@@ -228,3 +228,7 @@
     min-height: 100dvh;
   }
 }
+.long-text {
+  white-space: normal !important;
+  word-break: break-word !important;
+}
