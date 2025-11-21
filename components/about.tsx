@@ -35,7 +35,7 @@ type Project = {
   tags: string[]
   coverImage: string
   pdfName: string
-  pdfUrl: string // ✅ PDF 링크 (내부 / 외부 URL 모두 가능)
+  pdfUrl: string // ✅ 외부 링크/공유 링크도 사용 가능 (예: 네이버 MYBOX 링크)
 }
 
 type ResumeItem = {
@@ -129,33 +129,272 @@ type AboutInfo = {
   techStack: TechCategory[]
   testimonials: Testimonial[]
   lifePhotos: LifePhoto[]
+  // ✅ 수정 가능하게 만든 문구
+  whatIDoCaption: string
 }
 
 export function About() {
   const { getData, saveData, isEditMode } = useInlineEditor()
 
-  const defaultInfo = {
+  const defaultInfo: AboutInfo = {
     title: "김민수 포트폴리오",
-    subtitle: "당신의 전문성과 열정을 소개해주세요.",
-    background: {"image":"","video":"","color":"","opacity":0.08},
+    subtitle:
+      "도시를 관찰하고, 데이터를 읽고, 더 나은 공간을 고민하는 도시계획·부동산 전공자입니다.",
+    background: { image: "", video: "", color: "", opacity: 0.08 },
+
     profileName: "김민수",
     profileTitle: "단국대학교 도시계획부동산학부",
-    profileSummary: "도시재생과 주택시장 분석에 관심이 많으며, 데이터와 현장을 함께 보려고 노력합니다. 팀 프로젝트와 동아리 활동을 통해 사람들과 협업하는 법을 배웠습니다.",
+    profileSummary:
+      "도시재생과 주택시장 분석에 관심이 많으며, 데이터와 현장을 함께 보려고 노력합니다. 팀 프로젝트와 동아리 활동을 통해 사람들과 협업하는 법을 배웠습니다.",
     profileImage: "",
-    contact: [{"label":"Email","value":"example@naver.com"},{"label":"Phone","value":"010-0000-0000"},{"label":"Address","value":"경기 용인시 수지구 죽전동"},{"label":"GitHub / Blog","value":"https://github.com/your-id"}],
-    stats: [{"label":"전공 프로젝트","value":"6+","sub":"수업·팀 과제 포함"},{"label":"교육 봉사","value":"2+년","sub":"아이사랑 동아리 활동"},{"label":"관심 분야 리포트","value":"10+","sub":"주택·도시재생·환경 등"}],
-    services: [{"title":"도시·부동산 리서치","description":"정책 자료, 통계, 논문과 현장 자료를 종합해 이슈의 흐름을 정리하고 인사이트를 도출합니다."},{"title":"기초 데이터 분석 & 시각화","description":"실거래가, 인구구조, 상권 데이터 등을 엑셀과 통계를 활용해 정리·해석합니다."},{"title":"기획·발표 및 협업","description":"팀 프로젝트에서 역할 분담, 일정 관리, 발표 자료 제작을 맡으며 구성원들과 조율합니다."}],
-    skills: [{"title":"도시·부동산 리서치","level":"상","description":"정책 자료, 통계, 논문 등을 조사하여 흐름을 정리하고 핵심 인사이트를 도출합니다."},{"title":"데이터 분석(입문)","level":"중","description":"엑셀과 기본 통계를 활용하여 실거래가, 인구구조 등 데이터를 정리·시각화합니다."},{"title":"협업 & 커뮤니케이션","level":"상","description":"동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다."}],
-    techStack: [{"category":"데이터 & 분석","items":"Excel · 통계 기초 · 실거래가 데이터 · 인구통계"},{"category":"도구 & 소프트웨어","items":"PowerPoint · Word · QGIS / ArcGIS(입문)"},{"category":"관심 기술","items":"Python(기초 학습 중) · 데이터 시각화 · 공간 데이터"}],
-    resume: {"personal":[{"label":"이름","value":"김민수"},{"label":"생년월일","value":"2000.00.00"},{"label":"주소","value":"경기 용인시 수지구 죽전동"},{"label":"Email","value":"example@naver.com"}],"education":[{"period":"2018.03 ~ 2021.02","title":"OO고등학교","subtitle":"인문계열"},{"period":"2021.03 ~ 2027.02(졸업 예정)","title":"단국대학교 죽전캠퍼스","subtitle":"도시계획부동산학부"}],"experience":[{"period":"2023.03 ~ 현재","title":"아이사랑 동아리 교육부장","description":"아동 교육 봉사 기획 및 운영, 신규 부원 온보딩, 교육 프로그램 커리큘럼 구성"},{"period":"2024.03 ~ 2024.06","title":"도시·부동산 관련 팀 프로젝트","description":"주택시장·도시재생 이슈를 주제로 리포트 작성 및 발표"}],"activities":[{"period":"2023.03 ~ 현재","title":"아이사랑 동아리","details":["초등학생 대상 학습 지도 및 놀이 프로그램 진행","부원 간 소통과 활동 일정 조율, 행사 기획 참여"]},{"period":"2024.09 ~ 2024.12","title":"전공 수업 프로젝트","details":["서울시 특정 지역의 인구·상권 데이터 분석","GIS를 활용한 시각화 및 발표 자료 제작"]}],"certificates":[{"date":"2024.00.00","name":"관심 있는 자격증 또는 준비 중인 시험을 입력하세요."}]},
-    projects: [{"title":"서울 고덕동 아파트 실거래가 분석","period":"2023.09 ~ 2023.12","description":"국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트입니다.","tags":["#실거래가","#아파트분석","#고덕동"],"coverImage":"","pdfName":"고덕아르테온 분석 리포트","pdfUrl":"https://naver.me/GScEabVD"},{"title":"한·일 고령사회 주거정책 비교","period":"2024.03 ~ 2024.06","description":"한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 발표 과제입니다.","tags":["#고령사회","#주거정책","#비교연구"],"coverImage":"","pdfName":"","pdfUrl":"https://naver.me/GScEabVD"}],
-    highlights: [{"title":"현장을 보는 시각","description":"데이터뿐 아니라 실제 공간과 사람들의 생활을 함께 보면서 해석하려고 합니다."},{"title":"꾸준함과 책임감","description":"동아리와 팀 프로젝트에서 맡은 역할을 끝까지 책임지고 수행해 왔습니다."},{"title":"배우는 속도","description":"처음 보는 도구나 개념도 차근차근 익히며, 모르는 것은 질문하고 찾아보는 편입니다."}],
-    interests: ["#도시재생","#주택시장","#고령사회","#보행친화도시","#상권분석","#생활SOC"],
-    timeline: [{"period":"2018 ~ 2021","title":"고등학교 시절","description":"지리/사회 과목을 좋아하며, 도시와 공간에 대한 관심을 쌓기 시작."},{"period":"2021 ~ 현재","title":"단국대학교 도시계획부동산학부","description":"도시계획·부동산 전공 지식과 함께, 팀 프로젝트·발표 경험을 쌓는 중."},{"period":"2023 ~ 현재","title":"아이사랑 동아리","description":"교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장."}],
-    courses: [{"name":"GIS와 도시공간분석","detail":"공간 데이터를 활용한 분석 및 시각화 기초 학습."},{"name":"토지론입문","detail":"토지의 경제적 특성과 제도, 이용 방식에 대한 이해."},{"name":"부동산시장분석","detail":"주택시장, 상업용 부동산 시장의 구조와 가격 형성 요인 학습."},{"name":"도시재생론","detail":"쇠퇴 지역의 재생 전략과 국내외 사례 분석."}],
-    links: [{"label":"GitHub","url":"https://github.com/your-id"},{"label":"블로그 / Velog","url":"https://velog.io/@your-id"},{"label":"포트폴리오 PDF","url":""}],
-    testimonials: [{"name":"동아리 부원","role":"아이사랑","quote":"항상 먼저 다가와 주고, 약속한 일은 끝까지 책임지는 스타일이에요."},{"name":"팀 프로젝트 팀원","role":"전공 수업","quote":"정리와 발표를 잘해서 팀 분위기를 안정적으로 잡아주는 역할을 많이 했습니다."},{"name":"지도교수 가정","role":"수업 피드백","quote":"도시 문제를 보는 시각이 꾸준히 성장하고 있다는 평가를 받았습니다."}],
-    lifePhotos: [{"image":"","caption":"동아리 교육 봉사 활동"},{"image":"","caption":"현장 답사 및 도시 관찰"},{"image":"","caption":"친구들과의 협업·스터디"}]
+
+    contact: [
+      { label: "Email", value: "example@naver.com" },
+      { label: "Phone", value: "010-0000-0000" },
+      { label: "Address", value: "경기 용인시 수지구 죽전동" },
+      { label: "GitHub / Blog", value: "https://github.com/your-id" },
+    ],
+
+    // 상단 Stats
+    stats: [
+      { label: "전공 프로젝트", value: "6+", sub: "수업·팀 과제 포함" },
+      { label: "교육 봉사", value: "2+년", sub: "아이사랑 동아리 활동" },
+      { label: "관심 분야 리포트", value: "10+", sub: "주택·도시재생·환경 등" },
+    ],
+
+    // 내가 할 수 있는 일 (서비스)
+    services: [
+      {
+        title: "도시·부동산 리서치",
+        description:
+          "정책 자료, 통계, 논문과 현장 자료를 종합해 이슈의 흐름을 정리하고 인사이트를 도출합니다.",
+      },
+      {
+        title: "기초 데이터 분석 & 시각화",
+        description:
+          "실거래가, 인구구조, 상권 데이터 등을 엑셀과 통계를 활용해 정리·해석합니다.",
+      },
+      {
+        title: "기획·발표 및 협업",
+        description:
+          "팀 프로젝트에서 역할 분담, 일정 관리, 발표 자료 제작을 맡으며 구성원들과 조율합니다.",
+      },
+    ],
+
+    // Skills
+    skills: [
+      {
+        title: "도시·부동산 리서치",
+        level: "상",
+        description:
+          "정책 자료, 통계, 논문 등을 조사하여 흐름을 정리하고 핵심 인사이트를 도출합니다.",
+      },
+      {
+        title: "데이터 분석(입문)",
+        level: "중",
+        description:
+          "엑셀과 기본 통계를 활용하여 실거래가, 인구구조 등 데이터를 정리·시각화합니다.",
+      },
+      {
+        title: "협업 & 커뮤니케이션",
+        level: "상",
+        description: "동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다.",
+      },
+    ],
+
+    // Tech & Tools
+    techStack: [
+      {
+        category: "데이터 & 분석",
+        items: "Excel · 통계 기초 · 실거래가 데이터 · 인구통계",
+      },
+      {
+        category: "도구 & 소프트웨어",
+        items: "PowerPoint · Word · QGIS / ArcGIS(입문)",
+      },
+      {
+        category: "관심 기술",
+        items: "Python(기초 학습 중) · 데이터 시각화 · 공간 데이터",
+      },
+    ],
+
+    resume: {
+      personal: [
+        { label: "이름", value: "김민수" },
+        { label: "생년월일", value: "2000.00.00" },
+        { label: "주소", value: "경기 용인시 수지구 죽전동" },
+        { label: "Email", value: "example@naver.com" },
+      ],
+      education: [
+        {
+          period: "2018.03 ~ 2021.02",
+          title: "OO고등학교",
+          subtitle: "인문계열",
+        },
+        {
+          period: "2021.03 ~ 2027.02(졸업 예정)",
+          title: "단국대학교 죽전캠퍼스",
+          subtitle: "도시계획부동산학부",
+        },
+      ],
+      experience: [
+        {
+          period: "2023.03 ~ 현재",
+          title: "아이사랑 동아리 교육부장",
+          description:
+            "아동 교육 봉사 기획 및 운영, 신규 부원 온보딩, 교육 프로그램 커리큘럼 구성",
+        },
+        {
+          period: "2024.03 ~ 2024.06",
+          title: "도시·부동산 관련 팀 프로젝트",
+          description: "주택시장·도시재생 이슈를 주제로 리포트 작성 및 발표",
+        },
+      ],
+      activities: [
+        {
+          period: "2023.03 ~ 현재",
+          title: "아이사랑 동아리",
+          details: [
+            "초등학생 대상 학습 지도 및 놀이 프로그램 진행",
+            "부원 간 소통과 활동 일정 조율, 행사 기획 참여",
+          ],
+        },
+        {
+          period: "2024.09 ~ 2024.12",
+          title: "전공 수업 프로젝트",
+          details: [
+            "서울시 특정 지역의 인구·상권 데이터 분석",
+            "GIS를 활용한 시각화 및 발표 자료 제작",
+          ],
+        },
+      ],
+      certificates: [
+        { date: "2024.00.00", name: "관심 있는 자격증 또는 준비 중인 시험을 입력하세요." },
+      ],
+    },
+
+    // ✅ 프로젝트 + PDF (첫 번째는 네이버 MYBOX 링크 사용)
+    projects: [
+      {
+        title: "서울 고덕동 아파트 실거래가 분석",
+        period: "2023.09 ~ 2023.12",
+        description:
+          "국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트입니다.",
+        tags: ["#실거래가", "#아파트분석", "#고덕동"],
+        coverImage: "",
+        pdfName: "토지론입문 Report1",
+        pdfUrl: "https://naver.me/GScEabVD", // 👈 네이버 MYBOX 공유 링크
+      },
+      {
+        title: "한·일 고령사회 주거정책 비교",
+        period: "2024.03 ~ 2024.06",
+        description:
+          "한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 발표 과제입니다.",
+        tags: ["#고령사회", "#주거정책", "#비교연구"],
+        coverImage: "",
+        pdfName: "",
+        pdfUrl: "",
+      },
+    ],
+
+    highlights: [
+      {
+        title: "현장을 보는 시각",
+        description:
+          "데이터뿐 아니라 실제 공간과 사람들의 생활을 함께 보면서 해석하려고 합니다.",
+      },
+      {
+        title: "꾸준함과 책임감",
+        description:
+          "동아리와 팀 프로젝트에서 맡은 역할을 끝까지 책임지고 수행해 왔습니다.",
+      },
+      {
+        title: "배우는 속도",
+        description:
+          "처음 보는 도구나 개념도 차근차근 익히며, 모르는 것은 질문하고 찾아보는 편입니다.",
+      },
+    ],
+
+    interests: [
+      "#도시재생",
+      "#주택시장",
+      "#고령사회",
+      "#보행친화도시",
+      "#상권분석",
+      "#생활SOC",
+    ],
+
+    timeline: [
+      {
+        period: "2018 ~ 2021",
+        title: "고등학교 시절",
+        description: "지리/사회 과목을 좋아하며, 도시와 공간에 대한 관심을 쌓기 시작.",
+      },
+      {
+        period: "2021 ~ 현재",
+        title: "단국대학교 도시계획부동산학부",
+        description:
+          "도시계획·부동산 전공 지식과 함께, 팀 프로젝트·발표 경험을 쌓는 중.",
+      },
+      {
+        period: "2023 ~ 현재",
+        title: "아이사랑 동아리",
+        description: "교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장.",
+      },
+    ],
+
+    courses: [
+      {
+        name: "GIS와 도시공간분석",
+        detail: "공간 데이터를 활용한 분석 및 시각화 기초 학습.",
+      },
+      {
+        name: "토지론입문",
+        detail: "토지의 경제적 특성과 제도, 이용 방식에 대한 이해.",
+      },
+      {
+        name: "부동산시장분석",
+        detail: "주택시장, 상업용 부동산 시장의 구조와 가격 형성 요인 학습.",
+      },
+      {
+        name: "도시재생론",
+        detail: "쇠퇴 지역의 재생 전략과 국내외 사례 분석.",
+      },
+    ],
+
+    links: [
+      { label: "GitHub", url: "https://github.com/your-id" },
+      { label: "블로그 / Velog", url: "https://velog.io/@your-id" },
+      { label: "포트폴리오 PDF", url: "" },
+    ],
+
+    testimonials: [
+      {
+        name: "동아리 부원",
+        role: "아이사랑",
+        quote: "항상 먼저 다가와 주고, 약속한 일은 끝까지 책임지는 스타일이에요.",
+      },
+      {
+        name: "팀 프로젝트 팀원",
+        role: "전공 수업",
+        quote:
+          "정리와 발표를 잘해서 팀 분위기를 안정적으로 잡아주는 역할을 많이 했습니다.",
+      },
+      {
+        name: "지도교수 가정",
+        role: "수업 피드백",
+        quote: "도시 문제를 보는 시각이 꾸준히 성장하고 있다는 평가를 받았습니다.",
+      },
+    ],
+
+    lifePhotos: [
+      { image: "", caption: "동아리 교육 봉사 활동" },
+      { image: "", caption: "현장 답사 및 도시 관찰" },
+      { image: "", caption: "친구들과의 협업·스터디" },
+    ],
+
+    // What I Do 아래 설명 문구 (수정 가능)
+    whatIDoCaption: "민수가 잘할 수 있는 일들",
   }
 
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
@@ -191,6 +430,7 @@ export function About() {
         techStack: saved.techStack || defaultInfo.techStack,
         testimonials: saved.testimonials || defaultInfo.testimonials,
         lifePhotos: saved.lifePhotos || defaultInfo.lifePhotos,
+        whatIDoCaption: saved.whatIDoCaption || defaultInfo.whatIDoCaption,
       }
 
       setAboutInfo(merged)
@@ -245,6 +485,40 @@ export function About() {
       .filter((t) => t.length > 0)
     updateProject(index, "tags", tags)
   }
+
+  // ✅ Life & Moments 추가/삭제
+  const addLifePhoto = () => {
+    const newPhotos: LifePhoto[] = [
+      ...aboutInfo.lifePhotos,
+      { image: "", caption: "새 순간을 입력하세요." },
+    ]
+    updateAboutInfo("lifePhotos", newPhotos)
+  }
+
+  const removeLifePhoto = (index: number) => {
+    updateAboutInfo(
+      "lifePhotos",
+      aboutInfo.lifePhotos.filter((_, i) => i !== index),
+    )
+  }
+
+  // ✅ 수강 과목 추가/삭제
+  const addCourse = () => {
+    const newCourses: CourseItem[] = [
+      ...aboutInfo.courses,
+      { name: "새 과목", detail: "과목 설명을 입력하세요." },
+    ]
+    updateAboutInfo("courses", newCourses)
+  }
+
+  const removeCourse = (index: number) => {
+    updateAboutInfo(
+      "courses",
+      aboutInfo.courses.filter((_, i) => i !== index),
+    )
+  }
+
+  // (원하면 더 많은 add/remove 함수도 만들 수 있음)
 
   const updateResume = (
     section: keyof Resume,
@@ -477,7 +751,13 @@ export function About() {
                   What I Do
                 </h2>
                 <span className="text-xs text-muted-foreground">
-                  민수가 잘할 수 있는 일들
+                  <EditableText
+                    value={aboutInfo.whatIDoCaption}
+                    onChange={(value) =>
+                      updateAboutInfo("whatIDoCaption", value)
+                    }
+                    storageKey="about-what-i-do-caption"
+                  />
                 </span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -946,14 +1226,33 @@ export function About() {
           {/* 📚 수강 과목 & 학습 주제 */}
           {aboutInfo.courses.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-primary" />
-                <h2 className="text-xl font-bold">수강 과목 & 학습 주제</h2>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-primary" />
+                  <h2 className="text-xl font-bold">수강 과목 & 학습 주제</h2>
+                </div>
+                {isEditMode && (
+                  <button
+                    onClick={addCourse}
+                    className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                  >
+                    <Plus className="w-3 h-3" />
+                    과목 추가
+                  </button>
+                )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {aboutInfo.courses.map((c, idx) => (
-                  <Card key={idx} className="border bg-card/60">
+                  <Card key={idx} className="border bg-card/60 relative">
                     <CardContent className="p-4 space-y-1">
+                      {isEditMode && (
+                        <button
+                          onClick={() => removeCourse(idx)}
+                          className={COMMON_STYLES.deleteButton}
+                        >
+                          <X className={COMMON_STYLES.deleteIcon} />
+                        </button>
+                      )}
                       <p className="text-sm font-semibold">
                         <EditableText
                           value={c.name}
@@ -1083,13 +1382,35 @@ export function About() {
           {/* Life & Moments 사진 갤러리 */}
           {aboutInfo.lifePhotos.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-primary" />
-                <h2 className="text-xl font-bold">Life & Moments</h2>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Heart className="w-5 h-5 text-primary" />
+                  <h2 className="text-xl font-bold">Life & Moments</h2>
+                </div>
+                {isEditMode && (
+                  <button
+                    onClick={addLifePhoto}
+                    className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                  >
+                    <Plus className="w-3 h-3" />
+                    사진 추가
+                  </button>
+                )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {aboutInfo.lifePhotos.map((p, idx) => (
-                  <Card key={idx} className="border bg-card/70 overflow-hidden">
+                  <Card
+                    key={idx}
+                    className="border bg-card/70 overflow-hidden relative"
+                  >
+                    {isEditMode && (
+                      <button
+                        onClick={() => removeLifePhoto(idx)}
+                        className={COMMON_STYLES.deleteButton}
+                      >
+                        <X className={COMMON_STYLES.deleteIcon} />
+                      </button>
+                    )}
                     <div className="w-full h-40 bg-muted">
                       <EditableMedia
                         src={p.image}
@@ -1233,7 +1554,7 @@ export function About() {
                       </div>
                     )}
 
-                    {/* PDF 링크 (외부 공유 링크 포함) */}
+                    {/* PDF 링크 */}
                     <div className="pt-2 border-t border-border/60 mt-2 flex flex-col gap-2">
                       {project.pdfUrl && (
                         <a
@@ -1243,7 +1564,7 @@ export function About() {
                           className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
                         >
                           <FileText className="w-4 h-4" />
-                          {project.pdfName || "PDF 다운로드"}
+                          {project.pdfName || "PDF 열기"}
                         </a>
                       )}
 
@@ -1262,11 +1583,7 @@ export function About() {
                               />
                             </div>
                             <div className="flex flex-col gap-1">
-                              <span>
-                                PDF 경로 (예:{" "}
-                                <code>https://naver.me/공유링크</code> 또는{" "}
-                                <code>/pdfs/toji_report1.pdf</code>)
-                              </span>
+                              <span>PDF / 공유 링크 (예: 네이버 MYBOX 링크)</span>
                               <EditableText
                                 value={project.pdfUrl}
                                 onChange={(value) =>
@@ -1277,9 +1594,8 @@ export function About() {
                             </div>
                           </div>
                           <p className="text-[10px] mt-1">
-                            * 네이버 MYBOX, 구글 드라이브 등{" "}
-                            <b>공유 링크</b>를 그대로 넣어도 되고, 원하면{" "}
-                            <code>public/pdfs</code> 폴더 경로를 써도 됩니다.
+                            * 외부 공유 링크(네이버 MYBOX, 구글 드라이브 등)를 입력해도
+                            됩니다.
                           </p>
                         </div>
                       )}
