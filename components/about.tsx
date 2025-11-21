@@ -35,7 +35,7 @@ type Project = {
   tags: string[]
   coverImage: string
   pdfName: string
-  pdfUrl: string // ✅ 외부 링크/공유 링크도 사용 가능 (예: 네이버 MYBOX 링크)
+  pdfUrl: string // ✅ 외부 링크 포함 가능 (네이버 MYBOX 등)
 }
 
 type ResumeItem = {
@@ -129,8 +129,11 @@ type AboutInfo = {
   techStack: TechCategory[]
   testimonials: Testimonial[]
   lifePhotos: LifePhoto[]
-  // ✅ 수정 가능하게 만든 문구
-  whatIDoCaption: string
+
+  // 🔧 수정 불가능하던 문구도 편집 가능하게 추가
+  whatIDoNote: string
+  resumeCaption: string
+  projectsCaption: string
 }
 
 export function About() {
@@ -273,7 +276,7 @@ export function About() {
       ],
     },
 
-    // ✅ 프로젝트 + PDF (첫 번째는 네이버 MYBOX 링크 사용)
+    // ✅ 프로젝트 + PDF (네이버 MYBOX 링크 사용)
     projects: [
       {
         title: "서울 고덕동 아파트 실거래가 분석",
@@ -283,7 +286,7 @@ export function About() {
         tags: ["#실거래가", "#아파트분석", "#고덕동"],
         coverImage: "",
         pdfName: "토지론입문 Report1",
-        pdfUrl: "https://naver.me/GScEabVD", // 👈 네이버 MYBOX 공유 링크
+        pdfUrl: "https://naver.me/GScEabVD",
       },
       {
         title: "한·일 고령사회 주거정책 비교",
@@ -393,13 +396,16 @@ export function About() {
       { image: "", caption: "친구들과의 협업·스터디" },
     ],
 
-    // What I Do 아래 설명 문구 (수정 가능)
-    whatIDoCaption: "민수가 잘할 수 있는 일들",
+    // 🔧 편집 가능 문구 기본값
+    whatIDoNote: "민수가 잘할 수 있는 일들",
+    resumeCaption: "주요 학력과 경험을 한 눈에 볼 수 있도록 정리했습니다.",
+    projectsCaption: "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
   }
 
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
   const [backgroundData, setBackgroundData] = useState(defaultInfo.background)
 
+  // --------- 데이터 로딩 ----------
   useEffect(() => {
     const saved = getData("about-info") as Partial<AboutInfo> | null
     if (saved) {
@@ -430,7 +436,9 @@ export function About() {
         techStack: saved.techStack || defaultInfo.techStack,
         testimonials: saved.testimonials || defaultInfo.testimonials,
         lifePhotos: saved.lifePhotos || defaultInfo.lifePhotos,
-        whatIDoCaption: saved.whatIDoCaption || defaultInfo.whatIDoCaption,
+        whatIDoNote: saved.whatIDoNote || defaultInfo.whatIDoNote,
+        resumeCaption: saved.resumeCaption || defaultInfo.resumeCaption,
+        projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
       }
 
       setAboutInfo(merged)
@@ -448,6 +456,8 @@ export function About() {
     setAboutInfo(newInfo)
     saveData("about-info", newInfo)
   }
+
+  // --------- 리스트 항목 업데이트/추가/삭제 유틸 ----------
 
   const updateProject = (index: number, field: keyof Project, value: any) => {
     const newProjects = [...aboutInfo.projects]
@@ -486,40 +496,6 @@ export function About() {
     updateProject(index, "tags", tags)
   }
 
-  // ✅ Life & Moments 추가/삭제
-  const addLifePhoto = () => {
-    const newPhotos: LifePhoto[] = [
-      ...aboutInfo.lifePhotos,
-      { image: "", caption: "새 순간을 입력하세요." },
-    ]
-    updateAboutInfo("lifePhotos", newPhotos)
-  }
-
-  const removeLifePhoto = (index: number) => {
-    updateAboutInfo(
-      "lifePhotos",
-      aboutInfo.lifePhotos.filter((_, i) => i !== index),
-    )
-  }
-
-  // ✅ 수강 과목 추가/삭제
-  const addCourse = () => {
-    const newCourses: CourseItem[] = [
-      ...aboutInfo.courses,
-      { name: "새 과목", detail: "과목 설명을 입력하세요." },
-    ]
-    updateAboutInfo("courses", newCourses)
-  }
-
-  const removeCourse = (index: number) => {
-    updateAboutInfo(
-      "courses",
-      aboutInfo.courses.filter((_, i) => i !== index),
-    )
-  }
-
-  // (원하면 더 많은 add/remove 함수도 만들 수 있음)
-
   const updateResume = (
     section: keyof Resume,
     index: number,
@@ -536,6 +512,251 @@ export function About() {
     }
 
     updateAboutInfo("resume", newResume)
+  }
+
+  // 🔧 이력서 각 섹션 추가/삭제
+  const addPersonalField = () => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.personal.push({ label: "항목", value: "내용을 입력하세요." })
+    updateAboutInfo("resume", newResume)
+  }
+
+  const removePersonalField = (index: number) => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.personal.splice(index, 1)
+    updateAboutInfo("resume", newResume)
+  }
+
+  const addEducation = () => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.education.push({
+      period: "연도 ~ 연도",
+      title: "학교 / 과정",
+      subtitle: "전공 / 계열",
+    })
+    updateAboutInfo("resume", newResume)
+  }
+
+  const removeEducation = (index: number) => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.education.splice(index, 1)
+    updateAboutInfo("resume", newResume)
+  }
+
+  const addExperience = () => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.experience.push({
+      period: "연도 ~ 연도",
+      title: "경험 제목",
+      description: "설명을 입력하세요.",
+    })
+    updateAboutInfo("resume", newResume)
+  }
+
+  const removeExperience = (index: number) => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.experience.splice(index, 1)
+    updateAboutInfo("resume", newResume)
+  }
+
+  const addActivity = () => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.activities.push({
+      period: "연도 ~ 연도",
+      title: "활동명",
+      details: ["활동 내용을 입력하세요."],
+    })
+    updateAboutInfo("resume", newResume)
+  }
+
+  const removeActivity = (index: number) => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.activities.splice(index, 1)
+    updateAboutInfo("resume", newResume)
+  }
+
+  const addActivityDetail = (activityIndex: number) => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.activities[activityIndex].details.push("추가 내용을 입력하세요.")
+    updateAboutInfo("resume", newResume)
+  }
+
+  const removeActivityDetail = (activityIndex: number, detailIndex: number) => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.activities[activityIndex].details.splice(detailIndex, 1)
+    updateAboutInfo("resume", newResume)
+  }
+
+  const addCertificate = () => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.certificates.push({
+      date: "연도.월.일",
+      name: "자격증 / 수료증 이름",
+    })
+    updateAboutInfo("resume", newResume)
+  }
+
+  const removeCertificate = (index: number) => {
+    const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
+    newResume.certificates.splice(index, 1)
+    updateAboutInfo("resume", newResume)
+  }
+
+  // 🔧 강점, 타임라인, 과목, 링크, 후기, 사진 등 추가/삭제
+
+  const addHighlight = () => {
+    const newList = [
+      ...aboutInfo.highlights,
+      { title: "새 강점", description: "설명을 입력하세요." },
+    ]
+    updateAboutInfo("highlights", newList)
+  }
+
+  const removeHighlight = (index: number) => {
+    updateAboutInfo(
+      "highlights",
+      aboutInfo.highlights.filter((_, i) => i !== index),
+    )
+  }
+
+  const addTimelineItem = () => {
+    const newList = [
+      ...aboutInfo.timeline,
+      {
+        period: "연도 ~ 연도",
+        title: "새 타임라인",
+        description: "설명을 입력하세요.",
+      },
+    ]
+    updateAboutInfo("timeline", newList)
+  }
+
+  const removeTimelineItem = (index: number) => {
+    updateAboutInfo(
+      "timeline",
+      aboutInfo.timeline.filter((_, i) => i !== index),
+    )
+  }
+
+  const addCourse = () => {
+    const newList = [
+      ...aboutInfo.courses,
+      { name: "새 과목", detail: "과목 설명을 입력하세요." },
+    ]
+    updateAboutInfo("courses", newList)
+  }
+
+  const removeCourse = (index: number) => {
+    updateAboutInfo(
+      "courses",
+      aboutInfo.courses.filter((_, i) => i !== index),
+    )
+  }
+
+  const addInterest = () => {
+    const newList = [...aboutInfo.interests, "#새로운관심분야"]
+    updateAboutInfo("interests", newList)
+  }
+
+  const removeInterest = (index: number) => {
+    updateAboutInfo(
+      "interests",
+      aboutInfo.interests.filter((_, i) => i !== index),
+    )
+  }
+
+  const addLink = () => {
+    const newList = [
+      ...aboutInfo.links,
+      { label: "새 링크", url: "https://example.com" },
+    ]
+    updateAboutInfo("links", newList)
+  }
+
+  const removeLink = (index: number) => {
+    updateAboutInfo(
+      "links",
+      aboutInfo.links.filter((_, i) => i !== index),
+    )
+  }
+
+  const addStat = () => {
+    const newList = [
+      ...aboutInfo.stats,
+      { label: "새 항목", value: "0", sub: "설명을 입력하세요." },
+    ]
+    updateAboutInfo("stats", newList)
+  }
+
+  const removeStat = (index: number) => {
+    updateAboutInfo(
+      "stats",
+      aboutInfo.stats.filter((_, i) => i !== index),
+    )
+  }
+
+  const addService = () => {
+    const newList = [
+      ...aboutInfo.services,
+      { title: "새 역할", description: "설명을 입력하세요." },
+    ]
+    updateAboutInfo("services", newList)
+  }
+
+  const removeService = (index: number) => {
+    updateAboutInfo(
+      "services",
+      aboutInfo.services.filter((_, i) => i !== index),
+    )
+  }
+
+  const addTech = () => {
+    const newList = [
+      ...aboutInfo.techStack,
+      { category: "새 카테고리", items: "내용을 입력하세요." },
+    ]
+    updateAboutInfo("techStack", newList)
+  }
+
+  const removeTech = (index: number) => {
+    updateAboutInfo(
+      "techStack",
+      aboutInfo.techStack.filter((_, i) => i !== index),
+    )
+  }
+
+  const addTestimonial = () => {
+    const newList = [
+      ...aboutInfo.testimonials,
+      {
+        name: "이름",
+        role: "관계",
+        quote: "피드백 내용을 입력하세요.",
+      },
+    ]
+    updateAboutInfo("testimonials", newList)
+  }
+
+  const removeTestimonial = (index: number) => {
+    updateAboutInfo(
+      "testimonials",
+      aboutInfo.testimonials.filter((_, i) => i !== index),
+    )
+  }
+
+  const addLifePhoto = () => {
+    const newList = [
+      ...aboutInfo.lifePhotos,
+      { image: "", caption: "사진 설명을 입력하세요." },
+    ]
+    updateAboutInfo("lifePhotos", newList)
+  }
+
+  const removeLifePhoto = (index: number) => {
+    updateAboutInfo(
+      "lifePhotos",
+      aboutInfo.lifePhotos.filter((_, i) => i !== index),
+    )
   }
 
   const getLevelChip = (level: "상" | "중" | "하") => {
@@ -657,14 +878,25 @@ export function About() {
 
               <Card className="border-0 shadow-md">
                 <CardContent className="p-5 space-y-3">
-                  <h3 className="text-sm font-semibold text-muted-foreground tracking-wide">
-                    CONTACT
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-muted-foreground tracking-wide">
+                      CONTACT
+                    </h3>
+                    {isEditMode && (
+                      <button
+                        onClick={addPersonalField}
+                        className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                      >
+                        <Plus className="w-3 h-3" />
+                        항목 추가
+                      </button>
+                    )}
+                  </div>
                   <div className="space-y-2 text-sm">
                     {aboutInfo.resume.personal.map((item, idx) => (
                       <div
                         key={idx}
-                        className="grid grid-cols-[80px_minmax(0,1fr)] gap-2 items-center"
+                        className="grid grid-cols-[80px_minmax(0,1fr)_auto] gap-2 items-center"
                       >
                         <span className="text-xs text-muted-foreground">
                           <EditableText
@@ -684,6 +916,14 @@ export function About() {
                             storageKey={`resume-personal-${idx}-value`}
                           />
                         </span>
+                        {isEditMode && (
+                          <button
+                            onClick={() => removePersonalField(idx)}
+                            className="text-[10px] text-muted-foreground hover:text-destructive"
+                          >
+                            삭제
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -694,50 +934,74 @@ export function About() {
 
           {/* 상단 Stats 배너 */}
           {aboutInfo.stats.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {aboutInfo.stats.map((s, idx) => (
-                <Card
-                  key={idx}
-                  className="border-0 shadow-md bg-card/80 hover:bg-card transition-colors"
-                >
-                  <CardContent className="p-4 space-y-1">
-                    <p className="text-xs text-muted-foreground">
-                      <EditableText
-                        value={s.label}
-                        onChange={(value) => {
-                          const newStats = [...aboutInfo.stats]
-                          newStats[idx].label = value
-                          updateAboutInfo("stats", newStats)
-                        }}
-                        storageKey={`stat-${idx}-label`}
-                      />
-                    </p>
-                    <p className="text-2xl font-bold text-primary">
-                      <EditableText
-                        value={s.value}
-                        onChange={(value) => {
-                          const newStats = [...aboutInfo.stats]
-                          newStats[idx].value = value
-                          updateAboutInfo("stats", newStats)
-                        }}
-                        storageKey={`stat-${idx}-value`}
-                      />
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      <EditableText
-                        value={s.sub}
-                        onChange={(value) => {
-                          const newStats = [...aboutInfo.stats]
-                          newStats[idx].sub = value
-                          updateAboutInfo("stats", newStats)
-                        }}
-                        storageKey={`stat-${idx}-sub`}
-                        multiline
-                      />
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-semibold text-muted-foreground">
+                  한눈에 보는 민수
+                </span>
+                {isEditMode && (
+                  <button
+                    onClick={addStat}
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                  >
+                    <Plus className="w-3 h-3" />
+                    항목 추가
+                  </button>
+                )}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {aboutInfo.stats.map((s, idx) => (
+                  <Card
+                    key={idx}
+                    className="border-0 shadow-md bg-card/80 hover:bg-card transition-colors relative"
+                  >
+                    <CardContent className="p-4 space-y-1">
+                      {isEditMode && (
+                        <button
+                          onClick={() => removeStat(idx)}
+                          className={COMMON_STYLES.deleteButton}
+                        >
+                          <X className={COMMON_STYLES.deleteIcon} />
+                        </button>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        <EditableText
+                          value={s.label}
+                          onChange={(value) => {
+                            const newStats = [...aboutInfo.stats]
+                            newStats[idx].label = value
+                            updateAboutInfo("stats", newStats)
+                          }}
+                          storageKey={`stat-${idx}-label`}
+                        />
+                      </p>
+                      <p className="text-2xl font-bold text-primary">
+                        <EditableText
+                          value={s.value}
+                          onChange={(value) => {
+                            const newStats = [...aboutInfo.stats]
+                            newStats[idx].value = value
+                            updateAboutInfo("stats", newStats)
+                          }}
+                          storageKey={`stat-${idx}-value`}
+                        />
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        <EditableText
+                          value={s.sub}
+                          onChange={(value) => {
+                            const newStats = [...aboutInfo.stats]
+                            newStats[idx].sub = value
+                            updateAboutInfo("stats", newStats)
+                          }}
+                          storageKey={`stat-${idx}-sub`}
+                          multiline
+                        />
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
 
@@ -752,21 +1016,38 @@ export function About() {
                 </h2>
                 <span className="text-xs text-muted-foreground">
                   <EditableText
-                    value={aboutInfo.whatIDoCaption}
-                    onChange={(value) =>
-                      updateAboutInfo("whatIDoCaption", value)
-                    }
-                    storageKey="about-what-i-do-caption"
+                    value={aboutInfo.whatIDoNote}
+                    onChange={(value) => updateAboutInfo("whatIDoNote", value)}
+                    storageKey="what-i-do-note"
                   />
                 </span>
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                {isEditMode && (
+                  <button
+                    onClick={addService}
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5 mb-1"
+                  >
+                    <Plus className="w-3 h-3" />
+                    카드 추가
+                  </button>
+                )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {aboutInfo.services.map((srv, idx) => (
                   <Card
                     key={idx}
-                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow"
+                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow relative"
                   >
                     <CardContent className="p-4 space-y-2">
+                      {isEditMode && (
+                        <button
+                          onClick={() => removeService(idx)}
+                          className={COMMON_STYLES.deleteButton}
+                        >
+                          <X className={COMMON_STYLES.deleteIcon} />
+                        </button>
+                      )}
                       <p className="text-sm font-semibold">
                         <EditableText
                           value={srv.title}
@@ -800,13 +1081,32 @@ export function About() {
             <div className="space-y-6">
               <Card className="border-0 shadow-md">
                 <CardContent className="p-5 space-y-3">
-                  <h3 className="text-sm font-semibold text-muted-foreground tracking-wide flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-primary" />
-                    TECH & TOOLS
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-muted-foreground tracking-wide flex items-center gap-2">
+                      <BookOpen className="w-4 h-4 text-primary" />
+                      TECH & TOOLS
+                    </h3>
+                    {isEditMode && (
+                      <button
+                        onClick={addTech}
+                        className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                      >
+                        <Plus className="w-3 h-3" />
+                        항목 추가
+                      </button>
+                    )}
+                  </div>
                   <div className="space-y-2">
                     {aboutInfo.techStack.map((t, idx) => (
-                      <div key={idx} className="space-y-1">
+                      <div key={idx} className="space-y-1 relative">
+                        {isEditMode && (
+                          <button
+                            onClick={() => removeTech(idx)}
+                            className={COMMON_STYLES.deleteButton}
+                          >
+                            <X className={COMMON_STYLES.deleteIcon} />
+                          </button>
+                        )}
                         <p className="text-xs font-semibold text-foreground">
                           <EditableText
                             value={t.category}
@@ -899,17 +1199,33 @@ export function About() {
                   <Star className="w-5 h-5 text-primary" />
                   강점 한눈에 보기
                 </h2>
-                <span className="text-xs text-muted-foreground">
-                  민수의 성향과 강점을 카드로 정리한 영역입니다.
-                </span>
+                <div className="flex items-center gap-2">
+                  {isEditMode && (
+                    <button
+                      onClick={addHighlight}
+                      className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                    >
+                      <Plus className="w-3 h-3" />
+                      카드 추가
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {aboutInfo.highlights.map((h, idx) => (
                   <Card
                     key={idx}
-                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow"
+                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow relative"
                   >
                     <CardContent className="p-4 space-y-2">
+                      {isEditMode && (
+                        <button
+                          onClick={() => removeHighlight(idx)}
+                          className={COMMON_STYLES.deleteButton}
+                        >
+                          <X className={COMMON_STYLES.deleteIcon} />
+                        </button>
+                      )}
                       <div className="flex items-center gap-2">
                         {getHighlightIcon(idx)}
                         <h3 className="text-sm font-semibold">
@@ -948,7 +1264,12 @@ export function About() {
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-2xl font-bold">이력서</h2>
               <span className="text-xs text-muted-foreground">
-                주요 학력과 경험을 한 눈에 볼 수 있도록 정리했습니다.
+                <EditableText
+                  value={aboutInfo.resumeCaption}
+                  onChange={(value) => updateAboutInfo("resumeCaption", value)}
+                  storageKey="resume-caption"
+                  multiline
+                />
               </span>
             </div>
 
@@ -956,14 +1277,33 @@ export function About() {
               {/* 학력 + 경험 */}
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <GraduationCap className="w-5 h-5 text-primary" />
-                    학력
-                  </h3>
+                  <div className="flex items-center justify-between mb-3 gap-2">
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <GraduationCap className="w-5 h-5 text-primary" />
+                      학력
+                    </h3>
+                    {isEditMode && (
+                      <button
+                        onClick={addEducation}
+                        className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                      >
+                        <Plus className="w-3 h-3" />
+                        추가
+                      </button>
+                    )}
+                  </div>
                   <div className="space-y-3">
                     {aboutInfo.resume.education.map((edu, idx) => (
-                      <Card key={idx} className="border bg-card/60">
+                      <Card key={idx} className="border bg-card/60 relative">
                         <CardContent className="p-4 space-y-1">
+                          {isEditMode && (
+                            <button
+                              onClick={() => removeEducation(idx)}
+                              className={COMMON_STYLES.deleteButton}
+                            >
+                              <X className={COMMON_STYLES.deleteIcon} />
+                            </button>
+                          )}
                           <p className="text-xs text-primary font-medium">
                             <EditableText
                               value={edu.period}
@@ -1004,14 +1344,33 @@ export function About() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <Briefcase className="w-5 h-5 text-primary" />
-                    전공 관련 경험
-                  </h3>
+                  <div className="flex items-center justify-between mb-3 gap-2">
+                    <h3 className="text-lg font-semibold mb-0 flex items-center gap-2">
+                      <Briefcase className="w-5 h-5 text-primary" />
+                      전공 관련 경험
+                    </h3>
+                    {isEditMode && (
+                      <button
+                        onClick={addExperience}
+                        className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                      >
+                        <Plus className="w-3 h-3" />
+                        추가
+                      </button>
+                    )}
+                  </div>
                   <div className="space-y-3">
                     {aboutInfo.resume.experience.map((exp, idx) => (
-                      <Card key={idx} className="border bg-card/60">
+                      <Card key={idx} className="border bg-card/60 relative">
                         <CardContent className="p-4 space-y-1">
+                          {isEditMode && (
+                            <button
+                              onClick={() => removeExperience(idx)}
+                              className={COMMON_STYLES.deleteButton}
+                            >
+                              <X className={COMMON_STYLES.deleteIcon} />
+                            </button>
+                          )}
                           <p className="text-xs text-primary font-medium">
                             <EditableText
                               value={exp.period}
@@ -1055,14 +1414,33 @@ export function About() {
               {/* 활동 + 자격 */}
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <Award className="w-5 h-5 text-primary" />
-                    활동 & 대외 경험
-                  </h3>
+                  <div className="flex items-center justify-between mb-3 gap-2">
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <Award className="w-5 h-5 text-primary" />
+                      활동 & 대외 경험
+                    </h3>
+                    {isEditMode && (
+                      <button
+                        onClick={addActivity}
+                        className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                      >
+                        <Plus className="w-3 h-3" />
+                        활동 추가
+                      </button>
+                    )}
+                  </div>
                   <div className="space-y-3">
                     {aboutInfo.resume.activities.map((act, idx) => (
-                      <Card key={idx} className="border bg-card/60">
+                      <Card key={idx} className="border bg-card/60 relative">
                         <CardContent className="p-4 space-y-1">
+                          {isEditMode && (
+                            <button
+                              onClick={() => removeActivity(idx)}
+                              className={COMMON_STYLES.deleteButton}
+                            >
+                              <X className={COMMON_STYLES.deleteIcon} />
+                            </button>
+                          )}
                           <p className="text-xs text-primary font-medium">
                             <EditableText
                               value={act.period}
@@ -1083,24 +1461,45 @@ export function About() {
                           </p>
                           <ul className="mt-1 space-y-1 text-xs text-muted-foreground list-disc list-inside">
                             {act.details.map((d, dIdx) => (
-                              <li key={dIdx}>
-                                <EditableText
-                                  value={d}
-                                  onChange={(value) =>
-                                    updateResume(
-                                      "activities",
-                                      idx,
-                                      "details",
-                                      value,
-                                      dIdx,
-                                    )
-                                  }
-                                  storageKey={`resume-act-${idx}-detail-${dIdx}`}
-                                  multiline
-                                />
+                              <li key={dIdx} className="flex items-start gap-1">
+                                <div className="flex-1">
+                                  <EditableText
+                                    value={d}
+                                    onChange={(value) =>
+                                      updateResume(
+                                        "activities",
+                                        idx,
+                                        "details",
+                                        value,
+                                        dIdx,
+                                      )
+                                    }
+                                    storageKey={`resume-act-${idx}-detail-${dIdx}`}
+                                    multiline
+                                  />
+                                </div>
+                                {isEditMode && (
+                                  <button
+                                    onClick={() =>
+                                      removeActivityDetail(idx, dIdx)
+                                    }
+                                    className="text-[10px] text-muted-foreground hover:text-destructive ml-1"
+                                  >
+                                    삭제
+                                  </button>
+                                )}
                               </li>
                             ))}
                           </ul>
+                          {isEditMode && (
+                            <button
+                              onClick={() => addActivityDetail(idx)}
+                              className="mt-2 inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/40 text-primary hover:bg-primary/5"
+                            >
+                              <Plus className="w-3 h-3" />
+                              내용 추가
+                            </button>
+                          )}
                         </CardContent>
                       </Card>
                     ))}
@@ -1108,13 +1507,35 @@ export function About() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <Award className="w-5 h-5 text-primary" />
-                    자격 및 기타
-                  </h3>
+                  <div className="flex items-center justify-between mb-3 gap-2">
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <Award className="w-5 h-5 text-primary" />
+                      자격 및 기타
+                    </h3>
+                    {isEditMode && (
+                      <button
+                        onClick={addCertificate}
+                        className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                      >
+                        <Plus className="w-3 h-3" />
+                        추가
+                      </button>
+                    )}
+                  </div>
                   <div className="space-y-2 text-xs">
                     {aboutInfo.resume.certificates.map((cert, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
+                      <div
+                        key={idx}
+                        className="flex items-center gap-3 relative"
+                      >
+                        {isEditMode && (
+                          <button
+                            onClick={() => removeCertificate(idx)}
+                            className={COMMON_STYLES.deleteButton}
+                          >
+                            <X className={COMMON_STYLES.deleteIcon} />
+                          </button>
+                        )}
                         <span className="w-24 text-primary">
                           <EditableText
                             value={cert.date}
@@ -1145,15 +1566,26 @@ export function About() {
           {/* 🎯 관심 분야 */}
           {aboutInfo.interests.length > 0 && (
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-primary" />
-                <h2 className="text-xl font-bold">관심 분야</h2>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Heart className="w-5 h-5 text-primary" />
+                  <h2 className="text-xl font-bold">관심 분야</h2>
+                </div>
+                {isEditMode && (
+                  <button
+                    onClick={addInterest}
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                  >
+                    <Plus className="w-3 h-3" />
+                    태그 추가
+                  </button>
+                )}
               </div>
               <div className="flex flex-wrap gap-2">
                 {aboutInfo.interests.map((i, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 rounded-full text-xs bg-primary/10 text-primary"
+                    className="px-3 py-1 rounded-full text-xs bg-primary/10 text-primary inline-flex items-center gap-1"
                   >
                     <EditableText
                       value={i}
@@ -1164,6 +1596,14 @@ export function About() {
                       }}
                       storageKey={`interest-${idx}`}
                     />
+                    {isEditMode && (
+                      <button
+                        onClick={() => removeInterest(idx)}
+                        className="text-[10px] text-primary/70 hover:text-destructive ml-1"
+                      >
+                        ×
+                      </button>
+                    )}
                   </span>
                 ))}
               </div>
@@ -1173,13 +1613,32 @@ export function About() {
           {/* 📌 타임라인 */}
           {aboutInfo.timeline.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-primary" />
-                <h2 className="text-xl font-bold">타임라인</h2>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <h2 className="text-xl font-bold">타임라인</h2>
+                </div>
+                {isEditMode && (
+                  <button
+                    onClick={addTimelineItem}
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                  >
+                    <Plus className="w-3 h-3" />
+                    항목 추가
+                  </button>
+                )}
               </div>
               <div className="relative pl-4 border-l border-border/60 space-y-4">
                 {aboutInfo.timeline.map((t, idx) => (
                   <div key={idx} className="relative pl-4">
+                    {isEditMode && (
+                      <button
+                        onClick={() => removeTimelineItem(idx)}
+                        className={COMMON_STYLES.deleteButton}
+                      >
+                        <X className={COMMON_STYLES.deleteIcon} />
+                      </button>
+                    )}
                     <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-background border border-primary flex items-center justify-center">
                       <div className="w-2 h-2 rounded-full bg-primary" />
                     </div>
@@ -1234,7 +1693,7 @@ export function About() {
                 {isEditMode && (
                   <button
                     onClick={addCourse}
-                    className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
                   >
                     <Plus className="w-3 h-3" />
                     과목 추가
@@ -1243,7 +1702,10 @@ export function About() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {aboutInfo.courses.map((c, idx) => (
-                  <Card key={idx} className="border bg-card/60 relative">
+                  <Card
+                    key={idx}
+                    className="border bg-card/60 relative overflow-visible"
+                  >
                     <CardContent className="p-4 space-y-1">
                       {isEditMode && (
                         <button
@@ -1286,22 +1748,26 @@ export function About() {
           {/* 🔗 링크 모음 */}
           {aboutInfo.links.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <LinkIcon className="w-5 h-5 text-primary" />
-                <h2 className="text-xl font-bold">링크 모음</h2>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <LinkIcon className="w-5 h-5 text-primary" />
+                  <h2 className="text-xl font-bold">링크 모음</h2>
+                </div>
+                {isEditMode && (
+                  <button
+                    onClick={addLink}
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                  >
+                    <Plus className="w-3 h-3" />
+                    링크 추가
+                  </button>
+                )}
               </div>
               <div className="flex flex-wrap gap-3">
                 {aboutInfo.links.map((l, idx) => (
-                  <a
+                  <div
                     key={idx}
-                    href={l.url || "#"}
-                    target={l.url ? "_blank" : undefined}
-                    rel="noreferrer"
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs ${
-                      l.url
-                        ? "border-primary/40 text-primary hover:bg-primary/5"
-                        : "border-dashed border-muted-foreground/40 text-muted-foreground"
-                    }`}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs"
                   >
                     <LinkIcon className="w-3 h-3" />
                     <EditableText
@@ -1313,7 +1779,26 @@ export function About() {
                       }}
                       storageKey={`link-${idx}-label`}
                     />
-                  </a>
+                    <span className="hidden sm:inline-block">|</span>
+                    <EditableText
+                      value={l.url}
+                      onChange={(value) => {
+                        const newLinks = [...aboutInfo.links]
+                        newLinks[idx].url = value
+                        updateAboutInfo("links", newLinks)
+                      }}
+                      storageKey={`link-${idx}-url`}
+                      multiline
+                    />
+                    {isEditMode && (
+                      <button
+                        onClick={() => removeLink(idx)}
+                        className="text-[10px] text-muted-foreground hover:text-destructive"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
@@ -1327,17 +1812,31 @@ export function About() {
                   <Users className="w-5 h-5 text-primary" />
                   함께한 사람들이 본 나
                 </h2>
-                <span className="text-xs text-muted-foreground">
-                  동아리·팀 프로젝트에서 받은 피드백을 정리했습니다.
-                </span>
+                {isEditMode && (
+                  <button
+                    onClick={addTestimonial}
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                  >
+                    <Plus className="w-3 h-3" />
+                    카드 추가
+                  </button>
+                )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {aboutInfo.testimonials.map((t, idx) => (
                   <Card
                     key={idx}
-                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow"
+                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow relative"
                   >
                     <CardContent className="p-4 space-y-2">
+                      {isEditMode && (
+                        <button
+                          onClick={() => removeTestimonial(idx)}
+                          className={COMMON_STYLES.deleteButton}
+                        >
+                          <X className={COMMON_STYLES.deleteIcon} />
+                        </button>
+                      )}
                       <p className="text-xs text-muted-foreground leading-relaxed italic">
                         <EditableText
                           value={t.quote}
@@ -1390,7 +1889,7 @@ export function About() {
                 {isEditMode && (
                   <button
                     onClick={addLifePhoto}
-                    className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
                   >
                     <Plus className="w-3 h-3" />
                     사진 추가
@@ -1403,14 +1902,6 @@ export function About() {
                     key={idx}
                     className="border bg-card/70 overflow-hidden relative"
                   >
-                    {isEditMode && (
-                      <button
-                        onClick={() => removeLifePhoto(idx)}
-                        className={COMMON_STYLES.deleteButton}
-                      >
-                        <X className={COMMON_STYLES.deleteIcon} />
-                      </button>
-                    )}
                     <div className="w-full h-40 bg-muted">
                       <EditableMedia
                         src={p.image}
@@ -1427,6 +1918,14 @@ export function About() {
                       />
                     </div>
                     <CardContent className="p-3">
+                      {isEditMode && (
+                        <button
+                          onClick={() => removeLifePhoto(idx)}
+                          className={COMMON_STYLES.deleteButton}
+                        >
+                          <X className={COMMON_STYLES.deleteIcon} />
+                        </button>
+                      )}
                       <p className="text-xs text-muted-foreground text-center">
                         <EditableText
                           value={p.caption}
@@ -1455,7 +1954,14 @@ export function About() {
                   Projects
                 </h2>
                 <p className="text-xs text-muted-foreground mt-1">
-                  수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.
+                  <EditableText
+                    value={aboutInfo.projectsCaption}
+                    onChange={(value) =>
+                      updateAboutInfo("projectsCaption", value)
+                    }
+                    storageKey="projects-caption"
+                    multiline
+                  />
                 </p>
               </div>
               {isEditMode && (
@@ -1554,7 +2060,7 @@ export function About() {
                       </div>
                     )}
 
-                    {/* PDF 링크 */}
+                    {/* PDF 링크 (외부 링크 포함) */}
                     <div className="pt-2 border-t border-border/60 mt-2 flex flex-col gap-2">
                       {project.pdfUrl && (
                         <a
@@ -1570,7 +2076,7 @@ export function About() {
 
                       {isEditMode && (
                         <div className="text-[11px] text-muted-foreground space-y-1">
-                          <p className="font-medium">PDF 정보</p>
+                          <p className="font-medium">PDF / 링크 정보</p>
                           <div className="space-y-1">
                             <div className="flex flex-col gap-1">
                               <span>표시할 파일 이름 (예: 고덕동 분석 리포트)</span>
@@ -1583,18 +2089,19 @@ export function About() {
                               />
                             </div>
                             <div className="flex flex-col gap-1">
-                              <span>PDF / 공유 링크 (예: 네이버 MYBOX 링크)</span>
+                              <span>PDF 또는 외부 링크 URL</span>
                               <EditableText
                                 value={project.pdfUrl}
                                 onChange={(value) =>
                                   updateProject(index, "pdfUrl", value)
                                 }
                                 storageKey={`project-${index}-pdfUrl`}
+                                multiline
                               />
                             </div>
                           </div>
                           <p className="text-[10px] mt-1">
-                            * 외부 공유 링크(네이버 MYBOX, 구글 드라이브 등)를 입력해도
+                            * 네이버 MYBOX, 구글드라이브 등 공유 링크도 그대로 넣으면
                             됩니다.
                           </p>
                         </div>
