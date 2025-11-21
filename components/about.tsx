@@ -35,6 +35,7 @@ type Project = {
   tags: string[]
   coverImage: string
   pdfName: string
+  pdfUrl: string // ✅ PDF 링크 (내부 / 외부 URL 모두 가능)
 }
 
 type ResumeItem = {
@@ -147,7 +148,7 @@ export function About() {
     skills: [{"title":"도시·부동산 리서치","level":"상","description":"정책 자료, 통계, 논문 등을 조사하여 흐름을 정리하고 핵심 인사이트를 도출합니다."},{"title":"데이터 분석(입문)","level":"중","description":"엑셀과 기본 통계를 활용하여 실거래가, 인구구조 등 데이터를 정리·시각화합니다."},{"title":"협업 & 커뮤니케이션","level":"상","description":"동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다."}],
     techStack: [{"category":"데이터 & 분석","items":"Excel · 통계 기초 · 실거래가 데이터 · 인구통계"},{"category":"도구 & 소프트웨어","items":"PowerPoint · Word · QGIS / ArcGIS(입문)"},{"category":"관심 기술","items":"Python(기초 학습 중) · 데이터 시각화 · 공간 데이터"}],
     resume: {"personal":[{"label":"이름","value":"김민수"},{"label":"생년월일","value":"2000.00.00"},{"label":"주소","value":"경기 용인시 수지구 죽전동"},{"label":"Email","value":"example@naver.com"}],"education":[{"period":"2018.03 ~ 2021.02","title":"OO고등학교","subtitle":"인문계열"},{"period":"2021.03 ~ 2027.02(졸업 예정)","title":"단국대학교 죽전캠퍼스","subtitle":"도시계획부동산학부"}],"experience":[{"period":"2023.03 ~ 현재","title":"아이사랑 동아리 교육부장","description":"아동 교육 봉사 기획 및 운영, 신규 부원 온보딩, 교육 프로그램 커리큘럼 구성"},{"period":"2024.03 ~ 2024.06","title":"도시·부동산 관련 팀 프로젝트","description":"주택시장·도시재생 이슈를 주제로 리포트 작성 및 발표"}],"activities":[{"period":"2023.03 ~ 현재","title":"아이사랑 동아리","details":["초등학생 대상 학습 지도 및 놀이 프로그램 진행","부원 간 소통과 활동 일정 조율, 행사 기획 참여"]},{"period":"2024.09 ~ 2024.12","title":"전공 수업 프로젝트","details":["서울시 특정 지역의 인구·상권 데이터 분석","GIS를 활용한 시각화 및 발표 자료 제작"]}],"certificates":[{"date":"2024.00.00","name":"관심 있는 자격증 또는 준비 중인 시험을 입력하세요."}]},
-    projects: [{"title":"서울 고덕동 아파트 실거래가 분석","period":"2023.09 ~ 2023.12","description":"국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트입니다.","tags":["#실거래가ㅇ","#아파트분석","#고덕동"],"coverImage":"","pdfName":"토지론입문 Report1.pdf"},{"title":"한·일 고령사회 주거정책 비교","period":"2024.03 ~ 2024.06","description":"한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 발표 과제입니다.","tags":["#고령사회","#주거정책","#비교연구"],"coverImage":"","pdfName":""}],
+    projects: [{"title":"서울 고덕동 아파트 실거래가 분석","period":"2023.09 ~ 2023.12","description":"국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트입니다.","tags":["#실거래가","#아파트분석","#고덕동"],"coverImage":"","pdfName":"고덕아르테온 분석 리포트","pdfUrl":"https://naver.me/GScEabVD"},{"title":"한·일 고령사회 주거정책 비교","period":"2024.03 ~ 2024.06","description":"한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 발표 과제입니다.","tags":["#고령사회","#주거정책","#비교연구"],"coverImage":"","pdfName":"","pdfUrl":"https://naver.me/GScEabVD"}],
     highlights: [{"title":"현장을 보는 시각","description":"데이터뿐 아니라 실제 공간과 사람들의 생활을 함께 보면서 해석하려고 합니다."},{"title":"꾸준함과 책임감","description":"동아리와 팀 프로젝트에서 맡은 역할을 끝까지 책임지고 수행해 왔습니다."},{"title":"배우는 속도","description":"처음 보는 도구나 개념도 차근차근 익히며, 모르는 것은 질문하고 찾아보는 편입니다."}],
     interests: ["#도시재생","#주택시장","#고령사회","#보행친화도시","#상권분석","#생활SOC"],
     timeline: [{"period":"2018 ~ 2021","title":"고등학교 시절","description":"지리/사회 과목을 좋아하며, 도시와 공간에 대한 관심을 쌓기 시작."},{"period":"2021 ~ 현재","title":"단국대학교 도시계획부동산학부","description":"도시계획·부동산 전공 지식과 함께, 팀 프로젝트·발표 경험을 쌓는 중."},{"period":"2023 ~ 현재","title":"아이사랑 동아리","description":"교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장."}],
@@ -160,11 +161,6 @@ export function About() {
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
   const [backgroundData, setBackgroundData] = useState(defaultInfo.background)
 
-  // ✅ PDF는 localStorage에 저장하지 않고, 이 state에만 저장
-  const [projectPdfs, setProjectPdfs] = useState<{
-    [key: number]: { pdfName: string; file: File }
-  }>({})
-
   useEffect(() => {
     const saved = getData("about-info") as Partial<AboutInfo> | null
     if (saved) {
@@ -176,6 +172,7 @@ export function About() {
         tags: p.tags ?? [],
         coverImage: p.coverImage ?? "",
         pdfName: p.pdfName ?? "",
+        pdfUrl: p.pdfUrl ?? "",
       }))
 
       const merged: AboutInfo = {
@@ -228,6 +225,7 @@ export function About() {
         tags: ["#프로젝트"],
         coverImage: "",
         pdfName: "",
+        pdfUrl: "",
       },
     ]
     updateAboutInfo("projects", newProjects)
@@ -238,11 +236,6 @@ export function About() {
       "projects",
       aboutInfo.projects.filter((_, i) => i !== index),
     )
-    setProjectPdfs((prev) => {
-      const copy = { ...prev }
-      delete copy[index]
-      return copy
-    })
   }
 
   const updateProjectTags = (index: number, tagsString: string) => {
@@ -251,47 +244,6 @@ export function About() {
       .map((t) => t.trim())
       .filter((t) => t.length > 0)
     updateProject(index, "tags", tags)
-  }
-
-  // ✅ PDF 업로드 (File 객체만 state에 저장, localStorage에는 파일 이름만 저장)
-  const handleProjectPdfUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    if (file.type !== "application/pdf") {
-      alert("PDF 파일만 업로드할 수 있습니다.")
-      return
-    }
-
-    // 메모리(state)에만 저장
-    setProjectPdfs((prev) => ({
-      ...prev,
-      [index]: { pdfName: file.name, file },
-    }))
-
-    // localStorage에는 파일 이름만 저장
-    const newProjects = [...aboutInfo.projects]
-    newProjects[index] = {
-      ...newProjects[index],
-      pdfName: file.name,
-    }
-    updateAboutInfo("projects", newProjects)
-  }
-
-  // ✅ 버튼 클릭 시 Blob URL로 새 탭에서 PDF 열기
-  const handleOpenPdf = (index: number) => {
-    const entry = projectPdfs[index]
-    if (!entry) {
-      alert("이 브라우저 세션에서 업로드한 PDF만 열 수 있습니다. 다시 업로드해 주세요.")
-      return
-    }
-
-    const url = URL.createObjectURL(entry.file)
-    window.open(url, "_blank", "noopener,noreferrer")
-    // 너무 오래 안 쓰면 메모리 회수용으로 나중에 revoke 가능
-    // setTimeout(() => URL.revokeObjectURL(url), 60_000)
   }
 
   const updateResume = (
@@ -1281,36 +1233,53 @@ export function About() {
                       </div>
                     )}
 
-                    {/* PDF 링크 */}
+                    {/* PDF 링크 (외부 공유 링크 포함) */}
                     <div className="pt-2 border-t border-border/60 mt-2 flex flex-col gap-2">
-                      {projectPdfs[index] && (
-                        <button
-                          type="button"
-                          onClick={() => handleOpenPdf(index)}
+                      {project.pdfUrl && (
+                        <a
+                          href={project.pdfUrl}
+                          target="_blank"
+                          rel="noreferrer"
                           className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
                         >
                           <FileText className="w-4 h-4" />
-                          {projectPdfs[index].pdfName ||
-                            project.pdfName ||
-                            "PDF 보기"}
-                        </button>
+                          {project.pdfName || "PDF 다운로드"}
+                        </a>
                       )}
 
                       {isEditMode && (
                         <div className="text-[11px] text-muted-foreground space-y-1">
-                          <label className="font-medium">PDF 업로드</label>
-                          <input
-                            type="file"
-                            accept="application/pdf"
-                            onChange={(e) => handleProjectPdfUpload(e, index)}
-                            className="block w-full text-[11px]"
-                          />
-                          {project.pdfName && (
-                            <p className="mt-1">현재 파일명: {project.pdfName}</p>
-                          )}
-                          <p className="text-[10px]">
-                            * 업로드한 PDF는 이 페이지를 켜 놓은 동안에만 열 수 있습니다.
-                            (브라우저 메모리에만 저장되고, localStorage나 서버에는 저장되지 않습니다.)
+                          <p className="font-medium">PDF 정보</p>
+                          <div className="space-y-1">
+                            <div className="flex flex-col gap-1">
+                              <span>표시할 파일 이름 (예: 고덕동 분석 리포트)</span>
+                              <EditableText
+                                value={project.pdfName}
+                                onChange={(value) =>
+                                  updateProject(index, "pdfName", value)
+                                }
+                                storageKey={`project-${index}-pdfName`}
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span>
+                                PDF 경로 (예:{" "}
+                                <code>https://naver.me/공유링크</code> 또는{" "}
+                                <code>/pdfs/toji_report1.pdf</code>)
+                              </span>
+                              <EditableText
+                                value={project.pdfUrl}
+                                onChange={(value) =>
+                                  updateProject(index, "pdfUrl", value)
+                                }
+                                storageKey={`project-${index}-pdfUrl`}
+                              />
+                            </div>
+                          </div>
+                          <p className="text-[10px] mt-1">
+                            * 네이버 MYBOX, 구글 드라이브 등{" "}
+                            <b>공유 링크</b>를 그대로 넣어도 되고, 원하면{" "}
+                            <code>public/pdfs</code> 폴더 경로를 써도 됩니다.
                           </p>
                         </div>
                       )}
