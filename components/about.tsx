@@ -7,9 +7,6 @@ import {
   Briefcase,
   GraduationCap,
   Award,
-  Mail,
-  Phone,
-  MapPin,
   Link as LinkIcon,
   Plus,
   X,
@@ -30,6 +27,7 @@ import { EditableBackground } from "@/components/editable/editable-background"
 import { useInlineEditor } from "@/contexts/inline-editor-context"
 import { COMMON_STYLES } from "@/lib/constants"
 
+// ---- 타입 정의 ----
 type Project = {
   title: string
   period: string
@@ -82,6 +80,33 @@ type LinkItem = {
   url: string
 }
 
+type Stat = {
+  label: string
+  value: string
+  sub: string
+}
+
+type ServiceItem = {
+  title: string
+  description: string
+}
+
+type TechCategory = {
+  category: string
+  items: string
+}
+
+type Testimonial = {
+  name: string
+  role: string
+  quote: string
+}
+
+type LifePhoto = {
+  image: string
+  caption: string
+}
+
 type AboutInfo = {
   title: string
   subtitle: string
@@ -99,6 +124,11 @@ type AboutInfo = {
   timeline: TimelineItem[]
   courses: CourseItem[]
   links: LinkItem[]
+  stats: Stat[]
+  services: ServiceItem[]
+  techStack: TechCategory[]
+  testimonials: Testimonial[]
+  lifePhotos: LifePhoto[]
 }
 
 export function About() {
@@ -123,6 +153,33 @@ export function About() {
       { label: "GitHub / Blog", value: "https://github.com/your-id" },
     ],
 
+    // 상단 Stats
+    stats: [
+      { label: "전공 프로젝트", value: "6+", sub: "수업·팀 과제 포함" },
+      { label: "교육 봉사", value: "2+년", sub: "아이사랑 동아리 활동" },
+      { label: "관심 분야 리포트", value: "10+", sub: "주택·도시재생·환경 등" },
+    ],
+
+    // 내가 할 수 있는 일 (서비스)
+    services: [
+      {
+        title: "도시·부동산 리서치",
+        description:
+          "정책 자료, 통계, 논문과 현장 자료를 종합해 이슈의 흐름을 정리하고 인사이트를 도출합니다.",
+      },
+      {
+        title: "기초 데이터 분석 & 시각화",
+        description:
+          "실거래가, 인구구조, 상권 데이터 등을 엑셀과 통계를 활용해 정리·해석합니다.",
+      },
+      {
+        title: "기획·발표 및 협업",
+        description:
+          "팀 프로젝트에서 역할 분담, 일정 관리, 발표 자료 제작을 맡으며 구성원들과 조율합니다.",
+      },
+    ],
+
+    // Skills
     skills: [
       {
         title: "도시·부동산 리서치",
@@ -140,6 +197,22 @@ export function About() {
         title: "협업 & 커뮤니케이션",
         level: "상",
         description: "동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다.",
+      },
+    ],
+
+    // Tech & Tools
+    techStack: [
+      {
+        category: "데이터 & 분석",
+        items: "Excel · 통계 기초 · 실거래가 데이터 · 인구통계",
+      },
+      {
+        category: "도구 & 소프트웨어",
+        items: "PowerPoint · Word · QGIS / ArcGIS(입문)",
+      },
+      {
+        category: "관심 기술",
+        items: "Python(기초 학습 중) · 데이터 시각화 · 공간 데이터",
       },
     ],
 
@@ -291,6 +364,31 @@ export function About() {
       { label: "블로그 / Velog", url: "https://velog.io/@your-id" },
       { label: "포트폴리오 PDF", url: "" },
     ],
+
+    testimonials: [
+      {
+        name: "동아리 부원",
+        role: "아이사랑",
+        quote: "항상 먼저 다가와 주고, 약속한 일은 끝까지 책임지는 스타일이에요.",
+      },
+      {
+        name: "팀 프로젝트 팀원",
+        role: "전공 수업",
+        quote:
+          "정리와 발표를 잘해서 팀 분위기를 안정적으로 잡아주는 역할을 많이 했습니다.",
+      },
+      {
+        name: "지도교수 가정",
+        role: "수업 피드백",
+        quote: "도시 문제를 보는 시각이 꾸준히 성장하고 있다는 평가를 받았습니다.",
+      },
+    ],
+
+    lifePhotos: [
+      { image: "", caption: "동아리 교육 봉사 활동" },
+      { image: "", caption: "현장 답사 및 도시 관찰" },
+      { image: "", caption: "친구들과의 협업·스터디" },
+    ],
   }
 
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
@@ -310,6 +408,11 @@ export function About() {
         timeline: saved.timeline || defaultInfo.timeline,
         courses: saved.courses || defaultInfo.courses,
         links: saved.links || defaultInfo.links,
+        stats: saved.stats || defaultInfo.stats,
+        services: saved.services || defaultInfo.services,
+        techStack: saved.techStack || defaultInfo.techStack,
+        testimonials: saved.testimonials || defaultInfo.testimonials,
+        lifePhotos: saved.lifePhotos || defaultInfo.lifePhotos,
       }
       setAboutInfo(merged)
       if (saved.background) setBackgroundData(saved.background)
@@ -364,7 +467,7 @@ export function About() {
     updateProject(index, "tags", tags)
   }
 
-  // PDF 업로드 → base64로 저장
+  // PDF 업로드
   const handleProjectPdfUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -375,7 +478,6 @@ export function About() {
       alert("PDF 파일만 업로드할 수 있습니다.")
       return
     }
-
     const reader = new FileReader()
     reader.onloadend = () => {
       const result = reader.result as string
@@ -453,10 +555,10 @@ export function About() {
     >
       <section id="about" className="w-full">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
-          {/* 상단 소개 영역 */}
+          {/* 상단 Hero 영역 */}
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-10 items-stretch">
             {/* 프로필 + 요약 */}
-            <Card className="border-0 shadow-lg">
+            <Card className="border-0 shadow-xl bg-gradient-to-br from-primary/5 via-background to-background">
               <CardContent className="p-8 flex flex-col md:flex-row gap-6">
                 <div className="w-full md:w-40 md:h-40 rounded-2xl overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
                   <EditableMedia
@@ -474,14 +576,18 @@ export function About() {
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                       <EditableText
                         value={aboutInfo.profileName}
-                        onChange={(value) => updateAboutInfo("profileName", value)}
+                        onChange={(value) =>
+                          updateAboutInfo("profileName", value)
+                        }
                         storageKey="about-profile-name"
                       />
                     </h1>
                     <p className="text-primary mt-1 font-medium">
                       <EditableText
                         value={aboutInfo.profileTitle}
-                        onChange={(value) => updateAboutInfo("profileTitle", value)}
+                        onChange={(value) =>
+                          updateAboutInfo("profileTitle", value)
+                        }
                         storageKey="about-profile-title"
                         multiline
                       />
@@ -490,7 +596,9 @@ export function About() {
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     <EditableText
                       value={aboutInfo.profileSummary}
-                      onChange={(value) => updateAboutInfo("profileSummary", value)}
+                      onChange={(value) =>
+                        updateAboutInfo("profileSummary", value)
+                      }
                       storageKey="about-profile-summary"
                       multiline
                     />
@@ -499,7 +607,7 @@ export function About() {
               </CardContent>
             </Card>
 
-            {/* CONTACT + KEY SKILLS */}
+            {/* ABOUT 텍스트 + CONTACT */}
             <div className="space-y-6">
               <div>
                 <h2 className="text-xl font-semibold mb-3">
@@ -548,6 +656,146 @@ export function About() {
                             storageKey={`resume-personal-${idx}-value`}
                           />
                         </span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* 상단 Stats 배너 */}
+          {aboutInfo.stats.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {aboutInfo.stats.map((s, idx) => (
+                <Card
+                  key={idx}
+                  className="border-0 shadow-md bg-card/80 hover:bg-card transition-colors"
+                >
+                  <CardContent className="p-4 space-y-1">
+                    <p className="text-xs text-muted-foreground">
+                      <EditableText
+                        value={s.label}
+                        onChange={(value) => {
+                          const newStats = [...aboutInfo.stats]
+                          newStats[idx].label = value
+                          updateAboutInfo("stats", newStats)
+                        }}
+                        storageKey={`stat-${idx}-label`}
+                      />
+                    </p>
+                    <p className="text-2xl font-bold text-primary">
+                      <EditableText
+                        value={s.value}
+                        onChange={(value) => {
+                          const newStats = [...aboutInfo.stats]
+                          newStats[idx].value = value
+                          updateAboutInfo("stats", newStats)
+                        }}
+                        storageKey={`stat-${idx}-value`}
+                      />
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      <EditableText
+                        value={s.sub}
+                        onChange={(value) => {
+                          const newStats = [...aboutInfo.stats]
+                          newStats[idx].sub = value
+                          updateAboutInfo("stats", newStats)
+                        }}
+                        storageKey={`stat-${idx}-sub`}
+                        multiline
+                      />
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          {/* What I Do + Tech & Tools + Key Skills */}
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-8">
+            {/* What I Do */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <Target className="w-5 h-5 text-primary" />
+                  What I Do
+                </h2>
+                <span className="text-xs text-muted-foreground">
+                  민수가 잘할 수 있는 일들
+                </span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {aboutInfo.services.map((srv, idx) => (
+                  <Card
+                    key={idx}
+                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <CardContent className="p-4 space-y-2">
+                      <p className="text-sm font-semibold">
+                        <EditableText
+                          value={srv.title}
+                          onChange={(value) => {
+                            const newServices = [...aboutInfo.services]
+                            newServices[idx].title = value
+                            updateAboutInfo("services", newServices)
+                          }}
+                          storageKey={`service-${idx}-title`}
+                        />
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        <EditableText
+                          value={srv.description}
+                          onChange={(value) => {
+                            const newServices = [...aboutInfo.services]
+                            newServices[idx].description = value
+                            updateAboutInfo("services", newServices)
+                          }}
+                          storageKey={`service-${idx}-desc`}
+                          multiline
+                        />
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Tech & Tools + Key Skills */}
+            <div className="space-y-6">
+              <Card className="border-0 shadow-md">
+                <CardContent className="p-5 space-y-3">
+                  <h3 className="text-sm font-semibold text-muted-foreground tracking-wide flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-primary" />
+                    TECH & TOOLS
+                  </h3>
+                  <div className="space-y-2">
+                    {aboutInfo.techStack.map((t, idx) => (
+                      <div key={idx} className="space-y-1">
+                        <p className="text-xs font-semibold text-foreground">
+                          <EditableText
+                            value={t.category}
+                            onChange={(value) => {
+                              const newTech = [...aboutInfo.techStack]
+                              newTech[idx].category = value
+                              updateAboutInfo("techStack", newTech)
+                            }}
+                            storageKey={`tech-${idx}-cat`}
+                          />
+                        </p>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          <EditableText
+                            value={t.items}
+                            onChange={(value) => {
+                              const newTech = [...aboutInfo.techStack]
+                              newTech[idx].items = value
+                              updateAboutInfo("techStack", newTech)
+                            }}
+                            storageKey={`tech-${idx}-items`}
+                            multiline
+                          />
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -704,7 +952,12 @@ export function About() {
                             <EditableText
                               value={edu.subtitle || ""}
                               onChange={(value) =>
-                                updateResume("education", idx, "subtitle", value)
+                                updateResume(
+                                  "education",
+                                  idx,
+                                  "subtitle",
+                                  value,
+                                )
                               }
                               storageKey={`resume-edu-${idx}-subtitle`}
                               multiline
@@ -1013,6 +1266,111 @@ export function About() {
             </div>
           )}
 
+          {/* 함께한 사람들이 본 나 (Testimonials) */}
+          {aboutInfo.testimonials.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <Users className="w-5 h-5 text-primary" />
+                  함께한 사람들이 본 나
+                </h2>
+                <span className="text-xs text-muted-foreground">
+                  동아리·팀 프로젝트에서 받은 피드백을 정리했습니다.
+                </span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {aboutInfo.testimonials.map((t, idx) => (
+                  <Card
+                    key={idx}
+                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <CardContent className="p-4 space-y-2">
+                      <p className="text-xs text-muted-foreground leading-relaxed italic">
+                        <EditableText
+                          value={t.quote}
+                          onChange={(value) => {
+                            const newT = [...aboutInfo.testimonials]
+                            newT[idx].quote = value
+                            updateAboutInfo("testimonials", newT)
+                          }}
+                          storageKey={`testimonial-${idx}-quote`}
+                          multiline
+                        />
+                      </p>
+                      <p className="text-xs font-semibold">
+                        <EditableText
+                          value={t.name}
+                          onChange={(value) => {
+                            const newT = [...aboutInfo.testimonials]
+                            newT[idx].name = value
+                            updateAboutInfo("testimonials", newT)
+                          }}
+                          storageKey={`testimonial-${idx}-name`}
+                        />
+                        <span className="text-[11px] text-muted-foreground ml-1">
+                          <EditableText
+                            value={t.role}
+                            onChange={(value) => {
+                              const newT = [...aboutInfo.testimonials]
+                              newT[idx].role = value
+                              updateAboutInfo("testimonials", newT)
+                            }}
+                            storageKey={`testimonial-${idx}-role`}
+                          />
+                        </span>
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Life & Moments 사진 갤러리 */}
+          {aboutInfo.lifePhotos.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Heart className="w-5 h-5 text-primary" />
+                <h2 className="text-xl font-bold">Life & Moments</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {aboutInfo.lifePhotos.map((p, idx) => (
+                  <Card key={idx} className="border bg-card/70 overflow-hidden">
+                    <div className="w-full h-40 bg-muted">
+                      <EditableMedia
+                        src={p.image}
+                        onChange={(src) => {
+                          const newPhotos = [...aboutInfo.lifePhotos]
+                          newPhotos[idx].image = src
+                          updateAboutInfo("lifePhotos", newPhotos)
+                        }}
+                        type="image"
+                        storageKey={`life-photo-${idx}`}
+                        className="w-full h-full object-cover"
+                        alt={p.caption}
+                        purpose="life-photo"
+                      />
+                    </div>
+                    <CardContent className="p-3">
+                      <p className="text-xs text-muted-foreground text-center">
+                        <EditableText
+                          value={p.caption}
+                          onChange={(value) => {
+                            const newPhotos = [...aboutInfo.lifePhotos]
+                            newPhotos[idx].caption = value
+                            updateAboutInfo("lifePhotos", newPhotos)
+                          }}
+                          storageKey={`life-photo-${idx}-caption`}
+                          multiline
+                        />
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Projects 섹션 */}
           <div className="space-y-6">
             <div className="flex items-center justify-between gap-2">
@@ -1052,11 +1410,13 @@ export function About() {
                       </button>
                     )}
 
-                    {/* 표지 이미지 업로드 (EditableMedia 사용) */}
+                    {/* 표지 이미지 업로드 */}
                     <div className="w-full h-40 rounded-xl overflow-hidden bg-muted">
                       <EditableMedia
                         src={project.coverImage}
-                        onChange={(src) => updateProject(index, "coverImage", src)}
+                        onChange={(src) =>
+                          updateProject(index, "coverImage", src)
+                        }
                         type="image"
                         storageKey={`project-${index}-cover`}
                         className="w-full h-full object-cover"
