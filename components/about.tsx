@@ -107,6 +107,29 @@ type LifePhoto = {
   caption: string
 }
 
+type AboutLabels = {
+  statsSectionTitle: string
+  contactTitle: string
+  whatIDoTitle: string
+  techToolsTitle: string
+  keySkillsTitle: string
+  highlightsTitle: string
+  resumeTitle: string
+  educationTitle: string
+  experienceTitle: string
+  activityTitle: string
+  certificateTitle: string
+  interestsTitle: string
+  timelineTitle: string
+  coursesTitle: string
+  linksTitle: string
+  testimonialTitle: string
+  lifeMomentsTitle: string
+  projectsTitle: string
+  projectTagsLabel: string
+  projectPdfNote: string
+}
+
 type AboutInfo = {
   title: string
   subtitle: string
@@ -134,6 +157,9 @@ type AboutInfo = {
   whatIDoNote: string
   resumeCaption: string
   projectsCaption: string
+
+  // 🔧 섹션 제목 / 라벨 전부 여기에
+  labels: AboutLabels
 }
 
 export function About() {
@@ -201,7 +227,8 @@ export function About() {
       {
         title: "협업 & 커뮤니케이션",
         level: "상",
-        description: "동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다.",
+        description:
+          "동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다.",
       },
     ],
 
@@ -272,7 +299,10 @@ export function About() {
         },
       ],
       certificates: [
-        { date: "2024.00.00", name: "관심 있는 자격증 또는 준비 중인 시험을 입력하세요." },
+        {
+          date: "2024.00.00",
+          name: "관심 있는 자격증 또는 준비 중인 시험을 입력하세요.",
+        },
       ],
     },
 
@@ -331,7 +361,8 @@ export function About() {
       {
         period: "2018 ~ 2021",
         title: "고등학교 시절",
-        description: "지리/사회 과목을 좋아하며, 도시와 공간에 대한 관심을 쌓기 시작.",
+        description:
+          "지리/사회 과목을 좋아하며, 도시와 공간에 대한 관심을 쌓기 시작.",
       },
       {
         period: "2021 ~ 현재",
@@ -342,7 +373,8 @@ export function About() {
       {
         period: "2023 ~ 현재",
         title: "아이사랑 동아리",
-        description: "교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장.",
+        description:
+          "교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장.",
       },
     ],
 
@@ -400,6 +432,31 @@ export function About() {
     whatIDoNote: "민수가 잘할 수 있는 일들",
     resumeCaption: "주요 학력과 경험을 한 눈에 볼 수 있도록 정리했습니다.",
     projectsCaption: "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
+
+    // 🔧 섹션 라벨 기본값
+    labels: {
+      statsSectionTitle: "한눈에 보는 민수",
+      contactTitle: "CONTACT",
+      whatIDoTitle: "What I Do",
+      techToolsTitle: "TECH & TOOLS",
+      keySkillsTitle: "KEY SKILLS",
+      highlightsTitle: "강점 한눈에 보기",
+      resumeTitle: "이력서",
+      educationTitle: "학력",
+      experienceTitle: "전공 관련 경험",
+      activityTitle: "활동 & 대외 경험",
+      certificateTitle: "자격 및 기타",
+      interestsTitle: "관심 분야",
+      timelineTitle: "타임라인",
+      coursesTitle: "수강 과목 & 학습 주제",
+      linksTitle: "링크 모음",
+      testimonialTitle: "함께한 사람들이 본 나",
+      lifeMomentsTitle: "Life & Moments",
+      projectsTitle: "Projects",
+      projectTagsLabel: "태그 (공백으로 구분):",
+      projectPdfNote:
+        "* 네이버 MYBOX, 구글드라이브 등 공유 링크도 그대로 넣으면 됩니다.",
+    },
   }
 
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
@@ -439,6 +496,7 @@ export function About() {
         whatIDoNote: saved.whatIDoNote || defaultInfo.whatIDoNote,
         resumeCaption: saved.resumeCaption || defaultInfo.resumeCaption,
         projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
+        labels: saved.labels || defaultInfo.labels,
       }
 
       setAboutInfo(merged)
@@ -455,6 +513,11 @@ export function About() {
     const newInfo = { ...aboutInfo, [key]: value }
     setAboutInfo(newInfo)
     saveData("about-info", newInfo)
+  }
+
+  const updateLabels = (partial: Partial<AboutLabels>) => {
+    const newLabels = { ...aboutInfo.labels, ...partial }
+    updateAboutInfo("labels", newLabels)
   }
 
   // --------- 리스트 항목 업데이트/추가/삭제 유틸 ----------
@@ -880,7 +943,13 @@ export function About() {
                 <CardContent className="p-5 space-y-3">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-muted-foreground tracking-wide">
-                      CONTACT
+                      <EditableText
+                        value={aboutInfo.labels.contactTitle}
+                        onChange={(value) =>
+                          updateLabels({ contactTitle: value })
+                        }
+                        storageKey="label-contact-title"
+                      />
                     </h3>
                     {isEditMode && (
                       <button
@@ -937,7 +1006,13 @@ export function About() {
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-semibold text-muted-foreground">
-                  한눈에 보는 민수
+                  <EditableText
+                    value={aboutInfo.labels.statsSectionTitle}
+                    onChange={(value) =>
+                      updateLabels({ statsSectionTitle: value })
+                    }
+                    storageKey="label-stats-section-title"
+                  />
                 </span>
                 {isEditMode && (
                   <button
@@ -1012,7 +1087,13 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <Target className="w-5 h-5 text-primary" />
-                  What I Do
+                  <EditableText
+                    value={aboutInfo.labels.whatIDoTitle}
+                    onChange={(value) =>
+                      updateLabels({ whatIDoTitle: value })
+                    }
+                    storageKey="label-what-i-do-title"
+                  />
                 </h2>
                 <span className="text-xs text-muted-foreground">
                   <EditableText
@@ -1084,7 +1165,13 @@ export function About() {
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-muted-foreground tracking-wide flex items-center gap-2">
                       <BookOpen className="w-4 h-4 text-primary" />
-                      TECH & TOOLS
+                      <EditableText
+                        value={aboutInfo.labels.techToolsTitle}
+                        onChange={(value) =>
+                          updateLabels({ techToolsTitle: value })
+                        }
+                        storageKey="label-tech-tools-title"
+                      />
                     </h3>
                     {isEditMode && (
                       <button
@@ -1139,7 +1226,13 @@ export function About() {
               <Card className="border-0 shadow-md">
                 <CardContent className="p-5 space-y-3">
                   <h3 className="text-sm font-semibold text-muted-foreground tracking-wide">
-                    KEY SKILLS
+                    <EditableText
+                      value={aboutInfo.labels.keySkillsTitle}
+                      onChange={(value) =>
+                        updateLabels({ keySkillsTitle: value })
+                      }
+                      storageKey="label-key-skills-title"
+                    />
                   </h3>
                   <div className="space-y-3">
                     {aboutInfo.skills.map((skill, idx) => (
@@ -1197,7 +1290,13 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <Star className="w-5 h-5 text-primary" />
-                  강점 한눈에 보기
+                  <EditableText
+                    value={aboutInfo.labels.highlightsTitle}
+                    onChange={(value) =>
+                      updateLabels({ highlightsTitle: value })
+                    }
+                    storageKey="label-highlights-title"
+                  />
                 </h2>
                 <div className="flex items-center gap-2">
                   {isEditMode && (
@@ -1262,7 +1361,15 @@ export function About() {
           {/* 이력서 섹션 */}
           <div className="space-y-8">
             <div className="flex items-center justify-between gap-2">
-              <h2 className="text-2xl font-bold">이력서</h2>
+              <h2 className="text-2xl font-bold">
+                <EditableText
+                  value={aboutInfo.labels.resumeTitle}
+                  onChange={(value) =>
+                    updateLabels({ resumeTitle: value })
+                  }
+                  storageKey="label-resume-title"
+                />
+              </h2>
               <span className="text-xs text-muted-foreground">
                 <EditableText
                   value={aboutInfo.resumeCaption}
@@ -1277,10 +1384,16 @@ export function About() {
               {/* 학력 + 경험 */}
               <div className="space-y-6">
                 <div>
-                  <div className="flex items-center justify-between mb-3 gap-2">
+                  <div className="flex items-center justify_between mb-3 gap-2">
                     <h3 className="text-lg font-semibold flex items-center gap-2">
                       <GraduationCap className="w-5 h-5 text-primary" />
-                      학력
+                      <EditableText
+                        value={aboutInfo.labels.educationTitle}
+                        onChange={(value) =>
+                          updateLabels({ educationTitle: value })
+                        }
+                        storageKey="label-education-title"
+                      />
                     </h3>
                     {isEditMode && (
                       <button
@@ -1347,7 +1460,13 @@ export function About() {
                   <div className="flex items-center justify-between mb-3 gap-2">
                     <h3 className="text-lg font-semibold mb-0 flex items-center gap-2">
                       <Briefcase className="w-5 h-5 text-primary" />
-                      전공 관련 경험
+                      <EditableText
+                        value={aboutInfo.labels.experienceTitle}
+                        onChange={(value) =>
+                          updateLabels({ experienceTitle: value })
+                        }
+                        storageKey="label-experience-title"
+                      />
                     </h3>
                     {isEditMode && (
                       <button
@@ -1417,7 +1536,13 @@ export function About() {
                   <div className="flex items-center justify-between mb-3 gap-2">
                     <h3 className="text-lg font-semibold flex items-center gap-2">
                       <Award className="w-5 h-5 text-primary" />
-                      활동 & 대외 경험
+                      <EditableText
+                        value={aboutInfo.labels.activityTitle}
+                        onChange={(value) =>
+                          updateLabels({ activityTitle: value })
+                        }
+                        storageKey="label-activity-title"
+                      />
                     </h3>
                     {isEditMode && (
                       <button
@@ -1510,7 +1635,13 @@ export function About() {
                   <div className="flex items-center justify-between mb-3 gap-2">
                     <h3 className="text-lg font-semibold flex items-center gap-2">
                       <Award className="w-5 h-5 text-primary" />
-                      자격 및 기타
+                      <EditableText
+                        value={aboutInfo.labels.certificateTitle}
+                        onChange={(value) =>
+                          updateLabels({ certificateTitle: value })
+                        }
+                        storageKey="label-certificate-title"
+                      />
                     </h3>
                     {isEditMode && (
                       <button
@@ -1569,7 +1700,15 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Heart className="w-5 h-5 text-primary" />
-                  <h2 className="text-xl font-bold">관심 분야</h2>
+                  <h2 className="text-xl font-bold">
+                    <EditableText
+                      value={aboutInfo.labels.interestsTitle}
+                      onChange={(value) =>
+                        updateLabels({ interestsTitle: value })
+                      }
+                      storageKey="label-interests-title"
+                    />
+                  </h2>
                 </div>
                 {isEditMode && (
                   <button
@@ -1616,7 +1755,15 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-primary" />
-                  <h2 className="text-xl font-bold">타임라인</h2>
+                  <h2 className="text-xl font-bold">
+                    <EditableText
+                      value={aboutInfo.labels.timelineTitle}
+                      onChange={(value) =>
+                        updateLabels({ timelineTitle: value })
+                      }
+                      storageKey="label-timeline-title"
+                    />
+                  </h2>
                 </div>
                 {isEditMode && (
                   <button
@@ -1688,7 +1835,15 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-primary" />
-                  <h2 className="text-xl font-bold">수강 과목 & 학습 주제</h2>
+                  <h2 className="text-xl font-bold">
+                    <EditableText
+                      value={aboutInfo.labels.coursesTitle}
+                      onChange={(value) =>
+                        updateLabels({ coursesTitle: value })
+                      }
+                      storageKey="label-courses-title"
+                    />
+                  </h2>
                 </div>
                 {isEditMode && (
                   <button
@@ -1751,7 +1906,15 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <LinkIcon className="w-5 h-5 text-primary" />
-                  <h2 className="text-xl font-bold">링크 모음</h2>
+                  <h2 className="text-xl font-bold">
+                    <EditableText
+                      value={aboutInfo.labels.linksTitle}
+                      onChange={(value) =>
+                        updateLabels({ linksTitle: value })
+                      }
+                      storageKey="label-links-title"
+                    />
+                  </h2>
                 </div>
                 {isEditMode && (
                   <button
@@ -1810,7 +1973,13 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <Users className="w-5 h-5 text-primary" />
-                  함께한 사람들이 본 나
+                  <EditableText
+                    value={aboutInfo.labels.testimonialTitle}
+                    onChange={(value) =>
+                      updateLabels({ testimonialTitle: value })
+                    }
+                    storageKey="label-testimonial-title"
+                  />
                 </h2>
                 {isEditMode && (
                   <button
@@ -1884,7 +2053,15 @@ export function About() {
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Heart className="w-5 h-5 text-primary" />
-                  <h2 className="text-xl font-bold">Life & Moments</h2>
+                  <h2 className="text-xl font-bold">
+                    <EditableText
+                      value={aboutInfo.labels.lifeMomentsTitle}
+                      onChange={(value) =>
+                        updateLabels({ lifeMomentsTitle: value })
+                      }
+                      storageKey="label-life-moments-title"
+                    />
+                  </h2>
                 </div>
                 {isEditMode && (
                   <button
@@ -1951,7 +2128,13 @@ export function About() {
               <div>
                 <h2 className="text-2xl font-bold flex items-center gap-2">
                   <FolderOpen className="w-5 h-5 text-primary" />
-                  Projects
+                  <EditableText
+                    value={aboutInfo.labels.projectsTitle}
+                    onChange={(value) =>
+                      updateLabels({ projectsTitle: value })
+                    }
+                    storageKey="label-projects-title"
+                  />
                 </h2>
                 <p className="text-xs text-muted-foreground mt-1">
                   <EditableText
@@ -2051,7 +2234,15 @@ export function About() {
 
                     {isEditMode && (
                       <div className="text-[11px] text-muted-foreground space-y-1">
-                        <span>태그 (공백으로 구분):</span>
+                        <span>
+                          <EditableText
+                            value={aboutInfo.labels.projectTagsLabel}
+                            onChange={(value) =>
+                              updateLabels({ projectTagsLabel: value })
+                            }
+                            storageKey="label-project-tags"
+                          />
+                        </span>
                         <EditableText
                           value={project.tags.join(" ")}
                           onChange={(value) => updateProjectTags(index, value)}
@@ -2101,8 +2292,14 @@ export function About() {
                             </div>
                           </div>
                           <p className="text-[10px] mt-1">
-                            * 네이버 MYBOX, 구글드라이브 등 공유 링크도 그대로 넣으면
-                            됩니다.
+                            <EditableText
+                              value={aboutInfo.labels.projectPdfNote}
+                              onChange={(value) =>
+                                updateLabels({ projectPdfNote: value })
+                              }
+                              storageKey="label-project-pdf-note"
+                              multiline
+                            />
                           </p>
                         </div>
                       )}
