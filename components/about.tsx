@@ -7,7 +7,6 @@ import {
   Briefcase,
   GraduationCap,
   Award,
-  Link as LinkIcon,
   Plus,
   X,
   FolderOpen,
@@ -20,6 +19,7 @@ import {
   BookOpen,
   Clock,
   Heart,
+  Flame, // 🔥 모토 아이콘용 추가
 } from "lucide-react"
 import { EditableText } from "@/components/editable/editable-text"
 import { EditableMedia } from "@/components/editable/editable-media"
@@ -35,7 +35,7 @@ type Project = {
   tags: string[]
   coverImage: string
   pdfName: string
-  pdfUrl: string // ✅ 외부 링크 포함 가능 (네이버 MYBOX 등)
+  pdfUrl: string
 }
 
 type ResumeItem = {
@@ -73,11 +73,6 @@ type TimelineItem = {
 type CourseItem = {
   name: string
   detail: string
-}
-
-type LinkItem = {
-  label: string
-  url: string
 }
 
 type Stat = {
@@ -120,9 +115,9 @@ type AboutLabels = {
   activityTitle: string
   certificateTitle: string
   interestsTitle: string
+  interestMottoTitle: string
   timelineTitle: string
   coursesTitle: string
-  linksTitle: string
   testimonialTitle: string
   lifeMomentsTitle: string
   projectsTitle: string
@@ -144,21 +139,19 @@ type AboutInfo = {
   projects: Project[]
   highlights: Highlight[]
   interests: string[]
+  interestMotto: string
   timeline: TimelineItem[]
   courses: CourseItem[]
-  links: LinkItem[]
   stats: Stat[]
   services: ServiceItem[]
   techStack: TechCategory[]
   testimonials: Testimonial[]
   lifePhotos: LifePhoto[]
 
-  // 🔧 수정 불가능하던 문구도 편집 가능하게 추가
   whatIDoNote: string
   resumeCaption: string
   projectsCaption: string
 
-  // 🔧 섹션 제목 / 라벨 전부 여기에
   labels: AboutLabels
 }
 
@@ -306,7 +299,7 @@ export function About() {
       ],
     },
 
-    // ✅ 프로젝트 + PDF (네이버 MYBOX 링크 사용)
+    // 프로젝트 + PDF
     projects: [
       {
         title: "서울 고덕동 아파트 실거래가 분석",
@@ -357,6 +350,9 @@ export function About() {
       "#생활SOC",
     ],
 
+    // 관심 분야 아래 모토 기본값 (회색 글씨로 한 줄)
+    interestMotto: "사람이 떠나지 않는 도시를 고민하는 예비 도시계획가입니다.",
+
     timeline: [
       {
         period: "2018 ~ 2021",
@@ -397,12 +393,6 @@ export function About() {
       },
     ],
 
-    links: [
-      { label: "GitHub", url: "https://github.com/your-id" },
-      { label: "블로그 / Velog", url: "https://velog.io/@your-id" },
-      { label: "포트폴리오 PDF", url: "" },
-    ],
-
     testimonials: [
       {
         name: "동아리 부원",
@@ -428,12 +418,13 @@ export function About() {
       { image: "", caption: "친구들과의 협업·스터디" },
     ],
 
-    // 🔧 편집 가능 문구 기본값
+    // 편집 가능 문구 기본값
     whatIDoNote: "민수가 잘할 수 있는 일들",
     resumeCaption: "주요 학력과 경험을 한 눈에 볼 수 있도록 정리했습니다.",
-    projectsCaption: "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
+    projectsCaption:
+      "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
 
-    // 🔧 섹션 라벨 기본값
+    // 섹션 라벨 기본값
     labels: {
       statsSectionTitle: "한눈에 보는 민수",
       contactTitle: "CONTACT",
@@ -447,9 +438,9 @@ export function About() {
       activityTitle: "활동 & 대외 경험",
       certificateTitle: "자격 및 기타",
       interestsTitle: "관심 분야",
+      interestMottoTitle: "모토 / 글귀",
       timelineTitle: "타임라인",
       coursesTitle: "수강 과목 & 학습 주제",
-      linksTitle: "링크 모음",
       testimonialTitle: "함께한 사람들이 본 나",
       lifeMomentsTitle: "Life & Moments",
       projectsTitle: "Projects",
@@ -487,7 +478,6 @@ export function About() {
         interests: saved.interests || defaultInfo.interests,
         timeline: saved.timeline || defaultInfo.timeline,
         courses: saved.courses || defaultInfo.courses,
-        links: saved.links || defaultInfo.links,
         stats: saved.stats || defaultInfo.stats,
         services: saved.services || defaultInfo.services,
         techStack: saved.techStack || defaultInfo.techStack,
@@ -497,6 +487,7 @@ export function About() {
         resumeCaption: saved.resumeCaption || defaultInfo.resumeCaption,
         projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
         labels: saved.labels || defaultInfo.labels,
+        interestMotto: saved.interestMotto || defaultInfo.interestMotto,
       }
 
       setAboutInfo(merged)
@@ -665,8 +656,7 @@ export function About() {
     updateAboutInfo("resume", newResume)
   }
 
-  // 🔧 강점, 타임라인, 과목, 링크, 후기, 사진 등 추가/삭제
-
+  // 🔧 강점, 타임라인, 과목, 관심, 후기, 사진 등 추가/삭제
   const addHighlight = () => {
     const newList = [
       ...aboutInfo.highlights,
@@ -725,21 +715,6 @@ export function About() {
     updateAboutInfo(
       "interests",
       aboutInfo.interests.filter((_, i) => i !== index),
-    )
-  }
-
-  const addLink = () => {
-    const newList = [
-      ...aboutInfo.links,
-      { label: "새 링크", url: "https://example.com" },
-    ]
-    updateAboutInfo("links", newList)
-  }
-
-  const removeLink = (index: number) => {
-    updateAboutInfo(
-      "links",
-      aboutInfo.links.filter((_, i) => i !== index),
     )
   }
 
@@ -1089,9 +1064,7 @@ export function About() {
                   <Target className="w-5 h-5 text-primary" />
                   <EditableText
                     value={aboutInfo.labels.whatIDoTitle}
-                    onChange={(value) =>
-                      updateLabels({ whatIDoTitle: value })
-                    }
+                    onChange={(value) => updateLabels({ whatIDoTitle: value })}
                     storageKey="label-what-i-do-title"
                   />
                 </h2>
@@ -1364,9 +1337,7 @@ export function About() {
               <h2 className="text-2xl font-bold">
                 <EditableText
                   value={aboutInfo.labels.resumeTitle}
-                  onChange={(value) =>
-                    updateLabels({ resumeTitle: value })
-                  }
+                  onChange={(value) => updateLabels({ resumeTitle: value })}
                   storageKey="label-resume-title"
                 />
               </h2>
@@ -1384,7 +1355,7 @@ export function About() {
               {/* 학력 + 경험 */}
               <div className="space-y-6">
                 <div>
-                  <div className="flex items-center justify_between mb-3 gap-2">
+                  <div className="flex items-center justify-between mb-3 gap-2">
                     <h3 className="text-lg font-semibold flex items-center gap-2">
                       <GraduationCap className="w-5 h-5 text-primary" />
                       <EditableText
@@ -1533,7 +1504,7 @@ export function About() {
               {/* 활동 + 자격 */}
               <div className="space-y-6">
                 <div>
-                  <div className="flex items-center justify-between mb-3 gap-2">
+                  <div className="flex itemsCats-center justify-between mb-3 gap-2">
                     <h3 className="text-lg font-semibold flex items-center gap-2">
                       <Award className="w-5 h-5 text-primary" />
                       <EditableText
@@ -1694,9 +1665,10 @@ export function About() {
             </div>
           </div>
 
-          {/* 🎯 관심 분야 */}
+          {/* 🎯 관심 분야 + 모토/글귀 */}
           {aboutInfo.interests.length > 0 && (
             <div className="space-y-3">
+              {/* 관심 분야 태그 */}
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Heart className="w-5 h-5 text-primary" />
@@ -1745,6 +1717,33 @@ export function About() {
                     )}
                   </span>
                 ))}
+              </div>
+
+              {/* (아이콘) 모토 / 글귀  + 회색 한 줄 캡션 */}
+              <div className="mt-4 space-y-1">
+                <div className="flex items-center gap-2">
+                  {/* 🔥 여기만 불 아이콘으로 변경 */}
+                  <Flame className="w-4 h-4 text-primary" />
+                  <p className="text-sm font-semibold text-foreground">
+                    <EditableText
+                      value={aboutInfo.labels.interestMottoTitle}
+                      onChange={(value) =>
+                        updateLabels({ interestMottoTitle: value })
+                      }
+                      storageKey="label-interest-motto-title"
+                    />
+                  </p>
+                </div>
+                <p className="text-xs text-muted-foreground ml-6">
+                  <EditableText
+                    value={aboutInfo.interestMotto}
+                    onChange={(value) =>
+                      updateAboutInfo("interestMotto", value)
+                    }
+                    storageKey="interest-motto"
+                    multiline
+                  />
+                </p>
               </div>
             </div>
           )}
@@ -1895,73 +1894,6 @@ export function About() {
                       </p>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 🔗 링크 모음 */}
-          {aboutInfo.links.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <LinkIcon className="w-5 h-5 text-primary" />
-                  <h2 className="text-xl font-bold">
-                    <EditableText
-                      value={aboutInfo.labels.linksTitle}
-                      onChange={(value) =>
-                        updateLabels({ linksTitle: value })
-                      }
-                      storageKey="label-links-title"
-                    />
-                  </h2>
-                </div>
-                {isEditMode && (
-                  <button
-                    onClick={addLink}
-                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
-                  >
-                    <Plus className="w-3 h-3" />
-                    링크 추가
-                  </button>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {aboutInfo.links.map((l, idx) => (
-                  <div
-                    key={idx}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs"
-                  >
-                    <LinkIcon className="w-3 h-3" />
-                    <EditableText
-                      value={l.label}
-                      onChange={(value) => {
-                        const newLinks = [...aboutInfo.links]
-                        newLinks[idx].label = value
-                        updateAboutInfo("links", newLinks)
-                      }}
-                      storageKey={`link-${idx}-label`}
-                    />
-                    <span className="hidden sm:inline-block">|</span>
-                    <EditableText
-                      value={l.url}
-                      onChange={(value) => {
-                        const newLinks = [...aboutInfo.links]
-                        newLinks[idx].url = value
-                        updateAboutInfo("links", newLinks)
-                      }}
-                      storageKey={`link-${idx}-url`}
-                      multiline
-                    />
-                    {isEditMode && (
-                      <button
-                        onClick={() => removeLink(idx)}
-                        className="text-[10px] text-muted-foreground hover:text-destructive"
-                      >
-                        ×
-                      </button>
-                    )}
-                  </div>
                 ))}
               </div>
             </div>
