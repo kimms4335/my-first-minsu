@@ -13,16 +13,16 @@ export function Hero() {
   const { getData, saveData, isEditMode } = useInlineEditor()
   
   const defaultInfo = {
-    greeting: "도시를 살리는 도시재생 기획자",
+    greeting: "도시재생 기획가",
     name: "김민수",
-    title: "단국대 학생입니다.",
-    description: "사람과 공간이 만나는 현장에서, 지역과 함께 성장하는 도시재생을 만듭니다.",
+    title: "개발보다 활용, 변화보다 지속",
+    description: "지역의 일상 속 가능성을 찾아 지속 가능한 도시를 추구합니다.",
     profileImage: "/uploads/hero-profile-1763642616785.jpeg",
     backgroundImage: "",
     backgroundVideo: "",
     backgroundOpacity: 0.1,
     projectButton: "프로젝트 보기",
-    background: { image: "", video: "", color: "", opacity: 0.1 },
+    background: {"image":"","video":"","color":"","opacity":0.1}
   }
 
   const [backgroundData, setBackgroundData] =

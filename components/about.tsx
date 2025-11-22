@@ -158,296 +158,32 @@ type AboutInfo = {
 export function About() {
   const { getData, saveData, isEditMode } = useInlineEditor()
 
-  const defaultInfo: AboutInfo = {
-    title: "김민수 포트폴리오",
-    subtitle:
-      "도시를 관찰하고, 데이터를 읽고, 더 나은 공간을 고민하는 도시계획·부동산 전공자입니다.",
-    background: { image: "", video: "", color: "", opacity: 0.08 },
-
+  const defaultInfo = {
+    title: "포트폴리오",
+    subtitle: "도시를 관찰하고, 데이터를 읽고, 더 나은 공간을 고민하는 도시계획·부동산학 전공자입니다.",
+    background: {"image":"","video":"","color":"","opacity":0.08},
     profileName: "김민수",
     profileTitle: "단국대학교 도시계획부동산학부",
-    profileSummary:
-      "도시재생과 주택시장 분석에 관심이 많으며, 데이터와 현장을 함께 보려고 노력합니다. 팀 프로젝트와 동아리 활동을 통해 사람들과 협업하는 법을 배웠습니다.",
-    profileImage: "",
-
-    contact: [
-      { label: "Email", value: "example@naver.com" },
-      { label: "Phone", value: "010-0000-0000" },
-      { label: "Address", value: "경기 용인시 수지구 죽전동" },
-      { label: "GitHub / Blog", value: "https://github.com/your-id" },
-    ],
-
-    // 상단 Stats
-    stats: [
-      { label: "전공 프로젝트", value: "6+", sub: "수업·팀 과제 포함" },
-      { label: "교육 봉사", value: "2+년", sub: "아이사랑 동아리 활동" },
-      { label: "관심 분야 리포트", value: "10+", sub: "주택·도시재생·환경 등" },
-    ],
-
-    // 내가 할 수 있는 일 (서비스)
-    services: [
-      {
-        title: "도시·부동산 리서치",
-        description:
-          "정책 자료, 통계, 논문과 현장 자료를 종합해 이슈의 흐름을 정리하고 인사이트를 도출합니다.",
-      },
-      {
-        title: "기초 데이터 분석 & 시각화",
-        description:
-          "실거래가, 인구구조, 상권 데이터 등을 엑셀과 통계를 활용해 정리·해석합니다.",
-      },
-      {
-        title: "기획·발표 및 협업",
-        description:
-          "팀 프로젝트에서 역할 분담, 일정 관리, 발표 자료 제작을 맡으며 구성원들과 조율합니다.",
-      },
-    ],
-
-    // Skills
-    skills: [
-      {
-        title: "도시·부동산 리서치",
-        level: "상",
-        description:
-          "정책 자료, 통계, 논문 등을 조사하여 흐름을 정리하고 핵심 인사이트를 도출합니다.",
-      },
-      {
-        title: "데이터 분석(입문)",
-        level: "중",
-        description:
-          "엑셀과 기본 통계를 활용하여 실거래가, 인구구조 등 데이터를 정리·시각화합니다.",
-      },
-      {
-        title: "협업 & 커뮤니케이션",
-        level: "상",
-        description:
-          "동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다.",
-      },
-    ],
-
-    // Tech & Tools
-    techStack: [
-      {
-        category: "데이터 & 분석",
-        items: "Excel · 통계 기초 · 실거래가 데이터 · 인구통계",
-      },
-      {
-        category: "도구 & 소프트웨어",
-        items: "PowerPoint · Word · QGIS / ArcGIS(입문)",
-      },
-      {
-        category: "관심 기술",
-        items: "Python(기초 학습 중) · 데이터 시각화 · 공간 데이터",
-      },
-    ],
-
-    resume: {
-      personal: [
-        { label: "이름", value: "김민수" },
-        { label: "생년월일", value: "2000.00.00" },
-        { label: "주소", value: "경기 용인시 수지구 죽전동" },
-        { label: "Email", value: "example@naver.com" },
-      ],
-      education: [
-        {
-          period: "2018.03 ~ 2021.02",
-          title: "OO고등학교",
-          subtitle: "인문계열",
-        },
-        {
-          period: "2021.03 ~ 2027.02(졸업 예정)",
-          title: "단국대학교 죽전캠퍼스",
-          subtitle: "도시계획부동산학부",
-        },
-      ],
-      experience: [
-        {
-          period: "2023.03 ~ 현재",
-          title: "아이사랑 동아리 교육부장",
-          description:
-            "아동 교육 봉사 기획 및 운영, 신규 부원 온보딩, 교육 프로그램 커리큘럼 구성",
-        },
-        {
-          period: "2024.03 ~ 2024.06",
-          title: "도시·부동산 관련 팀 프로젝트",
-          description: "주택시장·도시재생 이슈를 주제로 리포트 작성 및 발표",
-        },
-      ],
-      activities: [
-        {
-          period: "2023.03 ~ 현재",
-          title: "아이사랑 동아리",
-          details: [
-            "초등학생 대상 학습 지도 및 놀이 프로그램 진행",
-            "부원 간 소통과 활동 일정 조율, 행사 기획 참여",
-          ],
-        },
-        {
-          period: "2024.09 ~ 2024.12",
-          title: "전공 수업 프로젝트",
-          details: [
-            "서울시 특정 지역의 인구·상권 데이터 분석",
-            "GIS를 활용한 시각화 및 발표 자료 제작",
-          ],
-        },
-      ],
-      certificates: [
-        {
-          date: "2024.00.00",
-          name: "관심 있는 자격증 또는 준비 중인 시험을 입력하세요.",
-        },
-      ],
-    },
-
-    // 프로젝트 + PDF
-    projects: [
-      {
-        title: "서울 고덕동 아파트 실거래가 분석",
-        period: "2023.09 ~ 2023.12",
-        description:
-          "국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트입니다.",
-        tags: ["#실거래가", "#아파트분석", "#고덕동"],
-        coverImage: "",
-        pdfName: "토지론입문 Report1",
-        pdfUrl: "https://naver.me/GScEabVD",
-      },
-      {
-        title: "한·일 고령사회 주거정책 비교",
-        period: "2024.03 ~ 2024.06",
-        description:
-          "한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 발표 과제입니다.",
-        tags: ["#고령사회", "#주거정책", "#비교연구"],
-        coverImage: "",
-        pdfName: "",
-        pdfUrl: "",
-      },
-    ],
-
-    highlights: [
-      {
-        title: "현장을 보는 시각",
-        description:
-          "데이터뿐 아니라 실제 공간과 사람들의 생활을 함께 보면서 해석하려고 합니다.",
-      },
-      {
-        title: "꾸준함과 책임감",
-        description:
-          "동아리와 팀 프로젝트에서 맡은 역할을 끝까지 책임지고 수행해 왔습니다.",
-      },
-      {
-        title: "배우는 속도",
-        description:
-          "처음 보는 도구나 개념도 차근차근 익히며, 모르는 것은 질문하고 찾아보는 편입니다.",
-      },
-    ],
-
-    interests: [
-      "#도시재생",
-      "#주택시장",
-      "#고령사회",
-      "#보행친화도시",
-      "#상권분석",
-      "#생활SOC",
-    ],
-
-    // 관심 분야 아래 모토 기본값 (회색 글씨로 한 줄)
-    interestMotto: "사람이 떠나지 않는 도시를 고민하는 예비 도시계획가입니다.",
-
-    timeline: [
-      {
-        period: "2018 ~ 2021",
-        title: "고등학교 시절",
-        description:
-          "지리/사회 과목을 좋아하며, 도시와 공간에 대한 관심을 쌓기 시작.",
-      },
-      {
-        period: "2021 ~ 현재",
-        title: "단국대학교 도시계획부동산학부",
-        description:
-          "도시계획·부동산 전공 지식과 함께, 팀 프로젝트·발표 경험을 쌓는 중.",
-      },
-      {
-        period: "2023 ~ 현재",
-        title: "아이사랑 동아리",
-        description:
-          "교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장.",
-      },
-    ],
-
-    courses: [
-      {
-        name: "GIS와 도시공간분석",
-        detail: "공간 데이터를 활용한 분석 및 시각화 기초 학습.",
-      },
-      {
-        name: "토지론입문",
-        detail: "토지의 경제적 특성과 제도, 이용 방식에 대한 이해.",
-      },
-      {
-        name: "부동산시장분석",
-        detail: "주택시장, 상업용 부동산 시장의 구조와 가격 형성 요인 학습.",
-      },
-      {
-        name: "도시재생론",
-        detail: "쇠퇴 지역의 재생 전략과 국내외 사례 분석.",
-      },
-    ],
-
-    testimonials: [
-      {
-        name: "동아리 부원",
-        role: "아이사랑",
-        quote: "항상 먼저 다가와 주고, 약속한 일은 끝까지 책임지는 스타일이에요.",
-      },
-      {
-        name: "팀 프로젝트 팀원",
-        role: "전공 수업",
-        quote:
-          "정리와 발표를 잘해서 팀 분위기를 안정적으로 잡아주는 역할을 많이 했습니다.",
-      },
-      {
-        name: "지도교수 가정",
-        role: "수업 피드백",
-        quote: "도시 문제를 보는 시각이 꾸준히 성장하고 있다는 평가를 받았습니다.",
-      },
-    ],
-
-    lifePhotos: [
-      { image: "", caption: "동아리 교육 봉사 활동" },
-      { image: "", caption: "현장 답사 및 도시 관찰" },
-      { image: "", caption: "친구들과의 협업·스터디" },
-    ],
-
-    // 편집 가능 문구 기본값
-    whatIDoNote: "민수가 잘할 수 있는 일들",
+    profileSummary: "도시재생과 주택시장 분석에 관심을 두고 있으며, 데이터 기반의 분석과 현장 조사 경험을 함께 결합하여 변화의 흐름을 이해하고자 노력하고 있습니다. 또한 팀 프로젝트와 동아리 활동을 통해 다양한 사람들과 목표를 공유하고 협업하는 과정을 경험하며, 의견을 조율하고 결과를 만들어 가는 역량을 키워왔습니다.",
+    profileImage: "/uploads/about-profile-1763791766014.jpeg",
+    contact: [{"label":"Email","value":"example@naver.com"},{"label":"Phone","value":"010-0000-0000"},{"label":"Address","value":"경기 용인시 수지구 죽전동"},{"label":"GitHub / Blog","value":"https://github.com/your-id"}],
+    stats: [{"label":"전공 프로젝트","value":"10+","sub":"수업·팀 과제 포함"},{"label":"관심 분야 리포트","value":"20+","sub":"주택·도시재생·환경 등"},{"label":"교육 봉사","value":"5년+","sub":"아이사랑 동아리 활동 및 고교 시절 멘토링 봉사"}],
+    services: [{"title":"도시·부동산 리서치","description":"정책 자료, 통계, 논문과 현장 자료를 종합해 이슈의 흐름을 정리하고 통찰력을 제공합니다."},{"title":"기초 데이터 분석 & 시각화","description":"실거래가, 인구구조, 상권 데이터 등을 데이터 기반 분석 기법으로 구조화하고 해석합니다."},{"title":"기획·발표 및 협업","description":"팀 프로젝트에서 역할 분담, 일정 관리, 발표 자료 제작을 맡으며 구성원들과 조율합니다."}],
+    skills: [{"title":"도시·부동산 리서치","level":"상","description":"정책 문헌과 통계 자료를 폭넓게 검토하여 흐름을 파악하고, 이를 토대로 핵심적인 시사점을 도출합니다."},{"title":"데이터 분석","level":"중","description":"엑셀과 기본 통계를 활용하여 실거래가, 인구구조 등 데이터를 정리·시각화합니다."},{"title":"협업 & 커뮤니케이션","level":"상","description":"동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다."}],
+    techStack: [{"category":"데이터 & 분석","items":"실거래가 데이터 · 인구통계 · 상권 · 토지이용 변화"},{"category":"도구 & 소프트웨어","items":"PowerPoint · Word · Excel · ArcGIS"},{"category":"관심 기술","items":"Python(기초 학습 중) · 데이터 시각화 · 공간 데이터"}],
+    resume: {"personal":[{"label":"이름","value":"김민수"},{"label":"생년월일","value":"2001.04.18"},{"label":"주소","value":"경기 용인시 수지구 죽전동"},{"label":"Email","value":"kimms4335@naver.com"}],"education":[{"period":"2017.03 ~ 2020.02","title":"성원고등학교","subtitle":"자연계열"},{"period":"2021.03 ~ 2027.02(졸업 예정)","title":"단국대학교 죽전캠퍼스","subtitle":"도시계획부동산학부                        "}],"experience":[{"period":"2024.03 ~ 2024.06","title":"토지이용계획_지역 답사","description":"명동 & 판교 답사를 통해 도시계획은 시민의 삶의 질 향상을 추구해야 한다는 가치관 확립"},{"period":"2024.03 ~ 2024.06","title":"부동산입지_상권 분석","description":"FC 양재점과 교대점의 입지·유동인구·상권 특성을 비교 분석하며, 동일 브랜드라도 배후 수요의 특성과 경쟁 환경에 따라 매출이 달라진다는 점을 확인"},{"period":"2024.09 ~ 2024.12","title":"세운상가_지역 답사 및 재건 방안 구상","description":"세운상가 현장 답사를 통해 현장 분석을 진행하였다. 분석된 내용을 토대로 지역 보존과 개발을 조화시킬 수 있는 전략으로 구역별 재건 계획과 공공임대·지식산업 연계 방안을 제시"},{"period":"2025.09 ~ 현재","title":"GIS와 도시공간분석","description":"인구·상권·주거 등 도시 데이터를 지도 기반으로 시각화하고 이에 대한 공간적 패턴을 해석함으로써 도시 문제에 대한 정책적 시사점을 도출하는 능력 함양"}],"activities":[{"period":"2024.03 ~ 현재","title":"교육봉사 동아리(아이사랑) 집행부","details":["• 초·중등 대상 학습 지도 및 놀이 프로그램 진행","• 부원 간 친목 도모 및 행사 기획","• 동아리와 지역아동센터 간 연결"]},{"period":"2025.03 ~ 현재","title":"독서 토론 모임","details":["• 선정 도서에 대한 의견 정리 및 토론 참여","• 서로 다른 관점에 대해 비교·조율하며 합의 도출","• 비판적 사고와 소통 역량 강화"]}],"certificates":[{"date":"2025.06(예정)","name":"도시계획기사 자격증 취득"},{"date":"2025.07(예정)","name":"교통기사 자격증 취득"},{"date":"2027.03(목표)","name":"법학전문대학원 입학"}]},
+    projects: [{"title":"세운상가 프로젝트","period":"도시개발론","description":"세운상가의 문제점에 대해 조사한 뒤 구역별 재생 방안을 제시한 팀 프로젝트.","tags":["#세운상가","#도시재생","#현장조사"],"coverImage":"/uploads/project-cover-1763802863927.png","pdfName":"세운상가 리포트","pdfUrl":"https://naver.me/5asLLhzz"},{"title":"KFC 교대점과 양재점에 대한 상권 분석","period":"부동산입지","description":"KFC 교대점 및 양재점을 대상으로 상권·접근성·수요를 분석하여 입지 적합성을 평가한 팀 프로젝트.","tags":["#KFC","#교대점","#양재점","#입지","#상권분석"],"coverImage":"/uploads/project-cover-1763804507678.png","pdfName":"KFC 교대점 & 양재점 분석 리포트","pdfUrl":"https://naver.me/xI100N0A"},{"title":"서울 고덕아르테온 아파트 실거래가 분석","period":"토지론입문","description":"국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트.","tags":["#실거래가","#아파트분석","#고덕아르테온"],"coverImage":"/uploads/project-cover-1763802189180.png","pdfName":"고덕아르테온 분석 리포트","pdfUrl":"https://naver.me/GScEabVD"},{"title":"일본 주택 문화 및 한·일 고령사회 주거정책 비교","period":"주택론입문","description":"한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 프로젝트.","tags":["#고령사회","#주거정책","#비교연구"],"coverImage":"/uploads/project-cover-1763802531639.png","pdfName":"일본 주택 문화와 주택 시장 리포트","pdfUrl":"https://naver.me/FhfJJryG"},{"title":"새 프로젝트","period":"2024","description":"프로젝트 설명을 입력하세요.","tags":["#프로젝트"],"coverImage":"","pdfName":"","pdfUrl":""},{"title":"새 프로젝트","period":"2024","description":"프로젝트 설명을 입력하세요.","tags":["#프로젝트"],"coverImage":"","pdfName":"","pdfUrl":""}],
+    highlights: [{"title":"현장을 보는 시각","description":"지역을 직접 답사하며 지도나 수치로는 드러나지 않는 생활권 특성과 공간 활용 방식을 관찰합니다.\n더 나아가, 현장에서 얻은 상황적 맥락을 데이터 분석과 연계하여 대안을 제시합니다."},{"title":"꾸준함과 책임감","description":"동아리와 팀 프로젝트에서 맡은 역할을 끝까지 책임지고 수행해 왔습니다."},{"title":"소통 능력","description":"상대방의 입장과 필요를 먼저 이해하며 협력 방향을 조율할 수 있기 때문에, 다양한 의견이 공존하는 상황에서도 효과적으로 문제를 해결할 수 있습니다."}],
+    interests: ["#도시재생","#주택시장","#고령사회","#보행친화도시","#상권분석","#도시계획"],
+    interestMotto: "\"최고보다 최선을\"",
+    timeline: [{"period":"2017.03 ~ 2020.02","title":"성원고등학교","description":"학업과 학생회 활동을 병행하며 교내 행사 기획과 운영을 맡아 책임감을 키움."},{"period":"2021.03 ~ 현재","title":"단국대학교 도시계획부동산학부","description":"도시계획·부동산 전공 지식과 함께, 팀 프로젝트 및 현장에 대한 경험을 쌓는 중."},{"period":"2021.07 ~ 2023.01","title":"육군 병장 만기전역","description":"다양한 사람들과 공동 생활을 하며 배려·협업의 중요성을 배우고, 맡은 임무를 끝까지 수행하는 책임감을 키움"},{"period":"2023 ~ 현재","title":"아이사랑 동아리","description":"교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장."}],
+    courses: [{"name":"GIS와 도시공간분석","detail":"공간 데이터를 활용한 분석 및 시각화 기초 학습."},{"name":"토지론입문","detail":"토지의 경제적 특성과 제도, 이용 방식에 대한 이해."},{"name":"부동산입지","detail":"주택시장, 상업용 부동산 시장의 구조와 가격 형성 요인 학습."},{"name":"도시재생론","detail":"쇠퇴 지역의 재생 전략과 국내외 사례 분석."},{"name":"토지이용계획","detail":"공간을 효율적으로 관리하기 위한 토지이용 구조와 규제 체계에 대한 분석."},{"name":"도시계획","detail":"토지이용, 교통, 주거, 환경 등 다양한 요소를 종합하여 도시공간을 설계하는 원리와 계획 체계에 대한 이해."},{"name":"AI와 도시계획","detail":"인공지능을 기반으로 한 장래 도시공간에 대한 설계."},{"name":"도시개발론","detail":"도시 개발의 이론과 제도, 사업 절차에 대한 이해 & 공공과 민간의 역할에 대한 탐구."},{"name":"부동산 사법","detail":"부동산 거래와 권리 관계를 규율하는 법적 원칙에 대한 이해."},{"name":"교통계획","detail":"도시 내 이동 수요와 교통 흐름을 분석하는 방법 & 지속 가능한 도시교통 구조를 설계하는 원리에 대한 이해."},{"name":"부동산 조세","detail":"부동산에 대해 부과되는 조세 체계에 대한 이해 & 부동산 시자의 공정성과 효율성을 확보하는 과세 정책 방향에 대한 탐구."},{"name":"부동산 프롭테크","detail":"ICT·빅데이터·AI 등 부동산 시장의 혁신을 이끌어 나가는 기술에 대한 이해."},{"name":"환경관리, 국토 및 지역계획 등","detail":"다양한 전공 과목을 수강함."}],
+    testimonials: [{"name":"동아리 부원","role":"아이사랑","quote":"편하게 다가가 고민을 털어놓을 수 있는 선배이자 필요할 때는 방향을 잡아주는 책임감 있는 집행부."},{"name":"팀 프로젝트 팀원","role":"전공 수업 & 교양 수업","quote":"의견을 조율하며 팀 분위기를 안정시키는 사람, 맡은 일은 끝까지 책임지는 믿음직한 팀원."},{"name":"전공과목에 대한 교수님","role":"수업 피드백","quote":"도시개발론이라는 과목에 늘 진지한 태도로 임하며 성실하게 참여한 학생이고, 그런 꾸준함 덕분에 기억에 남는 학생"}],
+    lifePhotos: [{"image":"/uploads/life-photo-1763800743577.png","caption":"부동산입지_KFC 답사"},{"image":"/uploads/life-photo-1763800702862.jpg","caption":"도시개발론_세운상가 답사"},{"image":"/uploads/life-photo-1763800381876.png","caption":"토지이용계획_판교 답사"},{"image":"/uploads/life-photo-1763800767781.jpg","caption":"교육봉사 동아리_장학금 행사"},{"image":"/uploads/life-photo-1763800945638.jpg","caption":"교육봉사 동아리_활동"},{"image":"/uploads/life-photo-1763801238983.jpg","caption":"교육봉사 동아리_학교 투어"}],
+    whatIDoNote: "Ability",
     resumeCaption: "주요 학력과 경험을 한 눈에 볼 수 있도록 정리했습니다.",
-    projectsCaption:
-      "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
-
-    // 섹션 라벨 기본값
-    labels: {
-      statsSectionTitle: "한눈에 보는 민수",
-      contactTitle: "CONTACT",
-      whatIDoTitle: "What I Do",
-      techToolsTitle: "TECH & TOOLS",
-      keySkillsTitle: "KEY SKILLS",
-      highlightsTitle: "강점 한눈에 보기",
-      resumeTitle: "이력서",
-      educationTitle: "학력",
-      experienceTitle: "전공 관련 경험",
-      activityTitle: "활동 & 대외 경험",
-      certificateTitle: "자격 및 기타",
-      interestsTitle: "관심 분야",
-      interestMottoTitle: "모토 / 글귀",
-      timelineTitle: "타임라인",
-      coursesTitle: "수강 과목 & 학습 주제",
-      testimonialTitle: "함께한 사람들이 본 나",
-      lifeMomentsTitle: "Life & Moments",
-      projectsTitle: "Projects",
-      projectTagsLabel: "태그 (공백으로 구분):",
-      projectPdfNote:
-        "* 네이버 MYBOX, 구글드라이브 등 공유 링크도 그대로 넣으면 됩니다.",
-    },
+    projectsCaption: "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
+    labels: {"statsSectionTitle":"경험","contactTitle":"CONTACT","whatIDoTitle":"What I Do","techToolsTitle":"TECH & TOOLS","keySkillsTitle":"KEY SKILLS","highlightsTitle":"핵심 역량","resumeTitle":"자기 PR","educationTitle":"학력","experienceTitle":"전공 관련 경험","activityTitle":"활동 & 대외 경험","certificateTitle":"자격 및 기타","interestsTitle":"관심 분야","interestMottoTitle":"모토","timelineTitle":"타임라인","coursesTitle":"수강 과목 & 학습 주제","testimonialTitle":"함께한 사람들이 본 나","lifeMomentsTitle":"Life & Moments","projectsTitle":"Projects","projectTagsLabel":"태그 (공백으로 구분):","projectPdfNote":"* 네이버 MYBOX, 구글드라이브 등 공유 링크도 그대로 넣으면 됩니다."}
   }
 
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
