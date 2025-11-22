@@ -451,7 +451,8 @@ export function About() {
   }
 
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
-  const [backgroundData, setBackgroundData] = useState(defaultInfo.background)
+  const [backgroundData, setBackgroundData] =
+    useState(defaultInfo.background)
 
   // --------- 데이터 로딩 ----------
   useEffect(() => {
@@ -1344,7 +1345,9 @@ export function About() {
               <span className="text-xs text-muted-foreground">
                 <EditableText
                   value={aboutInfo.resumeCaption}
-                  onChange={(value) => updateAboutInfo("resumeCaption", value)}
+                  onChange={(value) =>
+                    updateAboutInfo("resumeCaption", value)
+                  }
                   storageKey="resume-caption"
                   multiline
                 />
@@ -1378,7 +1381,10 @@ export function About() {
                   </div>
                   <div className="space-y-3">
                     {aboutInfo.resume.education.map((edu, idx) => (
-                      <Card key={idx} className="border bg-card/60 relative">
+                      <Card
+                        key={idx}
+                        className="border bg-card/60 relative"
+                      >
                         <CardContent className="p-4 space-y-1">
                           {isEditMode && (
                             <button
@@ -1392,7 +1398,12 @@ export function About() {
                             <EditableText
                               value={edu.period}
                               onChange={(value) =>
-                                updateResume("education", idx, "period", value)
+                                updateResume(
+                                  "education",
+                                  idx,
+                                  "period",
+                                  value,
+                                )
                               }
                               storageKey={`resume-edu-${idx}-period`}
                             />
@@ -1401,7 +1412,12 @@ export function About() {
                             <EditableText
                               value={edu.title}
                               onChange={(value) =>
-                                updateResume("education", idx, "title", value)
+                                updateResume(
+                                  "education",
+                                  idx,
+                                  "title",
+                                  value,
+                                )
                               }
                               storageKey={`resume-edu-${idx}-title`}
                             />
@@ -1451,7 +1467,10 @@ export function About() {
                   </div>
                   <div className="space-y-3">
                     {aboutInfo.resume.experience.map((exp, idx) => (
-                      <Card key={idx} className="border bg-card/60 relative">
+                      <Card
+                        key={idx}
+                        className="border bg-card/60 relative"
+                      >
                         <CardContent className="p-4 space-y-1">
                           {isEditMode && (
                             <button
@@ -1465,7 +1484,12 @@ export function About() {
                             <EditableText
                               value={exp.period}
                               onChange={(value) =>
-                                updateResume("experience", idx, "period", value)
+                                updateResume(
+                                  "experience",
+                                  idx,
+                                  "period",
+                                  value,
+                                )
                               }
                               storageKey={`resume-exp-${idx}-period`}
                             />
@@ -1474,7 +1498,12 @@ export function About() {
                             <EditableText
                               value={exp.title}
                               onChange={(value) =>
-                                updateResume("experience", idx, "title", value)
+                                updateResume(
+                                  "experience",
+                                  idx,
+                                  "title",
+                                  value,
+                                )
                               }
                               storageKey={`resume-exp-${idx}-title`}
                             />
@@ -1527,7 +1556,10 @@ export function About() {
                   </div>
                   <div className="space-y-3">
                     {aboutInfo.resume.activities.map((act, idx) => (
-                      <Card key={idx} className="border bg-card/60 relative">
+                      <Card
+                        key={idx}
+                        className="border bg-card/60 relative"
+                      >
                         <CardContent className="p-4 space-y-1">
                           {isEditMode && (
                             <button
@@ -1541,7 +1573,12 @@ export function About() {
                             <EditableText
                               value={act.period}
                               onChange={(value) =>
-                                updateResume("activities", idx, "period", value)
+                                updateResume(
+                                  "activities",
+                                  idx,
+                                  "period",
+                                  value,
+                                )
                               }
                               storageKey={`resume-act-${idx}-period`}
                             />
@@ -1550,14 +1587,22 @@ export function About() {
                             <EditableText
                               value={act.title}
                               onChange={(value) =>
-                                updateResume("activities", idx, "title", value)
+                                updateResume(
+                                  "activities",
+                                  idx,
+                                  "title",
+                                  value,
+                                )
                               }
                               storageKey={`resume-act-${idx}-title`}
                             />
                           </p>
                           <ul className="mt-1 space-y-1 text-xs text-muted-foreground list-disc list-inside">
                             {act.details.map((d, dIdx) => (
-                              <li key={dIdx} className="flex items-start gap-1">
+                              <li
+                                key={dIdx}
+                                className="flex items-start gap-1"
+                              >
                                 <div className="flex-1">
                                   <EditableText
                                     value={d}
@@ -1642,7 +1687,12 @@ export function About() {
                           <EditableText
                             value={cert.date}
                             onChange={(value) =>
-                              updateResume("certificates", idx, "date", value)
+                              updateResume(
+                                "certificates",
+                                idx,
+                                "date",
+                                value,
+                              )
                             }
                             storageKey={`resume-cert-${idx}-date`}
                           />
@@ -1651,7 +1701,12 @@ export function About() {
                           <EditableText
                             value={cert.name}
                             onChange={(value) =>
-                              updateResume("certificates", idx, "name", value)
+                              updateResume(
+                                "certificates",
+                                idx,
+                                "name",
+                                value,
+                              )
                             }
                             storageKey={`resume-cert-${idx}-name`}
                             multiline
@@ -2055,7 +2110,7 @@ export function About() {
           )}
 
           {/* Projects 섹션 */}
-          <div className="space-y-6">
+          <section id="projects" className="space-y-6">
             <div className="flex items-center justify-between gap-2">
               <div>
                 <h2 className="text-2xl font-bold flex items-center gap-2">
@@ -2240,7 +2295,7 @@ export function About() {
                 </Card>
               ))}
             </div>
-          </div>
+          </section>
         </div>
       </section>
     </EditableBackground>
