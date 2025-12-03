@@ -20,6 +20,7 @@ import {
   Clock,
   Heart,
   Flame, // 🔥 모토 아이콘용 추가
+  BarChart3, // 📊 Skills & Tools 아이콘
 } from "lucide-react"
 import { EditableText } from "@/components/editable/editable-text"
 import { EditableMedia } from "@/components/editable/editable-media"
@@ -153,37 +154,429 @@ type AboutInfo = {
   projectsCaption: string
 
   labels: AboutLabels
+
+  // 🔥 Working Style 텍스트
+  workingStyleTitle?: string
+  workingStyleBody?: string
 }
 
 export function About() {
   const { getData, saveData, isEditMode } = useInlineEditor()
 
-  const defaultInfo = {
+  const defaultInfo: AboutInfo = {
     title: "포트폴리오",
-    subtitle: "도시를 관찰하고, 데이터를 읽고, 더 나은 공간을 고민하는 도시계획·부동산학 전공자입니다.",
-    background: {"image":"","video":"","color":"","opacity":0.08},
+    subtitle:
+      "도시를 관찰하고, 데이터를 읽고, 더 나은 공간을 고민하는 도시계획·부동산학 전공자입니다.",
+    background: { image: "", video: "", color: "", opacity: 0.08 },
     profileName: "김민수",
     profileTitle: "단국대학교 도시계획부동산학부",
-    profileSummary: "도시재생과 주택시장 분석에 관심을 두고 있으며, 데이터 기반의 분석과 현장 조사 경험을 함께 결합하여 변화의 흐름을 이해하고자 노력하고 있습니다. 또한 팀 프로젝트와 동아리 활동을 통해 다양한 사람들과 목표를 공유하고 협업하는 과정을 경험하며, 의견을 조율하고 결과를 만들어 가는 역량을 키워왔습니다.",
+    profileSummary:
+      "도시재생과 주택시장 분석에 관심을 두고 있으며, 데이터 기반의 분석과 현장 조사 경험을 함께 결합하여 변화의 흐름을 이해하고자 노력하고 있습니다. 또한 팀 프로젝트와 동아리 활동을 통해 다양한 사람들과 목표를 공유하고 협업하는 과정을 경험하며, 의견을 조율하고 결과를 만들어 가는 역량을 키워왔습니다.",
     profileImage: "/uploads/about-profile-1763791766014.jpeg",
-    contact: [{"label":"Email","value":"example@naver.com"},{"label":"Phone","value":"010-0000-0000"},{"label":"Address","value":"경기 용인시 수지구 죽전동"},{"label":"GitHub / Blog","value":"https://github.com/your-id"}],
-    stats: [{"label":"전공 프로젝트","value":"10+","sub":"수업·팀 과제 포함"},{"label":"관심 분야 리포트","value":"20+","sub":"주택·도시재생·환경 등"},{"label":"교육 봉사","value":"5년+","sub":"아이사랑 동아리 활동 및 고교 시절 멘토링 봉사"}],
-    services: [{"title":"도시·부동산 리서치","description":"정책 자료, 통계, 논문과 현장 자료를 종합해 이슈의 흐름을 정리하고 통찰력을 제공합니다."},{"title":"기초 데이터 분석 & 시각화","description":"실거래가, 인구구조, 상권 데이터 등을 데이터 기반 분석 기법으로 구조화하고 해석합니다."},{"title":"기획·발표 및 협업","description":"팀 프로젝트에서 역할 분담, 일정 관리, 발표 자료 제작을 맡으며 구성원들과 조율합니다."}],
-    skills: [{"title":"도시·부동산 리서치","level":"상","description":"정책 문헌과 통계 자료를 폭넓게 검토하여 흐름을 파악하고, 이를 토대로 핵심적인 시사점을 도출합니다."},{"title":"데이터 분석","level":"중","description":"엑셀과 기본 통계를 활용하여 실거래가, 인구구조 등 데이터를 정리·시각화합니다."},{"title":"협업 & 커뮤니케이션","level":"상","description":"동아리 임원 경험을 바탕으로 일정 조율, 회의 진행, 역할 분담에 익숙합니다."}],
-    techStack: [{"category":"데이터 & 분석","items":"실거래가 데이터 · 인구통계 · 상권 · 토지이용 변화"},{"category":"도구 & 소프트웨어","items":"PowerPoint · Word · Excel · ArcGIS"},{"category":"관심 기술","items":"Python(기초 학습 중) · 데이터 시각화 · 공간 데이터"}],
-    resume: {"personal":[{"label":"이름","value":"김민수"},{"label":"생년월일","value":"2001.04.18"},{"label":"주소","value":"경기 용인시 수지구 죽전동"},{"label":"Email","value":"kimms4335@naver.com"}],"education":[{"period":"2017.03 ~ 2020.02","title":"성원고등학교","subtitle":"자연계열"},{"period":"2021.03 ~ 2027.02(졸업 예정)","title":"단국대학교 죽전캠퍼스","subtitle":"도시계획부동산학부                        "}],"experience":[{"period":"2024.03 ~ 2024.06","title":"토지이용계획_지역 답사","description":"명동 & 판교 답사를 통해 도시계획은 시민의 삶의 질 향상을 추구해야 한다는 가치관 확립"},{"period":"2024.03 ~ 2024.06","title":"부동산입지_상권 분석","description":"FC 양재점과 교대점의 입지·유동인구·상권 특성을 비교 분석하며, 동일 브랜드라도 배후 수요의 특성과 경쟁 환경에 따라 매출이 달라진다는 점을 확인"},{"period":"2024.09 ~ 2024.12","title":"세운상가_지역 답사 및 재건 방안 구상","description":"세운상가 현장 답사를 통해 현장 분석을 진행하였다. 분석된 내용을 토대로 지역 보존과 개발을 조화시킬 수 있는 전략으로 구역별 재건 계획과 공공임대·지식산업 연계 방안을 제시"},{"period":"2025.09 ~ 현재","title":"GIS와 도시공간분석","description":"인구·상권·주거 등 도시 데이터를 지도 기반으로 시각화하고 이에 대한 공간적 패턴을 해석함으로써 도시 문제에 대한 정책적 시사점을 도출하는 능력 함양"}],"activities":[{"period":"2024.03 ~ 현재","title":"교육봉사 동아리(아이사랑) 집행부","details":["• 초·중등 대상 학습 지도 및 놀이 프로그램 진행","• 부원 간 친목 도모 및 행사 기획","• 동아리와 지역아동센터 간 연결"]},{"period":"2025.03 ~ 현재","title":"독서 토론 모임","details":["• 선정 도서에 대한 의견 정리 및 토론 참여","• 서로 다른 관점에 대해 비교·조율하며 합의 도출","• 비판적 사고와 소통 역량 강화"]}],"certificates":[{"date":"2025.06(예정)","name":"도시계획기사 자격증 취득"},{"date":"2025.07(예정)","name":"교통기사 자격증 취득"},{"date":"2027.03(목표)","name":"법학전문대학원 입학"}]},
-    projects: [{"title":"세운상가 프로젝트","period":"도시개발론","description":"세운상가의 문제점에 대해 조사한 뒤 구역별 재생 방안을 제시한 팀 프로젝트.","tags":["#세운상가","#도시재생","#현장조사"],"coverImage":"/uploads/project-cover-0-1764440741968.png","pdfName":"세운상가 리포트","pdfUrl":"https://naver.me/5asLLhzz"},{"title":"KFC 교대점과 양재점에 대한 상권 분석","period":"부동산입지","description":"KFC 교대점 및 양재점을 대상으로 상권·접근성·수요를 분석하여 입지 적합성을 평가한 팀 프로젝트.","tags":["#KFC","#교대점","#양재점","#입지","#상권분석"],"coverImage":"/uploads/project-cover-1-1763810633854.png","pdfName":"KFC 교대점 & 양재점 분석 리포트","pdfUrl":"https://naver.me/xI100N0A"},{"title":"서울 고덕아르테온 아파트 실거래가 분석","period":"토지론입문","description":"국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트.","tags":["#실거래가","#아파트분석","#고덕아르테온"],"coverImage":"/uploads/project-cover-2-1763810806831.png","pdfName":"고덕아르테온 분석 리포트","pdfUrl":"https://naver.me/GScEabVD"},{"title":"일본 주택 문화 및 한·일 고령사회 주거정책 비교","period":"주택론입문","description":"한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 프로젝트.","tags":["#고령사회","#주거정책","#비교연구"],"coverImage":"/uploads/project-cover-3-1764440797235.png","pdfName":"일본 주택 문화와 주택 시장 리포트","pdfUrl":"https://naver.me/FhfJJryG"},{"title":"바르셀로나 슈퍼블록 프로젝트","period":"도시재생론","description":"바르셀로나 슈퍼블록 사례를 통해 공공공간 재창출 효과를 분석하고, 이를 한국에 적용하는 방안을 제시한 팀 프로젝트.","tags":["#바르셀로나","#슈퍼블록","#도시재생","#한국에서의적용","#저층주거지형","#어린이보호구역형"],"coverImage":"/uploads/project-cover-4-1763811880168.png","pdfName":"바르셀로나 슈퍼블록 프로젝트 리포트","pdfUrl":"https://naver.me/GRugewfV"},{"title":"지방 소멸에 대응하기 위한 혁신도시의 역할 및 한계 그리고 개선 방안","period":"국토및지역계획","description":"나주 혁신도시의 인구·교통·녹지 여건을 분석하고, 개선 방향을 제시한 개인 리포트.","tags":["#나주혁신도시","#지방소멸","#역할","#한계","#개선방안"],"coverImage":"/uploads/project-cover-5-1763813569998.png","pdfName":"나주 혁신도시 리포트","pdfUrl":"https://naver.me/FRuiekSX"}],
-    highlights: [{"title":"현장을 보는 시각","description":"지역을 직접 답사하며 지도나 수치로는 드러나지 않는 생활권 특성과 공간 활용 방식을 관찰합니다.\n더 나아가, 현장에서 얻은 상황적 맥락을 데이터 분석과 연계하여 대안을 제시합니다."},{"title":"꾸준함과 책임감","description":"동아리와 팀 프로젝트에서 맡은 역할을 끝까지 책임지고 수행해 왔습니다."},{"title":"소통 능력","description":"상대방의 입장과 필요를 먼저 이해하며 협력 방향을 조율할 수 있기 때문에, 다양한 의견이 공존하는 상황에서도 효과적으로 문제를 해결할 수 있습니다."}],
-    interests: ["#도시재생","#주택시장","#고령사회","#보행친화도시","#상권분석","#도시계획"],
-    interestMotto: "\"최고보다 최선을\"",
-    timeline: [{"period":"2017.03 ~ 2020.02","title":"성원고등학교","description":"학업과 학생회 활동을 병행하며 교내 행사 기획과 운영을 맡아 책임감을 키움."},{"period":"2021.03 ~ 현재","title":"단국대학교 도시계획부동산학부","description":"도시계획·부동산 전공 지식과 함께, 팀 프로젝트 및 현장에 대한 경험을 쌓는 중."},{"period":"2021.07 ~ 2023.01","title":"육군 병장 만기전역","description":"다양한 사람들과 공동 생활을 하며 배려·협업의 중요성을 배우고, 맡은 임무를 끝까지 수행하는 책임감을 키움"},{"period":"2023 ~ 현재","title":"아이사랑 동아리","description":"교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장."}],
-    courses: [{"name":"GIS와 도시공간분석","detail":"공간 데이터를 활용한 분석 및 시각화 기초 학습."},{"name":"토지론입문","detail":"토지의 경제적 특성과 제도, 이용 방식에 대한 이해."},{"name":"부동산입지","detail":"주택시장, 상업용 부동산 시장의 구조와 가격 형성 요인 학습."},{"name":"도시재생론","detail":"쇠퇴 지역의 재생 전략과 국내외 사례 분석."},{"name":"토지이용계획","detail":"공간을 효율적으로 관리하기 위한 토지이용 구조와 규제 체계에 대한 분석."},{"name":"도시계획","detail":"토지이용, 교통, 주거, 환경 등 다양한 요소를 종합하여 도시공간을 설계하는 원리와 계획 체계에 대한 이해."},{"name":"AI와 도시계획","detail":"인공지능을 기반으로 한 장래 도시공간에 대한 설계."},{"name":"도시개발론","detail":"도시 개발의 이론과 제도, 사업 절차에 대한 이해 & 공공과 민간의 역할에 대한 탐구."},{"name":"부동산 사법","detail":"부동산 거래와 권리 관계를 규율하는 법적 원칙에 대한 이해."},{"name":"교통계획","detail":"도시 내 이동 수요와 교통 흐름을 분석하는 방법 & 지속 가능한 도시교통 구조를 설계하는 원리에 대한 이해."},{"name":"부동산 조세","detail":"부동산에 대해 부과되는 조세 체계에 대한 이해 & 부동산 시자의 공정성과 효율성을 확보하는 과세 정책 방향에 대한 탐구."},{"name":"부동산 프롭테크","detail":"ICT·빅데이터·AI 등 부동산 시장의 혁신을 이끌어 나가는 기술에 대한 이해."},{"name":"환경관리, 국토 및 지역계획 등","detail":"다양한 전공 과목을 수강함."}],
-    testimonials: [{"name":"동아리 부원","role":"아이사랑","quote":"편하게 다가가 고민을 털어놓을 수 있는 선배이자 필요할 때는 방향을 잡아주는 책임감 있는 집행부."},{"name":"팀 프로젝트 팀원","role":"전공 수업 & 교양 수업","quote":"의견을 조율하며 팀 분위기를 안정시키는 사람, 맡은 일은 끝까지 책임지는 믿음직한 팀원."},{"name":"전공과목에 대한 교수님","role":"수업 피드백","quote":"도시개발론이라는 과목에 늘 진지한 태도로 임하며 성실하게 참여한 학생이고, 그런 꾸준함 덕분에 기억에 남는 학생"}],
-    lifePhotos: [{"image":"/uploads/life-photo-0-1763809986427.png","caption":"부동산입지_KFC 답사"},{"image":"/uploads/life-photo-1-1763810004680.jpg","caption":"도시개발론_세운상가 답사"},{"image":"/uploads/life-photo-2-1763810015595.png","caption":"토지이용계획_판교 답사"},{"image":"/uploads/life-photo-3-1763810035318.jpg","caption":"교육봉사 동아리_장학금 행사"},{"image":"/uploads/life-photo-4-1763809743535.jpg","caption":"교육봉사 동아리_활동"},{"image":"/uploads/life-photo-5-1763810025470.jpg","caption":"교육봉사 동아리_학교 투어"}],
+    contact: [
+      { label: "Email", value: "example@naver.com" },
+      { label: "Phone", value: "010-0000-0000" },
+      { label: "Address", value: "경기 용인시 수지구 죽전동" },
+      { label: "GitHub / Blog", value: "https://github.com/your-id" },
+    ],
+    stats: [
+      {
+        label: "전공 프로젝트",
+        value: "10+",
+        sub: "수업·팀 과제 포함",
+      },
+      {
+        label: "관심 분야 리포트",
+        value: "20+",
+        sub: "주택·도시재생·환경 등",
+      },
+      {
+        label: "교육 봉사",
+        value: "5년+",
+        sub: "아이사랑 동아리 활동 및 고교 시절 멘토링 봉사",
+      },
+    ],
+    services: [
+      {
+        title: "도시·부동산 리서치",
+        description:
+          "정책 자료, 통계, 논문과 현장 자료를 종합해 이슈의 흐름을 정리하고 통찰력을 제공합니다.",
+      },
+      {
+        title: "기초 데이터 분석 & 시각화",
+        description:
+          "실거래가, 인구구조, 상권 데이터를 데이터 기반 분석 기법으로 구조화하고 해석합니다.",
+      },
+      {
+        title: "기획·발표 및 협업",
+        description:
+          "팀 프로젝트에서 역할 분담, 일정 관리, 발표 자료 제작을 맡으며 구성원들과 조율합니다.",
+      },
+    ],
+    // 🔢 Skills – 기본 5개 막대
+    skills: [
+      {
+        title: "도시·부동산 리서치",
+        level: "상",
+        description: "",
+      },
+      {
+        title: "데이터 분석 기초",
+        level: "중",
+        description: "",
+      },
+      {
+        title: "공간·현장 관찰",
+        level: "상",
+        description: "",
+      },
+      {
+        title: "기획 & 발표",
+        level: "중",
+        description: "",
+      },
+      {
+        title: "협업 & 커뮤니케이션",
+        level: "상",
+        description: "",
+      },
+    ],
+    techStack: [
+      {
+        category: "데이터 & 분석",
+        items: "실거래가 데이터 · 인구통계 · 상권 · 토지이용 변화",
+      },
+      {
+        category: "도구 & 소프트웨어",
+        items: "PowerPoint · Word · Excel · ArcGIS",
+      },
+      {
+        category: "관심 기술",
+        items: "Python(기초 학습 중) · 데이터 시각화 · 공간 데이터",
+      },
+    ],
+    resume: {
+      personal: [
+        { label: "이름", value: "김민수" },
+        { label: "생년월일", value: "2001.04.18" },
+        { label: "주소", value: "경기 용인시 수지구 죽전동" },
+        { label: "Email", value: "kimms4335@naver.com" },
+      ],
+      education: [
+        {
+          period: "2017.03 ~ 2020.02",
+          title: "성원고등학교",
+          subtitle: "자연계열",
+        },
+        {
+          period: "2021.03 ~ 2027.02(졸업 예정)",
+          title: "단국대학교 죽전캠퍼스",
+          subtitle: "도시계획부동산학부                        ",
+        },
+      ],
+      experience: [
+        {
+          period: "2024.03 ~ 2024.06",
+          title: "토지이용계획_지역 답사",
+          description:
+            "명동 & 판교 답사를 통해 도시계획은 시민의 삶의 질 향상을 추구해야 한다는 가치관 확립",
+        },
+        {
+          period: "2024.03 ~ 2024.06",
+          title: "부동산입지_상권 분석",
+          description:
+            "FC 양재점과 교대점의 입지·유동인구·상권 특성을 비교 분석하며, 동일 브랜드라도 배후 수요의 특성과 경쟁 환경에 따라 매출이 달라진다는 점을 확인",
+        },
+        {
+          period: "2024.09 ~ 2024.12",
+          title: "세운상가_지역 답사 및 재건 방안 구상",
+          description:
+            "세운상가 현장 답사를 통해 현장 분석을 진행하였다. 분석된 내용을 토대로 지역 보존과 개발을 조화시킬 수 있는 전략으로 구역별 재건 계획과 공공임대·지식산업 연계 방안을 제시",
+        },
+        {
+          period: "2025.09 ~ 현재",
+          title: "GIS와 도시공간분석",
+          description:
+            "인구·상권·주거 등 도시 데이터를 지도 기반으로 시각화하고 이에 대한 공간적 패턴을 해석함으로써 도시 문제에 대한 정책적 시사점을 도출하는 능력 함양",
+        },
+      ],
+      activities: [
+        {
+          period: "2024.03 ~ 현재",
+          title: "교육봉사 동아리(아이사랑) 집행부",
+          details: [
+            "• 초·중등 대상 학습 지도 및 놀이 프로그램 진행",
+            "• 부원 간 친목 도모 및 행사 기획",
+            "• 동아리와 지역아동센터 간 연결",
+          ],
+        },
+        {
+          period: "2025.03 ~ 현재",
+          title: "독서 토론 모임",
+          details: [
+            "• 선정 도서에 대한 의견 정리 및 토론 참여",
+            "• 서로 다른 관점에 대해 비교·조율하며 합의 도출",
+            "• 비판적 사고와 소통 역량 강화",
+          ],
+        },
+      ],
+      certificates: [
+        { date: "2025.06(예정)", name: "도시계획기사 자격증 취득" },
+        { date: "2025.07(예정)", name: "교통기사 자격증 취득" },
+        { date: "2027.03(목표)", name: "법학전문대학원 입학" },
+      ],
+    },
+    projects: [
+      {
+        title: "세운상가 프로젝트",
+        period: "도시개발론",
+        description: "세운상가의 문제점에 대해 조사한 뒤 구역별 재생 방안을 제시한 팀 프로젝트.",
+        tags: ["#세운상가", "#도시재생", "#현장조사"],
+        coverImage: "/uploads/project-cover-0-1764440741968.png",
+        pdfName: "세운상가 리포트",
+        pdfUrl: "https://naver.me/5asLLhzz",
+      },
+      {
+        title: "KFC 교대점과 양재점에 대한 상권 분석",
+        period: "부동산입지",
+        description:
+          "KFC 교대점 및 양재점을 대상으로 상권·접근성·수요를 분석하여 입지 적합성을 평가한 팀 프로젝트.",
+        tags: ["#KFC", "#교대점", "#양재점", "#입지", "#상권분석"],
+        coverImage: "/uploads/project-cover-1-1763810633854.png",
+        pdfName: "KFC 교대점 & 양재점 분석 리포트",
+        pdfUrl: "https://naver.me/xI100N0A",
+      },
+      {
+        title: "서울 고덕아르테온 아파트 실거래가 분석",
+        period: "토지론입문",
+        description:
+          "국토부 실거래가 데이터를 활용하여 고덕동 주요 단지의 가격 추세와 9호선 연장, 비즈밸리 조성 등 개발 호재의 영향을 분석한 리포트.",
+        tags: ["#실거래가", "#아파트분석", "#고덕아르테온"],
+        coverImage: "/uploads/project-cover-2-1763810806831.png",
+        pdfName: "고덕아르테온 분석 리포트",
+        pdfUrl: "https://naver.me/GScEabVD",
+      },
+      {
+        title: "일본 주택 문화 및 한·일 고령사회 주거정책 비교",
+        period: "주택론입문",
+        description:
+          "한국과 일본의 고령자 주거지원, 빈집 문제, 농촌 활성화 정책을 비교하여 시사점을 정리한 팀 프로젝트.",
+        tags: ["#고령사회", "#주거정책", "#비교연구"],
+        coverImage: "/uploads/project-cover-3-1764440797235.png",
+        pdfName: "일본 주택 문화와 주택 시장 리포트",
+        pdfUrl: "https://naver.me/FhfJJryG",
+      },
+      {
+        title: "바르셀로나 슈퍼블록 프로젝트",
+        period: "도시재생론",
+        description:
+          "바르셀로나 슈퍼블록 사례를 통해 공공공간 재창출 효과를 분석하고, 이를 한국에 적용하는 방안을 제시한 팀 프로젝트.",
+        tags: [
+          "#바르셀로나",
+          "#슈퍼블록",
+          "#도시재생",
+          "#한국에서의적용",
+          "#저층주거지형",
+          "#어린이보호구역형",
+        ],
+        coverImage: "/uploads/project-cover-4-1763811880168.png",
+        pdfName: "바르셀로나 슈퍼블록 프로젝트 리포트",
+        pdfUrl: "https://naver.me/GRugewfV",
+      },
+      {
+        title: "지방 소멸에 대응하기 위한 혁신도시의 역할 및 한계 그리고 개선 방안",
+        period: "국토및지역계획",
+        description:
+          "나주 혁신도시의 인구·교통·녹지 여건을 분석하고, 개선 방향을 제시한 개인 리포트.",
+        tags: ["#나주혁신도시", "#지방소멸", "#역할", "#한계", "#개선방안"],
+        coverImage: "/uploads/project-cover-5-1763813569998.png",
+        pdfName: "나주 혁신도시 리포트",
+        pdfUrl: "https://naver.me/FRuiekSX",
+      },
+    ],
+    highlights: [
+      {
+        title: "현장을 보는 시각",
+        description:
+          "지역을 직접 답사하며 지도나 수치로는 드러나지 않는 생활권 특성과 공간 활용 방식을 관찰합니다.\n더 나아가, 현장에서 얻은 상황적 맥락을 데이터 분석과 연계하여 대안을 제시합니다.",
+      },
+      {
+        title: "꾸준함과 책임감",
+        description:
+          "동아리와 팀 프로젝트에서 맡은 역할을 끝까지 책임지고 수행해 왔습니다.",
+      },
+      {
+        title: "소통 능력",
+        description:
+          "상대방의 입장과 필요를 먼저 이해하며 협력 방향을 조율할 수 있기 때문에, 다양한 의견이 공존하는 상황에서도 효과적으로 문제를 해결할 수 있습니다.",
+      },
+    ],
+    interests: [
+      "#도시재생",
+      "#주택시장",
+      "#고령사회",
+      "#보행친화도시",
+      "#상권분석",
+      "#도시계획",
+    ],
+    interestMotto: '"최고보다 최선을"',
+    timeline: [
+      {
+        period: "2017.03 ~ 2020.02",
+        title: "성원고등학교",
+        description:
+          "학업과 학생회 활동을 병행하며 교내 행사 기획과 운영을 맡아 책임감을 키움.",
+      },
+      {
+        period: "2021.03 ~ 현재",
+        title: "단국대학교 도시계획부동산학부",
+        description:
+          "도시계획·부동산 전공 지식과 함께, 팀 프로젝트 및 현장에 대한 경험을 쌓는 중.",
+      },
+      {
+        period: "2021.07 ~ 2023.01",
+        title: "육군 병장 만기전역",
+        description:
+          "다양한 사람들과 공동 생활을 하며 배려·협업의 중요성을 배우고, 맡은 임무를 끝까지 수행하는 책임감을 키움",
+      },
+      {
+        period: "2023 ~ 현재",
+        title: "아이사랑 동아리",
+        description:
+          "교육봉사를 통해 사람들과 소통하고 협업하는 경험을 지속적으로 확장.",
+      },
+    ],
+    courses: [
+      { name: "GIS와 도시공간분석", detail: "공간 데이터를 활용한 분석 및 시각화 기초 학습." },
+      {
+        name: "토지론입문",
+        detail: "토지의 경제적 특성과 제도, 이용 방식에 대한 이해.",
+      },
+      {
+        name: "부동산입지",
+        detail: "주택시장, 상업용 부동산 시장의 구조와 가격 형성 요인 학습.",
+      },
+      {
+        name: "도시재생론",
+        detail: "쇠퇴 지역의 재생 전략과 국내외 사례 분석.",
+      },
+      {
+        name: "토지이용계획",
+        detail: "공간을 효율적으로 관리하기 위한 토지이용 구조와 규제 체계에 대한 분석.",
+      },
+      {
+        name: "도시계획",
+        detail:
+          "토지이용, 교통, 주거, 환경 등 다양한 요소를 종합하여 도시공간을 설계하는 원리와 계획 체계에 대한 이해.",
+      },
+      {
+        name: "AI와 도시계획",
+        detail: "인공지능을 기반으로 한 장래 도시공간에 대한 설계.",
+      },
+      {
+        name: "도시개발론",
+        detail:
+          "도시 개발의 이론과 제도, 사업 절차에 대한 이해 & 공공과 민간의 역할에 대한 탐구.",
+      },
+      {
+        name: "부동산 사법",
+        detail: "부동산 거래와 권리 관계를 규율하는 법적 원칙에 대한 이해.",
+      },
+      {
+        name: "교통계획",
+        detail:
+          "도시 내 이동 수요와 교통 흐름을 분석하는 방법 & 지속 가능한 도시교통 구조를 설계하는 원리에 대한 이해.",
+      },
+      {
+        name: "부동산 조세",
+        detail:
+          "부동산에 대해 부과되는 조세 체계에 대한 이해 & 부동산 시자의 공정성과 효율성을 확보하는 과세 정책 방향에 대한 탐구.",
+      },
+      {
+        name: "부동산 프롭테크",
+        detail:
+          "ICT·빅데이터·AI 등 부동산 시장의 혁신을 이끌어 나가는 기술에 대한 이해.",
+      },
+      { name: "환경관리, 국토 및 지역계획 등", detail: "다양한 전공 과목을 수강함." },
+    ],
+    testimonials: [
+      {
+        name: "동아리 부원",
+        role: "아이사랑",
+        quote:
+          "편하게 다가가 고민을 털어놓을 수 있는 선배이자 필요할 때는 방향을 잡아주는 책임감 있는 집행부.",
+      },
+      {
+        name: "팀 프로젝트 팀원",
+        role: "전공 수업 & 교양 수업",
+        quote:
+          "의견을 조율하며 팀 분위기를 안정시키는 사람, 맡은 일은 끝까지 책임지는 믿음직한 팀원.",
+      },
+      {
+        name: "전공과목에 대한 교수님",
+        role: "수업 피드백",
+        quote:
+          "도시개발론이라는 과목에 늘 진지한 태도로 임하며 성실하게 참여한 학생이고, 그런 꾸준함 덕분에 기억에 남는 학생",
+      },
+    ],
+    lifePhotos: [
+      {
+        image: "/uploads/life-photo-0-1763809986427.png",
+        caption: "부동산입지_KFC 답사",
+      },
+      {
+        image: "/uploads/life-photo-1-1763810004680.jpg",
+        caption: "도시개발론_세운상가 답사",
+      },
+      {
+        image: "/uploads/life-photo-2-1763810015595.png",
+        caption: "토지이용계획_판교 답사",
+      },
+      {
+        image: "/uploads/life-photo-3-1763810035318.jpg",
+        caption: "교육봉사 동아리_장학금 행사",
+      },
+      {
+        image: "/uploads/life-photo-4-1763809743535.jpg",
+        caption: "교육봉사 동아리_활동",
+      },
+      {
+        image: "/uploads/life-photo-5-1763810025470.jpg",
+        caption: "교육봉사 동아리_학교 투어",
+      },
+    ],
     whatIDoNote: "Ability",
     resumeCaption: "주요 학력과 경험을 한 눈에 볼 수 있도록 정리했습니다.",
-    projectsCaption: "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
-    labels: {"statsSectionTitle":"경험","contactTitle":"CONTACT","whatIDoTitle":"What I Do","techToolsTitle":"TECH & TOOLS","keySkillsTitle":"KEY SKILLS","highlightsTitle":"핵심 역량","resumeTitle":"자기 PR","educationTitle":"학력","experienceTitle":"전공 관련 경험","activityTitle":"활동 & 대외 경험","certificateTitle":"자격 및 기타","interestsTitle":"관심 분야","interestMottoTitle":"모토","timelineTitle":"타임라인","coursesTitle":"수강 과목 & 학습 주제","testimonialTitle":"함께한 사람들이 본 나","lifeMomentsTitle":"Life & Moments","projectsTitle":"Projects","projectTagsLabel":"태그 (공백으로 구분):","projectPdfNote":"* 네이버 MYBOX, 구글드라이브 등 공유 링크도 그대로 넣으면 됩니다."}
+    projectsCaption:
+      "수업·과제·개인 프로젝트 중 보여주고 싶은 작업을 정리한 영역입니다.",
+    labels: {
+      statsSectionTitle: "경험",
+      contactTitle: "CONTACT",
+      whatIDoTitle: "What I Do",
+      techToolsTitle: "TECH & TOOLS",
+      keySkillsTitle: "Skills & Tools", // 🔁 기본 제목 변경
+      highlightsTitle: "핵심 역량",
+      resumeTitle: "자기 PR",
+      educationTitle: "학력",
+      experienceTitle: "전공 관련 경험",
+      activityTitle: "활동 & 대외 경험",
+      certificateTitle: "자격 및 기타",
+      interestsTitle: "관심 분야",
+      interestMottoTitle: "모토",
+      timelineTitle: "타임라인",
+      coursesTitle: "수강 과목 & 학습 주제",
+      testimonialTitle: "함께한 사람들이 본 나",
+      lifeMomentsTitle: "Life & Moments",
+      projectsTitle: "Projects",
+      projectTagsLabel: "태그 (공백으로 구분):",
+      projectPdfNote:
+        "* 네이버 MYBOX, 구글드라이브 등 공유 링크도 그대로 넣으면 됩니다.",
+    },
+    // 🔥 Working Style 기본값
+    workingStyleTitle:
+      "숫자·지도·현장을 연결하고,\n여러 이해관계자의 목소리를 함께 듣습니다.",
+    workingStyleBody:
+      "리서치와 데이터 분석을 통해 방향을 잡고, 팀원들과의 토론을 통해 현실적인 대안을 찾는 과정을 선호합니다.\n\n“이론·데이터·현장·사람” 네 가지를 함께 보려고 노력합니다.",
   }
 
   const [aboutInfo, setAboutInfo] = useState<AboutInfo>(defaultInfo)
@@ -224,6 +617,10 @@ export function About() {
         projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
         labels: saved.labels || defaultInfo.labels,
         interestMotto: saved.interestMotto || defaultInfo.interestMotto,
+        workingStyleTitle:
+          saved.workingStyleTitle || defaultInfo.workingStyleTitle,
+        workingStyleBody:
+          saved.workingStyleBody || defaultInfo.workingStyleBody,
       }
 
       setAboutInfo(merged)
@@ -304,7 +701,6 @@ export function About() {
     updateAboutInfo("resume", newResume)
   }
 
-  // 🔧 이력서 각 섹션 추가/삭제
   const addPersonalField = () => {
     const newResume: Resume = JSON.parse(JSON.stringify(aboutInfo.resume))
     newResume.personal.push({ label: "항목", value: "내용을 입력하세요." })
@@ -392,7 +788,6 @@ export function About() {
     updateAboutInfo("resume", newResume)
   }
 
-  // 🔧 강점, 타임라인, 과목, 관심, 후기, 사진 등 추가/삭제
   const addHighlight = () => {
     const newList = [
       ...aboutInfo.highlights,
@@ -530,6 +925,22 @@ export function About() {
     updateAboutInfo(
       "lifePhotos",
       aboutInfo.lifePhotos.filter((_, i) => i !== index),
+    )
+  }
+
+  // 🔧 Skills 추가/삭제
+  const addSkill = () => {
+    const newList = [
+      ...aboutInfo.skills,
+      { title: "새 Skill", level: "중", description: "" },
+    ]
+    updateAboutInfo("skills", newList)
+  }
+
+  const removeSkill = (index: number) => {
+    updateAboutInfo(
+      "skills",
+      aboutInfo.skills.filter((_, i) => i !== index),
     )
   }
 
@@ -791,209 +1202,279 @@ export function About() {
             </div>
           )}
 
-          {/* What I Do + Tech & Tools + Key Skills */}
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-8">
-            {/* What I Do */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between gap-2">
-                <h2 className="text-xl font-bold flex items-center gap-2">
-                  <Target className="w-5 h-5 text-primary" />
-                  <EditableText
-                    value={aboutInfo.labels.whatIDoTitle}
-                    onChange={(value) =>
-                      updateLabels({ whatIDoTitle: value })
-                    }
-                    storageKey="label-what-i-do-title"
-                  />
-                </h2>
-                <span className="text-xs text-muted-foreground">
-                  <EditableText
-                    value={aboutInfo.whatIDoNote}
-                    onChange={(value) => updateAboutInfo("whatIDoNote", value)}
-                    storageKey="what-i-do-note"
-                  />
-                </span>
-              </div>
-              <div className="flex items-center justify-end gap-2">
+          {/* What I Do + Tech & Tools + Skills & Working Style */}
+{/* What I Do / Tech & Tools / Skills & Tools / Working Style */}
+<div className="space-y-8">
+  {/* 1행: What I Do (왼쪽 6) / Tech & Tools(오른쪽 4) */}
+  <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8">
+    {/* What I Do */}
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="text-xl font-bold flex items-center gap-2">
+          <Target className="w-5 h-5 text-primary" />
+          <EditableText
+            value={aboutInfo.labels.whatIDoTitle}
+            onChange={(value) => updateLabels({ whatIDoTitle: value })}
+            storageKey="label-what-i-do-title"
+          />
+        </h2>
+        <span className="text-xs text-muted-foreground">
+          <EditableText
+            value={aboutInfo.whatIDoNote}
+            onChange={(value) => updateAboutInfo("whatIDoNote", value)}
+            storageKey="what-i-do-note"
+          />
+        </span>
+      </div>
+
+      <div className="flex items-center justify-end gap-2">
+        {isEditMode && (
+          <button
+            onClick={addService}
+            className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5 mb-1"
+          >
+            <Plus className="w-3 h-3" />
+            카드 추가
+          </button>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {aboutInfo.services.map((srv, idx) => (
+          <Card
+            key={idx}
+            className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow relative"
+          >
+            <CardContent className="p-4 space-y-2">
+              {isEditMode && (
+                <button
+                  onClick={() => removeService(idx)}
+                  className={COMMON_STYLES.deleteButton}
+                >
+                  <X className={COMMON_STYLES.deleteIcon} />
+                </button>
+              )}
+              <p className="text-sm font-semibold">
+                <EditableText
+                  value={srv.title}
+                  onChange={(value) => {
+                    const newServices = [...aboutInfo.services]
+                    newServices[idx].title = value
+                    updateAboutInfo("services", newServices)
+                  }}
+                  storageKey={`service-${idx}-title`}
+                />
+              </p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                <EditableText
+                  value={srv.description}
+                  onChange={(value) => {
+                    const newServices = [...aboutInfo.services]
+                    newServices[idx].description = value
+                    updateAboutInfo("services", newServices)
+                  }}
+                  storageKey={`service-${idx}-desc`}
+                  multiline
+                />
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+
+    {/* 오른쪽: Tech & Tools (1행) */}
+    <div className="space-y-6">
+      <Card className="border-0 shadow-md">
+        <CardContent className="p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-muted-foreground tracking-wide flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-primary" />
+              <EditableText
+                value={aboutInfo.labels.techToolsTitle}
+                onChange={(value) => updateLabels({ techToolsTitle: value })}
+                storageKey="label-tech-tools-title"
+              />
+            </h3>
+            {isEditMode && (
+              <button
+                onClick={addTech}
+                className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+              >
+                <Plus className="w-3 h-3" />
+                항목 추가
+              </button>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            {aboutInfo.techStack.map((t, idx) => (
+              <div key={idx} className="space-y-1 relative">
                 {isEditMode && (
                   <button
-                    onClick={addService}
-                    className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5 mb-1"
+                    onClick={() => removeTech(idx)}
+                    className={COMMON_STYLES.deleteButton}
                   >
-                    <Plus className="w-3 h-3" />
-                    카드 추가
+                    <X className={COMMON_STYLES.deleteIcon} />
                   </button>
                 )}
+                <p className="text-xs font-semibold text-foreground">
+                  <EditableText
+                    value={t.category}
+                    onChange={(value) => {
+                      const newTech = [...aboutInfo.techStack]
+                      newTech[idx].category = value
+                      updateAboutInfo("techStack", newTech)
+                    }}
+                    storageKey={`tech-${idx}-cat`}
+                  />
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <EditableText
+                    value={t.items}
+                    onChange={(value) => {
+                      const newTech = [...aboutInfo.techStack]
+                      newTech[idx].items = value
+                      updateAboutInfo("techStack", newTech)
+                    }}
+                    storageKey={`tech-${idx}-items`}
+                    multiline
+                  />
+                </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {aboutInfo.services.map((srv, idx) => (
-                  <Card
-                    key={idx}
-                    className="border bg-card/70 shadow-sm hover:shadow-md transition-shadow relative"
-                  >
-                    <CardContent className="p-4 space-y-2">
-                      {isEditMode && (
-                        <button
-                          onClick={() => removeService(idx)}
-                          className={COMMON_STYLES.deleteButton}
-                        >
-                          <X className={COMMON_STYLES.deleteIcon} />
-                        </button>
-                      )}
-                      <p className="text-sm font-semibold">
-                        <EditableText
-                          value={srv.title}
-                          onChange={(value) => {
-                            const newServices = [...aboutInfo.services]
-                            newServices[idx].title = value
-                            updateAboutInfo("services", newServices)
-                          }}
-                          storageKey={`service-${idx}-title`}
-                        />
-                      </p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        <EditableText
-                          value={srv.description}
-                          onChange={(value) => {
-                            const newServices = [...aboutInfo.services]
-                            newServices[idx].description = value
-                            updateAboutInfo("services", newServices)
-                          }}
-                          storageKey={`service-${idx}-desc`}
-                          multiline
-                        />
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
 
-            {/* Tech & Tools + Key Skills */}
-            <div className="space-y-6">
-              <Card className="border-0 shadow-md">
-                <CardContent className="p-5 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-muted-foreground tracking-wide flex items-center gap-2">
-                      <BookOpen className="w-4 h-4 text-primary" />
-                      <EditableText
-                        value={aboutInfo.labels.techToolsTitle}
-                        onChange={(value) =>
-                          updateLabels({ techToolsTitle: value })
-                        }
-                        storageKey="label-tech-tools-title"
-                      />
-                    </h3>
-                    {isEditMode && (
-                      <button
-                        onClick={addTech}
-                        className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
-                      >
-                        <Plus className="w-3 h-3" />
-                        항목 추가
-                      </button>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    {aboutInfo.techStack.map((t, idx) => (
-                      <div key={idx} className="space-y-1 relative">
-                        {isEditMode && (
-                          <button
-                            onClick={() => removeTech(idx)}
-                            className={COMMON_STYLES.deleteButton}
-                          >
-                            <X className={COMMON_STYLES.deleteIcon} />
-                          </button>
-                        )}
-                        <p className="text-xs font-semibold text-foreground">
-                          <EditableText
-                            value={t.category}
-                            onChange={(value) => {
-                              const newTech = [...aboutInfo.techStack]
-                              newTech[idx].category = value
-                              updateAboutInfo("techStack", newTech)
-                            }}
-                            storageKey={`tech-${idx}-cat`}
-                          />
-                        </p>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          <EditableText
-                            value={t.items}
-                            onChange={(value) => {
-                              const newTech = [...aboutInfo.techStack]
-                              newTech[idx].items = value
-                              updateAboutInfo("techStack", newTech)
-                            }}
-                            storageKey={`tech-${idx}-items`}
-                            multiline
-                          />
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+  {/* 2행: Skills & Tools(왼쪽 6) / Working Style(오른쪽 4) */}
+  <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-4">
+{/* 📊 Skills & Tools (레벨 제거 버전) */}
+<Card className="border-0 shadow-md">
+  <CardContent className="p-5 space-y-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <BarChart3 className="w-4 h-4 text-primary" />
+        <h3 className="text-sm font-semibold text-muted-foreground tracking-wide">
+          <EditableText
+            value={aboutInfo.labels.keySkillsTitle}
+            onChange={(value) => updateLabels({ keySkillsTitle: value })}
+            storageKey="label-key-skills-title"
+          />
+        </h3>
+      </div>
 
-              <Card className="border-0 shadow-md">
-                <CardContent className="p-5 space-y-3">
-                  <h3 className="text-sm font-semibold text-muted-foreground tracking-wide">
-                    <EditableText
-                      value={aboutInfo.labels.keySkillsTitle}
-                      onChange={(value) =>
-                        updateLabels({ keySkillsTitle: value })
-                      }
-                      storageKey="label-key-skills-title"
-                    />
-                  </h3>
-                  <div className="space-y-3">
-                    {aboutInfo.skills.map((skill, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <div className="mt-1">
-                          {skill.level === "상" && (
-                            <Star className="w-4 h-4 text-primary" />
-                          )}
-                          {skill.level === "중" && (
-                            <Target className="w-4 h-4 text-primary" />
-                          )}
-                          {skill.level === "하" && (
-                            <Zap className="w-4 h-4 text-primary" />
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium text-sm">
-                              <EditableText
-                                value={skill.title}
-                                onChange={(value) => {
-                                  const newSkills = [...aboutInfo.skills]
-                                  newSkills[idx].title = value
-                                  updateAboutInfo("skills", newSkills)
-                                }}
-                                storageKey={`skills-${idx}-title`}
-                              />
-                            </span>
-                            {getLevelChip(skill.level)}
-                          </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed">
-                            <EditableText
-                              value={skill.description}
-                              onChange={(value) => {
-                                const newSkills = [...aboutInfo.skills]
-                                newSkills[idx].description = value
-                                updateAboutInfo("skills", newSkills)
-                              }}
-                              storageKey={`skills-${idx}-desc`}
-                              multiline
-                            />
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+      {isEditMode && (
+        <button
+          onClick={addSkill}
+          className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-full border border-dashed border-primary/50 text-primary hover:bg-primary/5"
+        >
+          <Plus className="w-3 h-3" /> 막대 추가
+        </button>
+      )}
+    </div>
+
+    <div className="space-y-4">
+      {aboutInfo.skills.map((skill, idx) => {
+        // 기본 퍼센트값(레벨과 무관)
+        const percent = (skill as any).percent ?? 70
+
+        return (
+          <div key={idx} className="space-y-2 relative">
+            {isEditMode && (
+              <button
+                onClick={() => removeSkill(idx)}
+                className={COMMON_STYLES.deleteButton}
+              >
+                <X className={COMMON_STYLES.deleteIcon} />
+              </button>
+            )}
+
+            {/* 제목 */}
+            <span className="font-medium text-sm">
+              <EditableText
+                value={skill.title}
+                onChange={(value) => {
+                  const newSkills = [...aboutInfo.skills]
+                  newSkills[idx].title = value
+                  updateAboutInfo("skills", newSkills)
+                }}
+                storageKey={`skills-${idx}-title`}
+              />
+            </span>
+
+{/* 🆕 관련 사항 입력란 추가 */}
+<div className="text-xs text-muted-foreground">
+  <EditableText
+    value={skill.detail || "관련 사항 : "}
+    onChange={(value) => {
+      const newSkills = [...aboutInfo.skills]
+      newSkills[idx].detail = value
+      updateAboutInfo("skills", newSkills)
+    }}
+    storageKey={`skills-${idx}-detail`}
+    multiline
+  />
+</div>
+
+{/* 퍼센트 수정 */}
+<div className="flex items-center gap-2 text-xs text-muted-foreground">
+
+  {/* 라벨도 수정 가능 */}
+  <EditableText
+    value={"Percent :"}
+    onChange={() => {}}
+    storageKey="skills-percent-label"
+  />
+
+  {/* 숫자 수정 가능 */}
+  <EditableText
+    value={String(percent)}
+    onChange={(value) => {
+      const newSkills = [...aboutInfo.skills]
+      newSkills[idx].percent = Number(value) || 0
+      updateAboutInfo("skills", newSkills)
+    }}
+    storageKey={`skills-${idx}-percent`}
+  />
+
+</div>
+
+
+            {/* 막대 그래프 */}
+            <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary transition-all"
+                style={{ width: `${percent}%` }}
+              />
             </div>
           </div>
+        )
+      })}
+    </div>
+  </CardContent>
+</Card>
+
+    {/* 💬 WORKING STYLE */}
+<Card className="border-0 shadow-md max-h-[260px] overflow-hidden">
+  <CardContent className="p-5 space-y-3">
+        <h3 className="text-sm font-semibold text-muted-foreground tracking-wide">
+          WORKING STYLE
+        </h3>
+        <p className="text-sm leading-relaxed text-foreground font-medium whitespace-pre-line">
+          <EditableText
+            value={aboutInfo.workingStyleTitle || ""}
+            onChange={(value) => updateAboutInfo("workingStyleTitle", value)}
+            storageKey="working-style-title"
+            multiline
+          />
+        </p>
+      </CardContent>
+    </Card>
+  </div>
+</div>
 
           {/* ⭐ 강점 하이라이트 */}
           {aboutInfo.highlights.length > 0 && (
@@ -1260,7 +1741,7 @@ export function About() {
               {/* 활동 + 자격 */}
               <div className="space-y-6">
                 <div>
-                  <div className="flex itemsCats-center justify-between mb-3 gap-2">
+                  <div className="flex items-center justify-between mb-3 gap-2">
                     <h3 className="text-lg font-semibold flex items-center gap-2">
                       <Award className="w-5 h-5 text-primary" />
                       <EditableText
@@ -1804,7 +2285,6 @@ export function About() {
                         storageKey={`life-photo-${idx}`}
                         className="w-full h-full object-cover"
                         alt={p.caption}
-                        // 🔑 각 카드별로 purpose를 다르게
                         purpose={`life-photo-${idx}`}
                       />
                     </div>
@@ -1899,7 +2379,6 @@ export function About() {
                         storageKey={`project-${index}-cover`}
                         className="w-full h-full object-cover"
                         alt={`${project.title} 표지 이미지`}
-                        // 🔑 각 프로젝트별로 purpose를 다르게
                         purpose={`project-cover-${index}`}
                       />
                     </div>
@@ -1960,7 +2439,9 @@ export function About() {
                         </span>
                         <EditableText
                           value={project.tags.join(" ")}
-                          onChange={(value) => updateProjectTags(index, value)}
+                          onChange={(value) =>
+                            updateProjectTags(index, value)
+                          }
                           storageKey={`project-${index}-tags`}
                         />
                       </div>
