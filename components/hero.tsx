@@ -23,11 +23,11 @@ export function Hero() {
     right_name: "김민수",
     right_role: "단국대학교 도시계획부동산학부",
     focus_label: "FOCUS",
-    focus_text: "도시재생 · 지역분석",
-    basedin_label: "BASED IN",
-    basedin_text: "Seoul, Korea",
+    focus_text: "도시계획 · 도시재생",
+    basedin_label: "GPA",
+    basedin_text: "4.27",
     keywords_label: "KEYWORDS",
-    keywords_text: "현장 조사 및 데이터 활용, ",
+    keywords_text: "현장 조사 및 데이터 활용, 소프트웨어 활용(ArcGIS), 데이터 시각화, 공간적 패턴 분석",
     projectButton: "프로젝트 포트폴리오 보기"
   }
 
@@ -61,7 +61,6 @@ export function Hero() {
             <div className="px-8 pt-8 pb-3 flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 <span className="inline-block h-[1px] w-6 bg-primary/60" />
-
                 <EditableText
                   value={heroInfo.tag}
                   onChange={(v) => update("tag", v)}
@@ -118,7 +117,7 @@ export function Hero() {
                     </p>
                   </div>
 
-                  {/* 프로젝트 버튼만 유지 */}
+                  {/* 프로젝트 버튼 */}
                   <div className="mt-8 flex">
                     {heroInfo.projectButton && (
                       <Button onClick={scrollToProjects} size="lg" className="text-base">
@@ -135,7 +134,7 @@ export function Hero() {
                 {/* 오른쪽 프로필 카드 */}
                 <div className="w-full max-w-xs lg:max-w-sm">
                   <div className="relative">
-                    <div className="relative bg-card rounded-3xl border shadow-xl overflow-hidden">
+                    <div className="relative z-10 bg-card rounded-3xl border shadow-xl overflow-visible">
                       <div className="px-6 pt-6 pb-4 flex flex-col items-center">
                         <div className="w-40 h-40 rounded-2xl overflow-hidden bg-muted mb-4">
                           <EditableMedia
@@ -179,60 +178,60 @@ export function Hero() {
                         {/* Focus + Based in */}
                         <div className="grid grid-cols-2 gap-3 w-full text-sm">
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground max-w-[80px]">
+                            <div className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground max-w-[80px]">
                               <EditableText
                                 value={heroInfo.focus_label}
                                 onChange={(v) => update("focus_label", v)}
                                 storageKey="hero-focus_label"
                               />
-                            </p>
-                            <p className="font-medium max-w-[160px]">
+                            </div>
+                            {/* 여기를 별도 레이어로 감싸서 클릭 가능하게 */}
+                            <div className="font-medium max-w-[160px] relative z-20 pointer-events-auto">
                               <EditableText
                                 value={heroInfo.focus_text}
                                 onChange={(v) => update("focus_text", v)}
                                 storageKey="hero-focus_text"
-                                multiline
                               />
-                            </p>
+                            </div>
                           </div>
 
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground max-w-[80px]">
+                            <div className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground max-w-[80px]">
                               <EditableText
                                 value={heroInfo.basedin_label}
                                 onChange={(v) => update("basedin_label", v)}
                                 storageKey="hero-basedin_label"
                               />
-                            </p>
-                            <p className="font-medium max-w-[160px]">
+                            </div>
+                            {/* BASED IN 도 마찬가지 */}
+                            <div className="font-medium max-w-[160px] relative z-20 pointer-events-auto">
                               <EditableText
                                 value={heroInfo.basedin_text}
                                 onChange={(v) => update("basedin_text", v)}
                                 storageKey="hero-basedin_text"
-                                multiline
                               />
-                            </p>
+                            </div>
                           </div>
                         </div>
 
                         {/* Keywords */}
                         <div className="mt-4 w-full">
-                          <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1 max-w-[120px]">
+                          <div className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1 max-w-[120px]">
                             <EditableText
                               value={heroInfo.keywords_label}
                               onChange={(v) => update("keywords_label", v)}
                               storageKey="hero-keywords_label"
                             />
-                          </p>
+                          </div>
 
-                          <p className="text-xs leading-relaxed text-muted-foreground max-w-full">
+                          <div className="text-xs leading-relaxed text-muted-foreground max-w-full">
                             <EditableText
                               value={heroInfo.keywords_text}
                               onChange={(v) => update("keywords_text", v)}
                               storageKey="hero-keywords_text"
                               multiline
                             />
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </div>
