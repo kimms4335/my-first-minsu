@@ -28,20 +28,20 @@ export function Hero() {
     basedin_text: "4.27 / 4.5",
     keywords_label: "KEYWORDS",
     keywords_text: "현장 조사 및 데이터 활용, 소프트웨어 활용(ArcGIS), 데이터 시각화, 공간적 패턴 분석",
-    projectButton: "프로젝트 포트폴리오 보기"
+    projectButton: "프로젝트 포트폴리오 보기",
   }
 
   const [heroInfo, setHeroInfo] = useState(defaultInfo)
 
   useEffect(() => {
-    const saved = getData("hero-info")
+    const saved = getData("hero-info-v2")
     if (saved) setHeroInfo({ ...defaultInfo, ...saved })
   }, [isEditMode])
 
   const update = (k: string, v: string) => {
     const newInfo = { ...heroInfo, [k]: v }
     setHeroInfo(newInfo)
-    saveData("hero-info", newInfo)
+    saveData("hero-info-v2", newInfo)
   }
 
   const scrollToProjects = () => {
@@ -51,7 +51,7 @@ export function Hero() {
 
   return (
     <EditableBackground
-      storageKey="hero-bg"
+      storageKey="hero-bg-v2"
       className="min-h-screen flex items-center justify-center relative overflow-hidden"
     >
       <section id="hero" className="w-full flex items-center justify-center py-16">
@@ -64,7 +64,7 @@ export function Hero() {
                 <EditableText
                   value={heroInfo.tag}
                   onChange={(v) => update("tag", v)}
-                  storageKey="hero-tag"
+                  storageKey="hero-v2-tag"
                 />
               </div>
 
@@ -72,7 +72,7 @@ export function Hero() {
                 <EditableText
                   value={heroInfo.tagline}
                   onChange={(v) => update("tagline", v)}
-                  storageKey="hero-tagline"
+                  storageKey="hero-v2-tagline"
                 />
               </div>
             </div>
@@ -87,7 +87,7 @@ export function Hero() {
                       <EditableText
                         value={heroInfo.tagline}
                         onChange={(v) => update("tagline", v)}
-                        storageKey="hero-tagline-2"
+                        storageKey="hero-v2-tagline-2"
                       />
                     </p>
 
@@ -95,7 +95,7 @@ export function Hero() {
                       <EditableText
                         value={heroInfo.name}
                         onChange={(v) => update("name", v)}
-                        storageKey="hero-name"
+                        storageKey="hero-v2-name"
                       />
                     </h1>
 
@@ -103,7 +103,7 @@ export function Hero() {
                       <EditableText
                         value={heroInfo.title}
                         onChange={(v) => update("title", v)}
-                        storageKey="hero-title"
+                        storageKey="hero-v2-title"
                       />
                     </p>
 
@@ -111,7 +111,7 @@ export function Hero() {
                       <EditableText
                         value={heroInfo.description}
                         onChange={(v) => update("description", v)}
-                        storageKey="hero-description"
+                        storageKey="hero-v2-description"
                         multiline
                       />
                     </p>
@@ -124,7 +124,7 @@ export function Hero() {
                         <EditableText
                           value={heroInfo.projectButton}
                           onChange={(v) => update("projectButton", v)}
-                          storageKey="hero-projectButton"
+                          storageKey="hero-v2-projectButton"
                         />
                       </Button>
                     )}
@@ -141,7 +141,7 @@ export function Hero() {
                             src={heroInfo.profileImage}
                             onChange={(v) => update("profileImage", v)}
                             type="image"
-                            storageKey="hero-profileImage"
+                            storageKey="hero-v2-profileImage"
                             className="w-full h-full object-cover"
                             alt="프로필"
                           />
@@ -151,7 +151,7 @@ export function Hero() {
                           <EditableText
                             value={heroInfo.right_profile_title}
                             onChange={(v) => update("right_profile_title", v)}
-                            storageKey="hero-right_profile_title"
+                            storageKey="hero-v2-right_profile_title"
                           />
                         </p>
 
@@ -159,7 +159,7 @@ export function Hero() {
                           <EditableText
                             value={heroInfo.right_name}
                             onChange={(v) => update("right_name", v)}
-                            storageKey="hero-right_name"
+                            storageKey="hero-v2-right_name"
                           />
                         </p>
 
@@ -167,7 +167,7 @@ export function Hero() {
                           <EditableText
                             value={heroInfo.right_role}
                             onChange={(v) => update("right_role", v)}
-                            storageKey="hero-right_role"
+                            storageKey="hero-v2-right_role"
                             multiline
                           />
                         </p>
@@ -182,15 +182,14 @@ export function Hero() {
                               <EditableText
                                 value={heroInfo.focus_label}
                                 onChange={(v) => update("focus_label", v)}
-                                storageKey="hero-focus_label"
+                                storageKey="hero-v2-focus_label"
                               />
                             </div>
-                            {/* 여기를 별도 레이어로 감싸서 클릭 가능하게 */}
                             <div className="font-medium max-w-[160px] relative z-20 pointer-events-auto">
                               <EditableText
                                 value={heroInfo.focus_text}
                                 onChange={(v) => update("focus_text", v)}
-                                storageKey="hero-focus_text"
+                                storageKey="hero-v2-focus_text"
                               />
                             </div>
                           </div>
@@ -200,15 +199,14 @@ export function Hero() {
                               <EditableText
                                 value={heroInfo.basedin_label}
                                 onChange={(v) => update("basedin_label", v)}
-                                storageKey="hero-basedin_label"
+                                storageKey="hero-v2-basedin_label"
                               />
                             </div>
-                            {/* BASED IN 도 마찬가지 */}
                             <div className="font-medium max-w-[160px] relative z-20 pointer-events-auto">
                               <EditableText
                                 value={heroInfo.basedin_text}
                                 onChange={(v) => update("basedin_text", v)}
-                                storageKey="hero-basedin_text"
+                                storageKey="hero-v2-basedin_text"
                               />
                             </div>
                           </div>
@@ -220,7 +218,7 @@ export function Hero() {
                             <EditableText
                               value={heroInfo.keywords_label}
                               onChange={(v) => update("keywords_label", v)}
-                              storageKey="hero-keywords_label"
+                              storageKey="hero-v2-keywords_label"
                             />
                           </div>
 
@@ -228,7 +226,7 @@ export function Hero() {
                             <EditableText
                               value={heroInfo.keywords_text}
                               onChange={(v) => update("keywords_text", v)}
-                              storageKey="hero-keywords_text"
+                              storageKey="hero-v2-keywords_text"
                               multiline
                             />
                           </div>
