@@ -21,7 +21,7 @@ export function Hero() {
     profileImage: "/uploads/hero-profile-1763642616785.jpeg",
     right_profile_title: "PROFILE",
     right_name: "김민수",
-    right_role: "단국대학교 도시계획부동산학부",
+    right_role: "단국대학교 도시계획·부동산학부",
     focus_label: "FOCUS",
     focus_text: "도시계획 · 도시재생",
     basedin_label: "GPA",
