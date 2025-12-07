@@ -74,19 +74,27 @@ export function Footer() {
     }
   }, [isEditMode])
 
-  const updateFooterInfo = async (key: string, value: string | boolean) => {
-    // Made with와 템플릿 크레딧 관련 필드는 수정 불가
-    if (key === 'showMadeWith' || key === 'madeWithLocation' || 
-        key === 'showTemplateCredit' || key === 'templateCreator') {
-      return
-    }
-    const newInfo = { ...footerInfo, [key]: value }
-    setFooterInfo(newInfo)
-    saveData('footer-info', newInfo)
-    // 파일로도 저장
-    await saveToFile('footer', 'Info', newInfo)
-
+const updateFooterInfo = async (key: string, value: string | boolean) => {
+  // Made with와 템플릿 크레딧 관련 필드는 수정 불가
+  if (
+    key === 'showMadeWith' ||
+    key === 'madeWithLocation' ||
+    key === 'showTemplateCredit' ||
+    key === 'templateCreator'
+  ) {
+    return
   }
+
+  const newInfo = { ...footerInfo, [key]: value }
+  setFooterInfo(newInfo)
+
+  // 🔹 브라우저(localStorage)에만 저장 – 이건 정상 동작
+  saveData('footer-info', newInfo)
+
+  // 🔻 문제 일으키는 파일 저장은 잠시 끈다
+  // await saveToFile('footer', 'Info', newInfo)
+}
+
   
   // 푸터 전체를 표시하지 않음
   if (!footerInfo.showFooter && !isEditMode) {
