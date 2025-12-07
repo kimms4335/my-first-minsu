@@ -219,7 +219,7 @@ const merged: AboutInfo = {
   background: { ...defaultInfo.background, ...(saved.background || {}) },
   resume: { ...defaultInfo.resume, ...(saved.resume || {}) },
   projects: normalizedProjects,
-  highlights: defaultInfo.highlights,                     // ✅ 여기로 고정
+  highlights: (saved.highlights as Highlight[] | undefined) ?? defaultInfo.highlights,
   interests: saved.interests || defaultInfo.interests,
   timeline: saved.timeline || defaultInfo.timeline,
   courses: saved.courses || defaultInfo.courses,
