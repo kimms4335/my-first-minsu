@@ -27,8 +27,9 @@ import { EditableMedia } from "@/components/editable/editable-media"
 import { EditableBackground } from "@/components/editable/editable-background"
 import { useInlineEditor } from "@/contexts/inline-editor-context"
 import { COMMON_STYLES } from "@/lib/constants"
-const ABOUT_STORAGE_KEY = "about-info-v2"
-const ABOUT_BG_STORAGE_KEY = "about-background-v2"
+const ABOUT_STORAGE_KEY = "about-info-v3"
+const ABOUT_BG_STORAGE_KEY = "about-background-v3"
+
 
 
 // ---- 타입 정의 ----
