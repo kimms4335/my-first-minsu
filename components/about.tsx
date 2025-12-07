@@ -213,29 +213,30 @@ useEffect(() => {
       pdfUrl: p.pdfUrl ?? "",
     }))
 
-    const merged: AboutInfo = {
-      ...defaultInfo,
-      ...saved,
-      background: { ...defaultInfo.background, ...(saved.background || {}) },
-      resume: { ...defaultInfo.resume, ...(saved.resume || {}) },
-      projects: normalizedProjects,
-      highlights: saved.highlights || defaultInfo.highlights,
-      interests: saved.interests || defaultInfo.interests,
-      timeline: saved.timeline || defaultInfo.timeline,
-      courses: saved.courses || defaultInfo.courses,
-      stats: saved.stats || defaultInfo.stats,
-      services: saved.services || defaultInfo.services,
-      techStack: saved.techStack || defaultInfo.techStack,
-      testimonials: saved.testimonials || defaultInfo.testimonials,
-      lifePhotos: saved.lifePhotos || defaultInfo.lifePhotos,
-      whatIDoNote: saved.whatIDoNote || defaultInfo.whatIDoNote,
-      resumeCaption: saved.resumeCaption || defaultInfo.resumeCaption,
-      projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
-      labels: saved.labels || defaultInfo.labels,
-      interestMotto: saved.interestMotto || defaultInfo.interestMotto,
-      workingStyleItems:
-        saved.workingStyleItems || defaultInfo.workingStyleItems,
-    }
+const merged: AboutInfo = {
+  ...defaultInfo,
+  ...saved,
+  background: { ...defaultInfo.background, ...(saved.background || {}) },
+  resume: { ...defaultInfo.resume, ...(saved.resume || {}) },
+  projects: normalizedProjects,
+  highlights: defaultInfo.highlights,                     // ✅ 여기로 고정
+  interests: saved.interests || defaultInfo.interests,
+  timeline: saved.timeline || defaultInfo.timeline,
+  courses: saved.courses || defaultInfo.courses,
+  stats: saved.stats || defaultInfo.stats,
+  services: saved.services || defaultInfo.services,
+  techStack: saved.techStack || defaultInfo.techStack,
+  testimonials: saved.testimonials || defaultInfo.testimonials,
+  lifePhotos: saved.lifePhotos || defaultInfo.lifePhotos,
+  whatIDoNote: saved.whatIDoNote || defaultInfo.whatIDoNote,
+  resumeCaption: saved.resumeCaption || defaultInfo.resumeCaption,
+  projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
+  labels: saved.labels || defaultInfo.labels,
+  interestMotto: saved.interestMotto || defaultInfo.interestMotto,
+  workingStyleItems:
+    saved.workingStyleItems || defaultInfo.workingStyleItems,
+}
+
 
     setAboutInfo(merged)
     if (saved.background) setBackgroundData(saved.background)
