@@ -5,23 +5,8 @@ import { useState, useEffect } from "react"
 import { EditableText } from "@/components/editable/editable-text"
 import { useInlineEditor } from "@/contexts/inline-editor-context"
 
-export function Footer() {
-  const { getData, saveData, isEditMode, saveToFile } = useInlineEditor()
-  const currentYear = new Date().getFullYear()
-  
-  // 헤더의 네비게이션 데이터 가져오기 - 기본값 설정
-  const [navItems, setNavItems] = useState<Array<{name: string, url: string}>>([
-    { name: "소개", url: "#about" },
-    { name: "프로젝트", url: "#projects" },
-    { name: "연락처", url: "#contact" }
-  ])
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
-
-  // 기본 데이터
-  const defaultInfo = {
+// 🔹 Footer 컴포넌트 밖(위쪽)에 기본 데이터 선언
+export const defaultInfo = {
     showFooter: true,
     name: "김민수",
     description: "",
@@ -40,7 +25,25 @@ export function Footer() {
     showScrollTop: true
   }
 
+export function Footer() {
+  const { getData, saveData, isEditMode, saveToFile } = useInlineEditor()
+  const currentYear = new Date().getFullYear()
+  
+  // 헤더의 네비게이션 데이터 가져오기 - 기본값 설정
+  const [navItems, setNavItems] = useState<Array<{name: string, url: string}>>([
+    { name: "소개", url: "#about" },
+    { name: "프로젝트", url: "#projects" },
+    { name: "연락처", url: "#contact" }
+  ])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  // ❌ 여기 있던 const defaultInfo = {...} 는 통째로 지우고
+  // ✅ 이 줄만 남겨
   const [footerInfo, setFooterInfo] = useState(defaultInfo)
+
 
   // localStorage에서 데이터 로드
   useEffect(() => {
@@ -82,6 +85,7 @@ export function Footer() {
     saveData('footer-info', newInfo)
     // 파일로도 저장
     await saveToFile('footer', 'Info', newInfo)
+
   }
   
   // 푸터 전체를 표시하지 않음
