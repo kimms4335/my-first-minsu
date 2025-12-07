@@ -27,6 +27,9 @@ import { EditableMedia } from "@/components/editable/editable-media"
 import { EditableBackground } from "@/components/editable/editable-background"
 import { useInlineEditor } from "@/contexts/inline-editor-context"
 import { COMMON_STYLES } from "@/lib/constants"
+const ABOUT_STORAGE_KEY = "about-info-v2"
+const ABOUT_BG_STORAGE_KEY = "about-background-v2"
+
 
 // ---- 타입 정의 ----
 type Project = {
@@ -195,58 +198,61 @@ export function About() {
   const [backgroundData, setBackgroundData] = useState(defaultInfo.background)
 
   // --------- 데이터 로딩 ----------
-  useEffect(() => {
-    const saved = getData("about-info") as Partial<AboutInfo> | null
-    if (saved) {
-      const savedProjects = (saved.projects || defaultInfo.projects) as any[]
-      const normalizedProjects: Project[] = savedProjects.map((p) => ({
-        title: p.title ?? "",
-        period: p.period ?? "",
-        description: p.description ?? "",
-        tags: p.tags ?? [],
-        coverImage: p.coverImage ?? "",
-        pdfName: p.pdfName ?? "",
-        pdfUrl: p.pdfUrl ?? "",
-      }))
+useEffect(() => {
+  const saved = getData(ABOUT_STORAGE_KEY) as Partial<AboutInfo> | null
+  if (saved) {
+    const savedProjects = (saved.projects || defaultInfo.projects) as any[]
+    const normalizedProjects: Project[] = savedProjects.map((p) => ({
+      title: p.title ?? "",
+      period: p.period ?? "",
+      description: p.description ?? "",
+      tags: p.tags ?? [],
+      coverImage: p.coverImage ?? "",
+      pdfName: p.pdfName ?? "",
+      pdfUrl: p.pdfUrl ?? "",
+    }))
 
-      const merged: AboutInfo = {
-        ...defaultInfo,
-        ...saved,
-        background: { ...defaultInfo.background, ...(saved.background || {}) },
-        resume: { ...defaultInfo.resume, ...(saved.resume || {}) },
-        projects: normalizedProjects,
-        highlights: saved.highlights || defaultInfo.highlights,
-        interests: saved.interests || defaultInfo.interests,
-        timeline: saved.timeline || defaultInfo.timeline,
-        courses: saved.courses || defaultInfo.courses,
-        stats: saved.stats || defaultInfo.stats,
-        services: saved.services || defaultInfo.services,
-        techStack: saved.techStack || defaultInfo.techStack,
-        testimonials: saved.testimonials || defaultInfo.testimonials,
-        lifePhotos: saved.lifePhotos || defaultInfo.lifePhotos,
-        whatIDoNote: saved.whatIDoNote || defaultInfo.whatIDoNote,
-        resumeCaption: saved.resumeCaption || defaultInfo.resumeCaption,
-        projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
-        labels: saved.labels || defaultInfo.labels,
-        interestMotto: saved.interestMotto || defaultInfo.interestMotto,
-        workingStyleItems: saved.workingStyleItems || defaultInfo.workingStyleItems,
-      }
-
-      setAboutInfo(merged)
-      if (saved.background) setBackgroundData(saved.background)
+    const merged: AboutInfo = {
+      ...defaultInfo,
+      ...saved,
+      background: { ...defaultInfo.background, ...(saved.background || {}) },
+      resume: { ...defaultInfo.resume, ...(saved.resume || {}) },
+      projects: normalizedProjects,
+      highlights: saved.highlights || defaultInfo.highlights,
+      interests: saved.interests || defaultInfo.interests,
+      timeline: saved.timeline || defaultInfo.timeline,
+      courses: saved.courses || defaultInfo.courses,
+      stats: saved.stats || defaultInfo.stats,
+      services: saved.services || defaultInfo.services,
+      techStack: saved.techStack || defaultInfo.techStack,
+      testimonials: saved.testimonials || defaultInfo.testimonials,
+      lifePhotos: saved.lifePhotos || defaultInfo.lifePhotos,
+      whatIDoNote: saved.whatIDoNote || defaultInfo.whatIDoNote,
+      resumeCaption: saved.resumeCaption || defaultInfo.resumeCaption,
+      projectsCaption: saved.projectsCaption || defaultInfo.projectsCaption,
+      labels: saved.labels || defaultInfo.labels,
+      interestMotto: saved.interestMotto || defaultInfo.interestMotto,
+      workingStyleItems:
+        saved.workingStyleItems || defaultInfo.workingStyleItems,
     }
 
-    const savedBg = getData("about-background") as
-      | { image: string; video: string; color: string; opacity: number }
-      | null
-    if (savedBg) setBackgroundData(savedBg)
-  }, [isEditMode])
-
-  const updateAboutInfo = (key: keyof AboutInfo, value: any) => {
-    const newInfo = { ...aboutInfo, [key]: value }
-    setAboutInfo(newInfo)
-    saveData("about-info", newInfo)
+    setAboutInfo(merged)
+    if (saved.background) setBackgroundData(saved.background)
   }
+
+  const savedBg = getData(ABOUT_BG_STORAGE_KEY) as
+    | { image: string; video: string; color: string; opacity: number }
+    | null
+  if (savedBg) setBackgroundData(savedBg)
+}, [isEditMode])
+
+
+const updateAboutInfo = (key: keyof AboutInfo, value: any) => {
+  const newInfo = { ...aboutInfo, [key]: value }
+  setAboutInfo(newInfo)
+  saveData(ABOUT_STORAGE_KEY, newInfo)
+}
+
 
   const updateLabels = (partial: Partial<AboutLabels>) => {
     const newLabels = { ...aboutInfo.labels, ...partial }
@@ -603,22 +609,24 @@ const removeWorkingStyleItem = (index: number) => {
   }
 
   return (
-    <EditableBackground
-      image={backgroundData.image}
-      video={backgroundData.video}
-      color={backgroundData.color}
-      opacity={backgroundData.opacity}
-      onChange={(data) => {
-        const newData = { ...backgroundData, ...data }
-        setBackgroundData(newData)
-        saveData("about-background", newData)
-        const updated = { ...aboutInfo, background: newData }
-        setAboutInfo(updated)
-        saveData("about-info", updated)
-      }}
-      storageKey="about-background"
-      className="py-20 bg-muted/30 relative"
-    >
+<EditableBackground
+  image={backgroundData.image}
+  video={backgroundData.video}
+  color={backgroundData.color}
+  opacity={backgroundData.opacity}
+  onChange={(data) => {
+    const newData = { ...backgroundData, ...data }
+    setBackgroundData(newData)
+    saveData(ABOUT_BG_STORAGE_KEY, newData)
+
+    const updated = { ...aboutInfo, background: newData }
+    setAboutInfo(updated)
+    saveData(ABOUT_STORAGE_KEY, updated)
+  }}
+  storageKey={ABOUT_BG_STORAGE_KEY}
+  className="py-20 bg-muted/30 relative"
+>
+
       <section id="about" className="w-full">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
           {/* 상단 Hero 영역 */}
