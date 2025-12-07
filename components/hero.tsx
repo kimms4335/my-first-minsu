@@ -27,7 +27,7 @@ export function Hero() {
     basedin_label: "GPA",
     basedin_text: "4.27 / 4.5",
     keywords_label: "KEYWORDS",
-    keywords_text: "현장 조사 및 데이터 활용, 소프트웨어 활용(ArcGIS), 데이터 시각화, 공간적 패턴 분석",
+    keywords_text: "현장 조사 및 데이터 활용, 소프트웨어 활용(ArcGIS), 공간적 패턴 분석, 지속 가능한 도시",
     projectButton: "프로젝트 포트폴리오 보기"
   }
 
